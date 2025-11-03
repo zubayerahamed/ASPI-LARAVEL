@@ -10,11 +10,12 @@ kit.ui = kit.ui || {};
 kit.ui.config = kit.ui.config || {};
 
 kit.ui.config.initSelect2 = function () {
-    $('.select2').select2();
+    $('.select2').select2({ width: '100%' });
 
     // Select2 with boostrap4 theme
     $('.select2bs4').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+        width: '100%'
     });
 }
 
@@ -209,6 +210,15 @@ kit.ui.config.initFilePond = function () {
     });
 }
 
+kit.ui.config.formRequiredLabel = function(){
+	$('form').each(function () {
+		$(this).find(':input[required]').each(function () {
+			// Find the label inside the same .form-group and mark it
+			$(this).closest('.form-group').find('label').addClass('required');
+		});
+	});
+}
+
 kit.ui.init = function () {
     kit.ui.config.initSelect2();
     kit.ui.config.initDatatable();
@@ -219,6 +229,7 @@ kit.ui.init = function () {
     kit.ui.config.initBootstrapSwitch();
     kit.ui.config.initSummernote();
     kit.ui.config.initFilePond();
+    kit.ui.config.formRequiredLabel();
 	console.log("KIT-UI JS code initialization done");
 }
 

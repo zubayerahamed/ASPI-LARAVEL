@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Business extends Model
 {
+    use SoftDeletes;
 
     protected $fillable = [
-        'business_name',
+        'name',
         'logo',
         'country',
         'currency',
@@ -20,12 +22,12 @@ class Business extends Model
         'is_delivery',
         'is_active',
 
-        'business_caregory_id',
+        'business_category_id',
     ];
 
     public function businessCategory()
     {
-        return $this->belongsTo(BusinessCategory::class, 'business_caregory_id', 'id');
+        return $this->belongsTo(BusinessCategory::class, 'business_category_id', 'id');
     }
 
     public function users()

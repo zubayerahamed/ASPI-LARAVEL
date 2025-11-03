@@ -3,17 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BusinessCategory extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'xcode',
         'name',
+        'seqn',
         'is_active',
     ];
 
     public function businesses()
     {
-        return $this->hasMany(Business::class, 'business_caregory_id', 'id');
+        return $this->hasMany(Business::class, 'business_category_id', 'id');
     }
 }

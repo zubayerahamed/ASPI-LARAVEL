@@ -103,7 +103,7 @@ function sectionReloadAjaxReq(section, callback, disableloadingmaskeffect) {
     if (disableloadingmaskeffect == undefined || disableloadingmaskeffect == null || disableloadingmaskeffect == false) loadingMask2.show();
 
     $.ajax({
-        url: getBasepath() + section.url,
+        url: section.url,
         type: "GET",
         success: function (data) {
             if (disableloadingmaskeffect == undefined || disableloadingmaskeffect == null || disableloadingmaskeffect == false) loadingMask2.hide();
@@ -127,8 +127,11 @@ function sectionReloadAjaxReq(section, callback, disableloadingmaskeffect) {
 function sectionReloadAjaxPostReq(section, data, callback) {
     loadingMask2.show();
     $.ajax({
-        url: getBasepath() + section.url,
+        url: section.url,
         type: "POST",
+        headers: {
+            "X-CSRF-TOKEN": getCSRFToken(),
+        },
         data: data,
         success: function (data) {
             loadingMask2.hide();
@@ -152,8 +155,11 @@ function sectionReloadAjaxPostReq(section, data, callback) {
 function sectionReloadAjaxDeleteReq(section, data, callbackFunction) {
     loadingMask2.show();
     $.ajax({
-        url: getBasepath() + section.url,
+        url: section.url,
         type: "DELETE",
+        headers: {
+            "X-CSRF-TOKEN": getCSRFToken(),
+        },
         data: data,
         success: function (data) {
             loadingMask2.hide();
@@ -195,6 +201,9 @@ function submitMainForm(customurl, customform, callbackFunction, callbackFunctio
     $.ajax({
         url: submitUrl,
         type: submitType,
+        headers: {
+            "X-CSRF-TOKEN": getCSRFToken(),
+        },
         data: formData,
         success: function (data, status, xhr) {
             loadingMask2.hide();
@@ -303,6 +312,9 @@ function submitMultipartForm(submitUrl, submitType, targettedForm, frommodal) {
     $.ajax({
         url: submitUrl,
         type: submitType,
+        headers: {
+            "X-CSRF-TOKEN": getCSRFToken(),
+        },
         data: formData,
         async: false,
         cache: false,
@@ -440,6 +452,9 @@ function actionPostRequest(customurl, data, timeout, callbackFunction, callbackF
     $.ajax({
         url: customurl,
         type: 'POST',
+        headers: {
+            "X-CSRF-TOKEN": getCSRFToken(),
+        },
         data: data,
         success: function (data) {
             loadingMask2.hide();
@@ -703,7 +718,7 @@ function sendSummernoteFile(file, el) {
     loadingMask2.show();
     $.ajax({
         headers: {
-            "X-CSRF-TOKEN": $('meta[name="_token"]').attr("content"),
+            "X-CSRF-TOKEN": getCSRFToken(),
         },
         data: formData,
         type: "POST",

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("name", 100);
             $table->string("xcode", 4)->unique();
+            $table->integer("seqn")->default(0);
             $table->boolean("is_active")->default(true);
             $table->timestamps();
             $table->softDeletes();

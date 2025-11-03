@@ -2,6 +2,34 @@
 	display: none;
 }
 
+.cursor-pointer{
+	cursor: pointer;
+}
+
+.gap-1 > * + * {
+  margin-left: .25rem;
+}
+
+.gap-2 > * + * {
+  margin-left: .5rem;
+}
+
+.gap-3 > * + * {
+  margin-left: 1rem;
+}
+
+.gap-4 > * + * {
+  margin-left: 1.5rem;
+}
+
+.gap-5 > * + * {
+  margin-left: 3rem;
+}
+
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+
 label.form-label{
 	font-weight: 500 !important;
 }
@@ -46,6 +74,8 @@ table td, table th {
 	vertical-align: middle !important;
 	padding-top: 8px !important;
 	padding-bottom: 8px !important;
+	padding-left: 20px !important;
+	padding-right: 20px !important;
 }
 table th::before, table th::after {
 	bottom: 10px !important;

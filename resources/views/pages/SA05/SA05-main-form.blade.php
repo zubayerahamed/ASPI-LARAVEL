@@ -9,44 +9,57 @@
 
             <div class="row">
                 <div class="col-md-3">
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label class="form-label" for="name">Category name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ $businessCategory->name }}">
+                        <input type="text" class="form-control" id="name" name="name" value="{{ $businessCategory->name }}" required>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label class="form-label" for="xcode">Category code</label>
-                        <input type="text" class="form-control" id="xcode" name="xcode" value="{{ $businessCategory->xcode }}">
+                        <input type="text" class="form-control" id="xcode" name="xcode" value="{{ $businessCategory->xcode }}" required>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="seqn">Sequence number</label>
+                        <input type="number" class="form-control" id="seqn" name="seqn" value="{{ $businessCategory->seqn }}" min="0" required>
                     </div>
                 </div>
 
                 <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="form-label" for="is_active">Is Active?</label>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active" {{ $businessCategory->is_active ? 'checked' : '' }}>
-                        </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label d-block" for="is_active">Is Active?</label>
+                        <input type="checkbox" id="is_active" name="is_active" {{ $businessCategory->is_active ? 'checked' : '' }}>
                     </div>
-
                 </div>
+
             </div>
 
             <div class="d-flex justify-content-between align-items-center">
                 <div class="flex-grow-1 text-left">
-                    <button type="reset" 
+                    <button 
                         data-reloadid="main-form-container" 
-                        data-reloadurl="/SA05?id=RESET" 
+                        data-reloadurl="{{ route('SA05', ['id' => 'RESET']) }}" 
                         data-detailreloadid="header-table-container" 
-                        data-detailreloadurl="/SA05/header-table"
-                        class="btn btn-default btn-reset">Clear</button>
+                        data-detailreloadurl="{{ route('SA05.header-table') }}"
+                        type="reset" 
+                        class="btn btn-sm btn-default btn-reset d-flex align-items-center gap-2">
+                        <i class="ph ph-broom"></i> <span>Clear</span>
+                    </button>
                 </div>
                 <div class="flex-grow-1 justify-content-end d-flex gap-2">
                     @if ($businessCategory->id == null)
-                        <button type="submit" class="btn btn-primary btn-submit d-flex align-items-center ml-2"><i class="ph ph-floppy-disk mr-2"></i> <span>Save</span></button>
+                        <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">
+                            <i class="ph ph-floppy-disk"></i> <span>Save</span>
+                        </button>
                     @else
-                        <button type="button" data-url="{{ route('SA05.delete', ['id' => $businessCategory->id]) }}" class="btn btn-danger btn-delete d-flex align-items-center ml-2"><i class="ph ph-trash mr-2"></i> <span>Delete</span></button>
-                        <button type="submit" class="btn btn-primary btn-submit d-flex align-items-center ml-2"><i class="ph ph-pencil mr-2"></i> <span>Update</span></button>
+                        <button data-url="{{ route('SA05.delete', ['id' => $businessCategory->id]) }}" type="button"  class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
+                            <i class="ph ph-trash"></i> <span>Delete</span>
+                        </button>
+                        <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">
+                            <i class="ph ph-floppy-disk"></i> <span>Update</span>
+                        </button>
                     @endif
                 </div>
             </div>

@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ReloadSection;
-use App\Helpers\ReloadSectionParams;
 use App\Models\BusinessCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use PhpParser\Node\Stmt\TryCatch;
 
-class SA05 extends ZayaanController
+class SA05Controller extends ZayaanController
 {
     public function index(Request $request)
     {
@@ -22,7 +19,7 @@ class SA05 extends ZayaanController
                 return response()->json([
                     'page' => view('pages.SA05.SA05', [
                         'businessCategory' => new BusinessCategory(),
-                        'detailList' => BusinessCategory::all()
+                        'detailList' => BusinessCategory::orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Business Category',
                     'subtitle' => 'Business Category',
@@ -60,14 +57,14 @@ class SA05 extends ZayaanController
             'content_header_title' => 'Business Category',
             'subtitle' => 'Business Category',
             'businessCategory' => new BusinessCategory(),
-            'detailList' => BusinessCategory::all()
+            'detailList' => BusinessCategory::orderBy('seqn', 'asc')->get()
         ]);
     }
 
     public function headerTable(){
         return response()->json([
             'page' => view('pages.SA05.SA05-header-table', [
-                'detailList' => BusinessCategory::all()
+                'detailList' => BusinessCategory::orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }
@@ -77,9 +74,12 @@ class SA05 extends ZayaanController
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'xcode' => 'required|unique:business_categories,xcode,except,id',
+            'seqn' => 'required|integer',
         ], [
             'name.required' => 'Category name required.',
             'xcode.required' => 'Category code required.',
+            'seqn.required' => 'Sequence number required.',
+            'seqn.integer' => 'Sequence number must be an integer.',
         ]);
 
         $validator->validate();
@@ -89,13 +89,14 @@ class SA05 extends ZayaanController
         $businessCategory = BusinessCategory::create($request->only([
             'name', 
             'xcode',
+            'seqn',
             'is_active'
         ]));
 
         if($businessCategory){
             $this->setReloadSections([
-                new ReloadSection('main-form-container', '/SA05?id=RESET'),
-                new ReloadSection('header-table-container', '/SA05/header-table'),
+                new ReloadSection('main-form-container', route('SA05', ['id' => 'RESET'])),
+                new ReloadSection('header-table-container', route('SA05.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Category created successfully");
             return $this->getResponse();
@@ -110,9 +111,12 @@ class SA05 extends ZayaanController
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'xcode' => 'required|unique:business_categories,xcode,'.$id,
+            'seqn' => 'required|integer',
         ], [
             'name.required' => 'Category name required.',
             'xcode.required' => 'Category code required.',
+            'seqn.required' => 'Sequence number required.',
+            'seqn.integer' => 'Sequence number must be an integer.',
         ]);
 
         $validator->validate();
@@ -123,13 +127,14 @@ class SA05 extends ZayaanController
         $businessCategory->update($request->only([
             'name', 
             'xcode',
+            'seqn',
             'is_active'
         ]));
 
         if($businessCategory){
             $this->setReloadSections([
-                new ReloadSection('main-form-container', '/SA05?id='.$id),
-                new ReloadSection('header-table-container', '/SA05/header-table'),
+                new ReloadSection('main-form-container', route('SA05', ['id' => $id])),
+                new ReloadSection('header-table-container', route('SA05.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Category updated successfully");
             return $this->getResponse();
@@ -145,8 +150,8 @@ class SA05 extends ZayaanController
 
         if($businessCategory){
             $this->setReloadSections([
-                new ReloadSection('main-form-container', '/SA05?id=RESET'),
-                new ReloadSection('header-table-container', '/SA05/header-table'),
+                new ReloadSection('main-form-container', route('SA05', ['id' => 'RESET'])),
+                new ReloadSection('header-table-container', route('SA05.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Category deleted successfully");
             return $this->getResponse();

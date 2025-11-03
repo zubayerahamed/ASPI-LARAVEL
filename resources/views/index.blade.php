@@ -9,7 +9,7 @@
 @endsection
 
 @section('content_body')
-    <div class="screen-container pt-3">
+    <div class="screen-container">
         @if ($page)
             @include($page)
         @endif

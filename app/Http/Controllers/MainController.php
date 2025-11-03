@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Business;
 use Illuminate\Http\Request;
 
 class MainController extends ZayaanController
@@ -13,10 +14,14 @@ class MainController extends ZayaanController
      */
     public function index()
     {
+
+        $businesses = Business::with(['businessCategory'])->orderBy('name', 'asc')->get();
+
         return view('index', [
-            'page' => 'pages.examples',
-            'content_header_title' => 'Dynamic Elements & Data Tables',
-            'subtitle' => 'Dynamic Elements & Data Tables',
+            'page' => 'pages.business-selection',
+            'content_header_title' => 'Select Your Business',
+            'subtitle' => 'Business Selection',
+            'businesses' => $businesses
         ]);
     }
 }

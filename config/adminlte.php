@@ -344,6 +344,15 @@ return [
                 'screen' => 'SA10',
             ],
         ],
+        [
+            'text' => 'Business Admins',
+            'route' => 'SA15',
+            'icon' => 'ph ph-user-circle',
+            'classes' => 'screen-item d-flex align-items-center',
+            'data' => [
+                'screen' => 'SA15',
+            ],
+        ],
         // [
         //     'text' => 'Dashboard',
         //     'route' => 'DASH',
