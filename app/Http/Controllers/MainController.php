@@ -6,6 +6,7 @@ use App\Models\Business;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class MainController extends ZayaanController
 {
@@ -16,6 +17,7 @@ class MainController extends ZayaanController
      */
     public function index()
     {
+        // dd(Config::get('adminlte.menu'));
 
         // Get Auth User's businesses
         $user = Auth::user();

@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\CheckForcePasswordChange;
 use App\Http\Middleware\EnsureEmailIsVerified;
+use App\Providers\MenuServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,6 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'email_verified' => EnsureEmailIsVerified::class,
             'force_password_change' => CheckForcePasswordChange::class,
+        ]);
+
+        $middleware->web(append: [
+            \App\Http\Middleware\ShareMenuData::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

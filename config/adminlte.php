@@ -325,34 +325,34 @@ return [
         //     'type' => 'sidebar-menu-search',
         //     'text' => 'search',
         // ],
-        ['header' => 'System Administrator'],
-        [
-            'text' => 'Business Category',
-            'route' => 'SA05',
-            'icon' => 'ph ph-copy-simple',
-            'classes' => 'screen-item d-flex align-items-center',
-            'data' => [
-                'screen' => 'SA05',
-            ],
-        ],
-        [
-            'text' => 'Business',
-            'route' => 'SA10',
-            'icon' => 'ph ph-briefcase',
-            'classes' => 'screen-item d-flex align-items-center',
-            'data' => [
-                'screen' => 'SA10',
-            ],
-        ],
-        [
-            'text' => 'Business Admins',
-            'route' => 'SA15',
-            'icon' => 'ph ph-user-circle',
-            'classes' => 'screen-item d-flex align-items-center',
-            'data' => [
-                'screen' => 'SA15',
-            ],
-        ],
+        // ['header' => 'System Administrator'],
+        // [
+        //     'text' => 'Business Category',
+        //     'route' => 'SA05',
+        //     'icon' => 'ph ph-copy-simple',
+        //     'classes' => 'screen-item d-flex align-items-center',
+        //     'data' => [
+        //         'screen' => 'SA05',
+        //     ],
+        // ],
+        // [
+        //     'text' => 'Business',
+        //     'route' => 'SA10',
+        //     'icon' => 'ph ph-briefcase',
+        //     'classes' => 'screen-item d-flex align-items-center',
+        //     'data' => [
+        //         'screen' => 'SA10',
+        //     ],
+        // ],
+        // [
+        //     'text' => 'Business Admins',
+        //     'route' => 'SA15',
+        //     'icon' => 'ph ph-user-circle',
+        //     'classes' => 'screen-item d-flex align-items-center',
+        //     'data' => [
+        //         'screen' => 'SA15',
+        //     ],
+        // ],
         // [
         //     'text' => 'Dashboard',
         //     'route' => 'DASH',
