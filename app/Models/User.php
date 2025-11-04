@@ -59,6 +59,7 @@ class User extends Authenticatable
             'is_business_admin' => 'boolean',
             'is_driver' => 'boolean',
             'is_customer' => 'boolean',
+            'password_changed' => 'boolean',
         ];
     }
 
@@ -70,6 +71,10 @@ class User extends Authenticatable
         return $this->status === 'active';
     }
 
+    public function requiresPasswordChange()
+    {
+        return !$this->password_changed;
+    }
 
     /**
      * The businesses that belong to the user.

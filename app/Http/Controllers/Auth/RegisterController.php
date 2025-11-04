@@ -73,6 +73,7 @@ class RegisterController extends Controller
             'is_customer' => false,
             'register_type' => 'REGULAR',
             'status' => 'active',
+            'password_changed' => true,
         ]);
     }
 }

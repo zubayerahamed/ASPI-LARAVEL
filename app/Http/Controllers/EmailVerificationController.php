@@ -61,7 +61,10 @@ class EmailVerificationController extends Controller
         $user->status = 'active'; // Update status to active
         $user->save();
 
-        return redirect()->route('login')->with('status', 'Email verified successfully. You can now log in.');
+        return redirect()->route('password.set')
+            ->with('user_id', $user->id)
+            ->with('email', $user->email)
+            ->with('status', 'Email verified successfully. You can now set your password.');
     }
 
     public function resendVerificationEmail(Request $request)

@@ -64,6 +64,9 @@
                     <h3 class="card-title float-none text-center">
                         @yield('auth_header')
                     </h3>
+                    @if (session('status') || isset($status))
+                        <p class="text-success p-0 m-0 mt-2 text-center">{{ session('status') ?? $status }}</p>
+                    @endif
                 </div>
             @endif
 

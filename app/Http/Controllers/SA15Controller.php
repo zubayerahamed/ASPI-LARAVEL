@@ -118,7 +118,7 @@ class SA15Controller extends ZayaanController
 
             $this->setReloadSections([
                 new ReloadSection('main-form-container', route('SA15', ['id' => 'RESET'])),
-                // new ReloadSection('header-table-container', route('SA15.header-table')),
+                new ReloadSection('header-table-container', route('SA15.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Business Admin created successfully and send verification email.");
             return $this->getResponse();

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckForcePasswordChange;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Register your custom middleware
         $middleware->alias([
-            'verified' => EnsureEmailIsVerified::class,
+            'email_verified' => EnsureEmailIsVerified::class,
+            'force_password_change' => CheckForcePasswordChange::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
