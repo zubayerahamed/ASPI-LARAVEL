@@ -17,7 +17,7 @@
                         <th>Mobile</th>
                         <th>Services</th>
                         <th class="text-center">Active</th>
-                        <th>Action</th>
+                        <th class="text-right">Action</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -42,6 +42,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'activation_token',
     ];
 
     /**
@@ -54,9 +55,25 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_system_admin' => 'boolean',
+            'is_business_admin' => 'boolean',
+            'is_driver' => 'boolean',
+            'is_customer' => 'boolean',
         ];
     }
 
+    /**
+     * Check if user is active
+     */
+    public function isActive()
+    {
+        return $this->status === 'active';
+    }
+
+
+    /**
+     * The businesses that belong to the user.
+     */
     public function businesses()
     {
         return $this->belongsToMany(Business::class, 'business_user')->withPivot('is_active');

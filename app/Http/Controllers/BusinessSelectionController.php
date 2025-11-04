@@ -6,7 +6,7 @@ use App\Models\Business;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class BusinessSelectionController extends Controller
+class BusinessSelectionController extends ZayaanController
 {
     // Logic to handle business selection based on the provided ID
     // This could involve setting a session variable, redirecting, etc.

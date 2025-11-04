@@ -67,6 +67,10 @@ label.required:after {
 /**
 === Data table
 */
+.data-table-responsive{
+	padding: 20px !important;
+}
+
 table{
 	white-space: nowrap;
 }
