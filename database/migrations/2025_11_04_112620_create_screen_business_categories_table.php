@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu_screens', function (Blueprint $table) {
+        Schema::create('screen_business_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("menu_id")->references("id")->on("menus")->onDelete("cascade");
             $table->foreignId("screen_id")->references("id")->on("screens")->onDelete("cascade");
-            $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
-            $table->string('altername_title', 50)->nullable();
-            $table->integer('seqn')->default(0);
-            $table->unique(['menu_id', 'screen_id', 'business_id']);  // unique per business
+            $table->foreignId("business_category_id")->references("id")->on("business_categories")->onDelete("cascade");
+            $table->unique(['screen_id', 'business_category_id']);  // unique per screen and business category
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu_screens');
+        Schema::dropIfExists('screen_business_categories');
     }
 };

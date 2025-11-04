@@ -23,10 +23,6 @@ return new class extends Migration
             $table->integer('xnum')->default(0);
             $table->integer('seqn')->default(0);
 
-            $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
-
-            $table->unique(['xscreen', 'business_id']);  // menu will be unique per business
-
             $table->timestamps();
             $table->softDeletes();
         });
