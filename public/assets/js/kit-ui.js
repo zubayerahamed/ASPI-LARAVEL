@@ -135,11 +135,11 @@ kit.ui.config.initSummernote = function () {
     });
 }
 
-kit.ui.config.initDatatable = function () {
-    $(".datatable").DataTable({
+kit.ui.config.initDatatable = function (tableClass = 'datatable', allowButtons = true) {
+    $("." + tableClass).DataTable({
         "responsive": true,
         "lengthChange": true,
-        "autoWidth": false,
+        "autoWidth": true,
         // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"], 
         // dom: '<"datatable-header justify-content-start"f<"ms-sm-auto"l><"ms-sm-3"B>><"datatable-scroll-wrap"t><"datatable-footer"ip>',
         buttons: {
@@ -171,6 +171,11 @@ kit.ui.config.initDatatable = function () {
     }).buttons().container().css({
         width: '100%'
     }).appendTo('.dataTables_wrapper .col-md-6:eq(1)');
+
+    if (!allowButtons) {
+        // Remove buttons container
+        $("." + tableClass).DataTable().buttons().remove();
+    }
 }
 
 kit.ui.config.initFilePond = function () {
