@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId("menu_id")->references("id")->on("menus")->onDelete("cascade");
             $table->foreignId("screen_id")->references("id")->on("screens")->onDelete("cascade");
-            $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
-            $table->string('altername_title', 50)->nullable();
+            $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
+            $table->string('alternate_title', 50)->nullable();
             $table->integer('seqn')->default(0);
             $table->unique(['menu_id', 'screen_id', 'business_id']);  // unique per business
             $table->timestamps();

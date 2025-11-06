@@ -10,6 +10,7 @@ class MenuScreen extends Model
         'menu_id',
         'screen_id',
         'business_id',
+        'alternate_title',
         'seqn',
     ];
 

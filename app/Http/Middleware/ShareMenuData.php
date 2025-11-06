@@ -84,12 +84,30 @@ class ShareMenuData
                 ],
             ];
             $menu[] = [
-                'text' => 'Menu Management',
+                'text' => 'Navigation Management',
                 'route' => 'SA05',
                 'icon' => 'ph ph-align-left',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
                     'screen' => 'SA05',
+                ],
+            ];
+            $menu[] = [
+                'text' => 'Navigation Screens',
+                'route' => 'SA06',
+                'icon' => 'ph ph-anchor-simple',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'SA06',
+                ],
+            ];
+            $menu[] = [
+                'text' => 'Codes & Parameters',
+                'route' => 'SA07',
+                'icon' => 'ph ph-tree-structure',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'SA07',
                 ],
             ];
 

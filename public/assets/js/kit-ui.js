@@ -139,7 +139,7 @@ kit.ui.config.initDatatable = function (tableClass = 'datatable', allowButtons =
     $("." + tableClass).DataTable({
         "responsive": true,
         "lengthChange": true,
-        "autoWidth": true,
+        "autoWidth": false,
         // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"], 
         // dom: '<"datatable-header justify-content-start"f<"ms-sm-auto"l><"ms-sm-3"B>><"datatable-scroll-wrap"t><"datatable-footer"ip>',
         buttons: {
