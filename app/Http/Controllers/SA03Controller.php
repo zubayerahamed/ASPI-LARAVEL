@@ -11,16 +11,17 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
-class SA15Controller extends ZayaanController
+class SA03Controller extends ZayaanController
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $id = $request->query('id', 'RESET'); // Returns null if not present
         $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
 
         if ($request->ajax()) {
-            if($frommenu == 'Y'){
+            if ($frommenu == 'Y') {
                 return response()->json([
-                    'page' => view('pages.SA15.SA15', [
+                    'page' => view('pages.SA03.SA03', [
                         'businesses' => Business::orderBy('name', 'asc')->get(),
                         'user' => new User(),
                         'detailList' => User::with(['businesses'])->where('is_business_admin', true)->orderBy('id', 'desc')->get()
@@ -30,9 +31,9 @@ class SA15Controller extends ZayaanController
                 ]);
             }
 
-            if("RESET" == $id){
+            if ("RESET" == $id) {
                 return response()->json([
-                    'page' => view('pages.SA15.SA15-main-form', [
+                    'page' => view('pages.SA03.SA03-main-form', [
                         'businesses' => Business::orderBy('name', 'asc')->get(),
                         'user' => new User(),
                     ])->render(),
@@ -43,14 +44,14 @@ class SA15Controller extends ZayaanController
                 $user = User::findOrFail($id);
 
                 return response()->json([
-                    'page' => view('pages.SA15.SA15-main-form', [
+                    'page' => view('pages.SA03.SA03-main-form', [
                         'businesses' => Business::orderBy('name', 'asc')->get(),
                         'user' => $user,
                     ])->render(),
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
-                    'page' => view('pages.SA15.SA15-main-form', [
+                    'page' => view('pages.SA03.SA03-main-form', [
                         'businesses' => Business::orderBy('name', 'asc')->get(),
                         'user' => new User(),
                     ])->render(),
@@ -58,9 +59,9 @@ class SA15Controller extends ZayaanController
             }
         }
 
-         // When url is directly hit from url bar
+        // When url is directly hit from url bar
         return view('index', [
-            'page' => 'pages.SA15.SA15',
+            'page' => 'pages.SA03.SA03',
             'content_header_title' => 'Business Admins',
             'subtitle' => 'Business Admins',
             'businesses' => Business::orderBy('name', 'asc')->get(),
@@ -69,15 +70,17 @@ class SA15Controller extends ZayaanController
         ]);
     }
 
-    public function headerTable(){
+    public function headerTable()
+    {
         return response()->json([
-            'page' => view('pages.SA15.SA15-header-table', [
+            'page' => view('pages.SA03.SA03-header-table', [
                 'detailList' => User::with(['businesses'])->where('is_business_admin', true)->orderBy('id', 'desc')->get()
             ])->render(),
         ]);
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'business_ids' => ['required', 'array', 'min:1'],
@@ -105,8 +108,8 @@ class SA15Controller extends ZayaanController
         $user->status = 'pending'; // Set default status
         $user->register_type = 'REGULAR'; // Set default register type
         $user->activation_token = Str::random(60);
-        
-        if($user->save()){
+
+        if ($user->save()) {
             // Attach businesses to the user
             $businessIds = $request->input('business_ids', []);
             $user->businesses()->attach($businessIds, ['is_active' => true]);
@@ -117,14 +120,84 @@ class SA15Controller extends ZayaanController
             Mail::to($user->email)->send(new EmailVerificationMail($user, $verificationUrl));
 
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('SA15', ['id' => 'RESET'])),
-                new ReloadSection('header-table-container', route('SA15.header-table')),
+                new ReloadSection('main-form-container', route('SA03', ['id' => 'RESET'])),
+                new ReloadSection('header-table-container', route('SA03.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Business Admin created successfully and send verification email.");
             return $this->getResponse();
         }
 
         $this->setErrorStatusAndMessage("Business Admin creation failed. Please try again.");
+        return $this->getResponse();
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $id],
+            'business_ids' => ['required', 'array', 'min:1'],
+            'business_ids.*' => ['exists:businesses,id'],
+        ], [
+            'email.required' => 'The email field is required.',
+            'email.string' => 'The email must be a string.',
+            'email.email' => 'The email must be a valid email address.',
+            'email.max' => 'The email may not be greater than 255 characters.',
+            'email.unique' => 'The email has already been taken.',
+            'business_ids.required' => 'Please select at least one business.',
+            'business_ids.array' => 'Invalid business selection.',
+            'business_ids.min' => 'Please select at least one business.',
+            'business_ids.*.exists' => 'One or more selected businesses are invalid.',
+        ]);
+
+        $validator->validate();
+
+        $user = User::find($id);
+        if (!$user) {
+            $this->setErrorStatusAndMessage("Business Admin not found");
+            return $this->getResponse();
+        }
+
+        $user->email = $request->input('email');
+        $user->status = $request->has('is_active') ? 'active' : 'pending';
+
+        if ($user->save()) {
+            // Sync businesses to the user
+            $businessIds = $request->input('business_ids', []);
+            $user->businesses()->sync($businessIds);
+
+            $this->setReloadSections([
+                new ReloadSection('main-form-container', route('SA03', ['id' => $user->id])),
+                new ReloadSection('header-table-container', route('SA03.header-table')),
+            ]);
+            $this->setSuccessStatusAndMessage("Business Admin updated successfully");
+            return $this->getResponse();
+        }
+
+        $this->setErrorStatusAndMessage("Business Admin update failed. Please try again.");
+        return $this->getResponse();
+    }
+
+    public function delete($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            $this->setErrorStatusAndMessage("Business Admin not found");
+            return $this->getResponse();
+        }
+
+        $user->businesses()->detach(); // Detach all associated businesses
+        $user->delete();
+
+        if (!$user) {
+            $this->setReloadSections([
+                new ReloadSection('main-form-container', route('SA03', ['id' => 'RESET'])),
+                new ReloadSection('header-table-container', route('SA03.header-table')),
+            ]);
+            $this->setSuccessStatusAndMessage("Business Admin deleted successfully");
+            return $this->getResponse();
+        }
+
+        $this->setErrorStatusAndMessage("Business Admin deletion failed");
         return $this->getResponse();
     }
 }

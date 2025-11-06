@@ -1,6 +1,6 @@
 <div class="card card-default">
     <div class="card-body">
-        <form id="mainform" action="{{ $user->id == null ? route('SA15.create') : route('SA15.update', ['id' => $user->id]) }}" method="POST">
+        <form id="mainform" action="{{ $user->id == null ? route('SA03.create') : route('SA03.update', ['id' => $user->id]) }}" method="POST">
             @csrf
             @if ($user->id != null)
                 @method('PUT')
@@ -25,17 +25,25 @@
                         </select>
                     </div>
                 </div>
+                @if ($user->id != null)
+                    <div class="col-md-3">
+                        <div class="form-group mb-3">
+                            <label class="form-label d-block" for="is_active">Is Active?</label>
+                            <input type="checkbox" id="is_active" name="is_active" {{ $user->status == 'active' ? 'checked' : '' }}>
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <div class="d-flex justify-content-between align-items-center">
                 <div class="flex-grow-1 text-left">
-                    <button 
-                        data-reloadid="main-form-container" 
-                        data-reloadurl="{{ route('SA15', ['id' => 'RESET']) }}" 
-                        data-detailreloadid="header-table-container" 
-                        data-detailreloadurl="{{ route('SA15.header-table') }}"
-                        type="reset" 
-                        class="btn btn-sm btn-default btn-reset d-flex align-items-center gap-2">
+                    <button
+                            data-reloadid="main-form-container"
+                            data-reloadurl="{{ route('SA03', ['id' => 'RESET']) }}"
+                            data-detailreloadid="header-table-container"
+                            data-detailreloadurl="{{ route('SA03.header-table') }}"
+                            type="reset"
+                            class="btn btn-sm btn-default btn-reset d-flex align-items-center gap-2">
                         <i class="ph ph-broom"></i> <span>Clear</span>
                     </button>
                 </div>
@@ -45,7 +53,7 @@
                             <i class="ph ph-floppy-disk"></i> <span>Save</span>
                         </button>
                     @else
-                        <button data-url="{{ route('SA15.delete', ['id' => $user->id]) }}" type="button"  class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
+                        <button data-url="{{ route('SA03.delete', ['id' => $user->id]) }}" type="button" class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
                             <i class="ph ph-trash"></i> <span>Delete</span>
                         </button>
                         <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">

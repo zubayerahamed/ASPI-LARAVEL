@@ -9,9 +9,9 @@
             <table class="table table-hover table-bordered p-0 m-0 datatable-fragment">
                 <thead>
                     <tr>
-                        <th>Menu Code</th>
+                        <th>Screen Code</th>
                         <th>Title</th>
-                        <th>Parent Menu</th>
+                        <th>Type</th>
                         <th class="text-center">Sequence</th>
                         <th>Icon</th>
                         <th data-nosort='Y'>Actions</th>
@@ -21,16 +21,16 @@
                     @foreach ($detailList as $x)
                         <tr>
                             <td>
-                                <a data-reloadurl="{{ route('SA05', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->xmenu }}</a>
+                                <a data-reloadurl="{{ route('SA04', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->xscreen }}</a>
                             </td>
                             <td>{{ $x->title }}</td>
                             <td>
-                                <span class="badge bg-{{ $x->parent_menu_id ? 'primary' : 'warning' }}">{{ $x->parent_menu_id ? $x->xmenu . ' - ' . $x->parentMenu->title : 'No Parent' }}</span>
+                                <span class="badge bg-{{ $x->type == 'SCREEN' ? 'primary' : ($x->type == 'REPORT' ? 'success' : ($x->type == 'SYSTEM' ? 'info' : 'warning')) }}">{{ $x->type }}</span>
                             </td>
                             <td class="text-center">{{ $x->seqn }}</td>
                             <td>{{ $x->icon }}</td>
                             <td class="d-flex justify-content-start gap-2">
-                                <button data-url="{{ route('SA05.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                <button data-url="{{ route('SA04.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
                                     <i class="ph ph-trash"></i>
                                 </button>
                             </td>

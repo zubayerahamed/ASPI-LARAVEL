@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Illuminate\Support\Facades\Validator;
 
-class SA10Controller extends ZayaanController
+class SA02Controller extends ZayaanController
 {
     public function index(Request $request)
     {
@@ -18,9 +18,9 @@ class SA10Controller extends ZayaanController
         $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
 
         if ($request->ajax()) {
-            if($frommenu == 'Y'){
+            if ($frommenu == 'Y') {
                 return response()->json([
-                    'page' => view('pages.SA10.SA10', [
+                    'page' => view('pages.SA02.SA02', [
                         'countries' => $this->countriesList(),
                         'currencies' => $this->currenciesList(),
                         'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
@@ -32,9 +32,9 @@ class SA10Controller extends ZayaanController
                 ]);
             }
 
-            if("RESET" == $id){
+            if ("RESET" == $id) {
                 return response()->json([
-                    'page' => view('pages.SA10.SA10-main-form', [
+                    'page' => view('pages.SA02.SA02-main-form', [
                         'countries' => $this->countriesList(),
                         'currencies' => $this->currenciesList(),
                         'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
@@ -48,7 +48,7 @@ class SA10Controller extends ZayaanController
                 $business = Business::findOrFail($id);
 
                 return response()->json([
-                    'page' => view('pages.SA10.SA10-main-form', [
+                    'page' => view('pages.SA02.SA02-main-form', [
                         'countries' => $this->countriesList(),
                         'currencies' => $this->currenciesList(),
                         'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
@@ -57,7 +57,7 @@ class SA10Controller extends ZayaanController
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
-                    'page' => view('pages.SA10.SA10-main-form', [
+                    'page' => view('pages.SA02.SA02-main-form', [
                         'countries' => $this->countriesList(),
                         'currencies' => $this->currenciesList(),
                         'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
@@ -69,7 +69,7 @@ class SA10Controller extends ZayaanController
 
         // When url is directly hit from url bar
         return view('index', [
-            'page' => 'pages.SA10.SA10',
+            'page' => 'pages.SA02.SA02',
             'content_header_title' => 'Business',
             'subtitle' => 'Business',
             'countries' => $this->countriesList(),
@@ -80,15 +80,17 @@ class SA10Controller extends ZayaanController
         ]);
     }
 
-    public function headerTable(){
+    public function headerTable()
+    {
         return response()->json([
-            'page' => view('pages.SA10.SA10-header-table', [
+            'page' => view('pages.SA02.SA02-header-table', [
                 'detailList' => Business::with(['businessCategory'])->orderBy('name', 'asc')->get()
             ])->render(),
         ]);
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -116,7 +118,7 @@ class SA10Controller extends ZayaanController
         $request['is_delivery'] = $request->has('is_delivery');
 
         // Atleast one service type must be selected
-        if(!($request['is_inhouse'] || $request['is_pickup'] || $request['is_delivery'])){
+        if (!($request['is_inhouse'] || $request['is_pickup'] || $request['is_delivery'])) {
             $this->setErrorStatusAndMessage("Atleast one service type must be selected (Inhouse, Pickup, Delivery)");
             return $this->getResponse();
         }
@@ -134,14 +136,14 @@ class SA10Controller extends ZayaanController
             'business_category_id',
         ]));
 
-       if($business){
+        if ($business) {
             // Assign this business to current user as well
             $user = User::find(FacadesAuth::id());
             $user->businesses()->attach($business->id);
 
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('SA10', ['id' => 'RESET'])),
-                new ReloadSection('header-table-container', route('SA10.header-table')),
+                new ReloadSection('main-form-container', route('SA02', ['id' => 'RESET'])),
+                new ReloadSection('header-table-container', route('SA02.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Business created successfully");
             return $this->getResponse();
@@ -151,7 +153,8 @@ class SA10Controller extends ZayaanController
         return $this->getResponse();
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'country' => 'required',
@@ -178,12 +181,17 @@ class SA10Controller extends ZayaanController
         $request['is_delivery'] = $request->has('is_delivery');
 
         // Atleast one service type must be selected
-        if(!($request['is_inhouse'] || $request['is_pickup'] || $request['is_delivery'])){
+        if (!($request['is_inhouse'] || $request['is_pickup'] || $request['is_delivery'])) {
             $this->setErrorStatusAndMessage("Atleast one service type must be selected (Inhouse, Pickup, Delivery)");
             return $this->getResponse();
         }
 
-        $business = Business::findOrFail($id);
+        $business = Business::find($id);
+        if (!$business) {
+            $this->setErrorStatusAndMessage("Business not found");
+            return $this->getResponse();
+        }
+
         $business->fill($request->only([
             'name',
             'country',
@@ -197,10 +205,10 @@ class SA10Controller extends ZayaanController
             'business_category_id',
         ]));
 
-        if($business->save()){
+        if ($business->save()) {
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('SA10', ['id' => $business->id])),
-                new ReloadSection('header-table-container', route('SA10.header-table')),
+                new ReloadSection('main-form-container', route('SA02', ['id' => $business->id])),
+                new ReloadSection('header-table-container', route('SA02.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Business updated successfully");
             return $this->getResponse();
@@ -210,12 +218,18 @@ class SA10Controller extends ZayaanController
         return $this->getResponse();
     }
 
-    public function delete($id){
-        $business = Business::findOrFail($id);
-        if($business->delete()){
+    public function delete($id)
+    {
+        $business = Business::find($id);
+        if (!$business) {
+            $this->setErrorStatusAndMessage("Business not found");
+            return $this->getResponse();
+        }
+
+        if ($business->delete()) {
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('SA10', ['id' => 'RESET'])),
-                new ReloadSection('header-table-container', route('SA10.header-table')),
+                new ReloadSection('main-form-container', route('SA02', ['id' => 'RESET'])),
+                new ReloadSection('header-table-container', route('SA02.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Business deleted successfully");
             return $this->getResponse();
@@ -226,14 +240,16 @@ class SA10Controller extends ZayaanController
     }
 
     // country list with codes
-    public function countriesList(){
+    public function countriesList()
+    {
         return [
             ['code' => 'BD', 'name' => 'Bangladesh'],
         ];
     }
 
     // currency list with codes and names and symbols
-    public function currenciesList(){
+    public function currenciesList()
+    {
         return [
             ['code' => 'BDT', 'name' => 'Bangladeshi Taka', 'symbol' => '৳'],
         ];

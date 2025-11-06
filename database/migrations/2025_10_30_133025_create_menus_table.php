@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('icon', 50)->nullable();
             $table->integer('seqn')->default(0);
 
-            $table->foreignId("parent_menu_id")->references("id")->on("menus")->onDelete("cascade")->nullable();
-            $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
+            $table->foreignId("parent_menu_id")->nullable()->references("id")->on("menus")->onDelete("cascade");
+            $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
 
             $table->unique(['xmenu', 'business_id']);  // menu will be unique per business
 

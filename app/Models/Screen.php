@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Screen extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'xscreen',
         'title',
@@ -14,27 +17,6 @@ class Screen extends Model
         'type',
         'xnum',
         'seqn',
-        'business_id',
     ];
 
-    public function business()
-    {
-        return $this->belongsTo(Business::class, 'business_id', 'id');
-    }
-
-    // unique
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $exists = Screen::where('xscreen', $model->xscreen)
-                ->where('business_id', $model->business_id)
-                ->exists();
-
-            if ($exists) {
-                throw new \Exception('The screen code must be unique per business.');
-            }
-        });
-    }
 }

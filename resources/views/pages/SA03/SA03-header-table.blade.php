@@ -5,8 +5,8 @@
             <h3 class="card-title">Business Admins List</h3>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover p-0 m-0">
+        <div class="table-responsive data-table-responsive">
+            <table class="table table-hover table-bordered p-0 m-0 datatable-fragment">
                 <thead>
                     <tr>
                         <th>Email</th>
@@ -20,7 +20,7 @@
                     @foreach ($detailList as $x)
                         <tr>
                             <td>
-                                <a data-reloadurl="{{ route('SA15', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->email }}</a>
+                                <a data-reloadurl="{{ route('SA03', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->email }}</a>
                             </td>
                             <td>{{ $x->name }}</td>
                             <td>
@@ -30,7 +30,7 @@
                             </td>
                             <td class="text-center">{{ $x->status }}</td>
                             <td class="d-flex justify-content-end gap-2">
-                                <button data-url="{{ route('SA15.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                <button data-url="{{ route('SA03.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
                                     <i class="ph ph-trash"></i>
                                 </button>
                             </td>
@@ -45,6 +45,8 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            kit.ui.config.initDatatable('datatable-fragment');
+
             $('a.detail-dataindex').off('click').on('click', function(e) {
                 e.preventDefault();
 

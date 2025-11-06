@@ -1,6 +1,6 @@
 <div class="card card-default">
     <div class="card-body">
-        <form id="mainform" action="{{ $business->id == null ? route('SA10.create') : route('SA10.update', ['id' => $business->id]) }}" method="POST">
+        <form id="mainform" action="{{ $business->id == null ? route('SA02.create') : route('SA02.update', ['id' => $business->id]) }}" method="POST">
             @csrf
             @if ($business->id != null)
                 @method('PUT')
@@ -98,9 +98,9 @@
                 <div class="flex-grow-1 text-left">
                     <button 
                         data-reloadid="main-form-container" 
-                        data-reloadurl="{{ route('SA10', ['id' => 'RESET']) }}" 
+                        data-reloadurl="{{ route('SA02', ['id' => 'RESET']) }}" 
                         data-detailreloadid="header-table-container" 
-                        data-detailreloadurl="{{ route('SA10.header-table') }}"
+                        data-detailreloadurl="{{ route('SA02.header-table') }}"
                         type="reset" 
                         class="btn btn-sm btn-default btn-reset d-flex align-items-center gap-2">
                         <i class="ph ph-broom"></i> <span>Clear</span>
@@ -112,7 +112,7 @@
                             <i class="ph ph-floppy-disk"></i> <span>Save</span>
                         </button>
                     @else
-                        <button data-url="{{ route('SA10.delete', ['id' => $business->id]) }}" type="button"  class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
+                        <button data-url="{{ route('SA02.delete', ['id' => $business->id]) }}" type="button"  class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
                             <i class="ph ph-trash"></i> <span>Delete</span>
                         </button>
                         <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">

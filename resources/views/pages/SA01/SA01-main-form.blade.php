@@ -1,0 +1,101 @@
+<div class="card card-default">
+    <div class="card-body">
+        <form id="mainform" action="{{ $businessCategory->id == null ? route('SA01.create') : route('SA01.update', ['id' => $businessCategory->id]) }}" method="POST">
+            @csrf
+            @if ($businessCategory->id != null)
+                @method('PUT')
+                <input type="hidden" name="id" value="{{ $businessCategory->id }}">
+            @endif
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="name">Category name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ $businessCategory->name }}" required>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="xcode">Category code</label>
+                        <input type="text" class="form-control" id="xcode" name="xcode" value="{{ $businessCategory->xcode }}" required>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="seqn">Sequence number</label>
+                        <input type="number" class="form-control" id="seqn" name="seqn" value="{{ $businessCategory->seqn }}" min="0" required>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label d-block" for="is_active">Is Active?</label>
+                        <input type="checkbox" id="is_active" name="is_active" {{ $businessCategory->is_active ? 'checked' : '' }}>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1 text-left">
+                    <button 
+                        data-reloadid="main-form-container" 
+                        data-reloadurl="{{ route('SA01', ['id' => 'RESET']) }}" 
+                        data-detailreloadid="header-table-container" 
+                        data-detailreloadurl="{{ route('SA01.header-table') }}"
+                        type="reset" 
+                        class="btn btn-sm btn-default btn-reset d-flex align-items-center gap-2">
+                        <i class="ph ph-broom"></i> <span>Clear</span>
+                    </button>
+                </div>
+                <div class="flex-grow-1 justify-content-end d-flex gap-2">
+                    @if ($businessCategory->id == null)
+                        <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">
+                            <i class="ph ph-floppy-disk"></i> <span>Save</span>
+                        </button>
+                    @else
+                        <button data-url="{{ route('SA01.delete', ['id' => $businessCategory->id]) }}" type="button"  class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
+                            <i class="ph ph-trash"></i> <span>Delete</span>
+                        </button>
+                        <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">
+                            <i class="ph ph-floppy-disk"></i> <span>Update</span>
+                        </button>
+                    @endif
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        kit.ui.init();
+
+        $('.btn-reset').off('click').on('click', function(e) {
+            e.preventDefault();
+
+            sectionReloadAjaxReq({
+                id: $(this).data('reloadid'),
+                url: $(this).data('reloadurl')
+            });
+
+            sectionReloadAjaxReq({
+                id: $(this).data('detailreloadid'),
+                url: $(this).data('detailreloadurl')
+            });
+        });
+
+        $('.btn-submit').off('click').on('click', function(e) {
+            e.preventDefault();
+            submitMainForm();
+        });
+
+        $('.btn-delete').off('click').on('click', function(e) {
+            e.preventDefault();
+            if (!confirm("Are you sure, to delete this?")) {
+                return;
+            }
+            deleteRequest($(this).data('url'));
+        });
+    })
+</script>

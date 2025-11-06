@@ -49,29 +49,47 @@ class ShareMenuData
             $menu[] = ['header' => 'System Administrator'];
             $menu[] = [
                 'text' => 'Business Category',
-                'route' => 'SA05',
+                'route' => 'SA01',
                 'icon' => 'ph ph-copy-simple',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
-                    'screen' => 'SA05',
+                    'screen' => 'SA01',
                 ],
             ];
             $menu[] = [
                 'text' => 'Business',
-                'route' => 'SA10',
+                'route' => 'SA02',
                 'icon' => 'ph ph-briefcase',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
-                    'screen' => 'SA10',
+                    'screen' => 'SA02',
                 ],
             ];
             $menu[] = [
                 'text' => 'Business Admins',
-                'route' => 'SA15',
+                'route' => 'SA03',
                 'icon' => 'ph ph-user-circle',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
-                    'screen' => 'SA15',
+                    'screen' => 'SA03',
+                ],
+            ];
+            $menu[] = [
+                'text' => 'Screen Management',
+                'route' => 'SA04',
+                'icon' => 'ph ph-monitor',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'SA04',
+                ],
+            ];
+            $menu[] = [
+                'text' => 'Menu Management',
+                'route' => 'SA05',
+                'icon' => 'ph ph-align-left',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'SA05',
                 ],
             ];
 

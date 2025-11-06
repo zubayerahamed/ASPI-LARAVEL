@@ -27,7 +27,14 @@ class Menu extends Model
 
     public function subMenus()
     {
-        return $this->hasMany(Menu::class, 'parent_menu_id', 'id');
+        return $this->hasMany(Menu::class, 'parent_menu_id', 'id')->orderBy('seqn', 'asc');
+    }
+
+    public function allSubMenus()
+    {
+        return $this->hasMany(Menu::class, 'parent_menu_id')
+            ->with('allSubMenus')
+            ->orderBy('seqn', 'asc');
     }
 
     // unique
@@ -45,4 +52,101 @@ class Menu extends Model
         });
     }
 
+
+    // public static function generateMenuTree($business_id = null)
+    // {
+    //     // Eager load all nested submenus recursively
+    //     $menus = Menu::with('allSubMenus')
+    //         ->when($business_id, function ($query) use ($business_id) {
+    //             return $query->where('business_id', $business_id);
+    //         })
+    //         ->whereNull('parent_menu_id')
+    //         ->where('business_id', $business_id)
+    //         ->orderBy('seqn', 'asc')
+    //         ->get();
+
+    //     $buildTree = function ($menus) use (&$buildTree) {
+    //         $tree = [];
+    //         foreach ($menus as $menu) {
+    //             $node = [
+    //                 'id' => $menu->id,
+    //                 'xmenu' => $menu->xmenu,
+    //                 'title' => $menu->title,
+    //                 'icon' => $menu->icon,
+    //                 'seqn' => $menu->seqn,
+    //                 'business_id' => $menu->business_id,
+    //                 'parent_menu_id' => $menu->parent_menu_id,
+    //                 'children' => $buildTree($menu->allSubMenus),
+    //             ];
+    //             $tree[] = $node;
+    //         }
+    //         return $tree;
+    //     };
+
+    //     return $buildTree($menus);
+    // }
+
+
+    public static function generateMenuTree($business_id = null, $excludeMenuId = null)
+    {
+        // Get all menus for the business in a single query
+        $allMenus = Menu::where('business_id', $business_id)
+            ->orderBy('seqn', 'asc')
+            ->get();
+
+        // Get IDs to exclude
+        $excludeIds = [];
+        if ($excludeMenuId) {
+            $excludeIds = self::getAllDescendantIdsFromCollection($allMenus, $excludeMenuId);
+            $excludeIds[] = $excludeMenuId;
+        }
+
+        // Build tree from flat collection
+        $buildTree = function ($menus, $parentId = null) use (&$buildTree, $excludeIds) {
+            $tree = [];
+
+            foreach ($menus as $menu) {
+                // Skip if this menu is in exclude list
+                if (in_array($menu->id, $excludeIds)) {
+                    continue;
+                }
+
+                if ($menu->parent_menu_id == $parentId) {
+                    $node = [
+                        'id' => $menu->id,
+                        'xmenu' => $menu->xmenu,
+                        'title' => $menu->title,
+                        'icon' => $menu->icon,
+                        'seqn' => $menu->seqn,
+                        'business_id' => $menu->business_id,
+                        'parent_menu_id' => $menu->parent_menu_id,
+                        'children' => $buildTree($menus, $menu->id),
+                    ];
+                    $tree[] = $node;
+                }
+            }
+
+            return $tree;
+        };
+
+        return $buildTree($allMenus);
+    }
+
+    // More efficient descendant ID collection
+    public static function getAllDescendantIdsFromCollection($menus, $menuId)
+    {
+        $descendantIds = [];
+
+        $getDescendants = function ($parentId) use (&$getDescendants, &$descendantIds, $menus) {
+            $children = $menus->where('parent_menu_id', $parentId);
+
+            foreach ($children as $child) {
+                $descendantIds[] = $child->id;
+                $getDescendants($child->id);
+            }
+        };
+
+        $getDescendants($menuId);
+        return $descendantIds;
+    }
 }

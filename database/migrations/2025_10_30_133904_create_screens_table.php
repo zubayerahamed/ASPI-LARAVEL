@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('screens', function (Blueprint $table) {
             $table->id();
-            $table->string('xscreen', 10);
+            $table->string('xscreen', 10)->unique();
             $table->string('title', 50);
             $table->string('icon', 50)->nullable();
             $table->text('keywords')->nullable();
 
-            $table->enum('type', ['Screen', 'Report', 'System', 'Default'])->default('Screen');
+            $table->enum('type', ['SCREEN', 'REPORT', 'SYSTEM', 'DEFAULT'])->default('SCREEN');
 
             $table->integer('xnum')->default(0);
             $table->integer('seqn')->default(0);

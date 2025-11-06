@@ -24,7 +24,7 @@
                     @foreach ($detailList as $x)
                         <tr>
                             <td>
-                                <a data-reloadurl="{{ route('SA10', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->name }}</a>
+                                <a data-reloadurl="{{ route('SA02', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->name }}</a>
                             </td>
                             <td>{{ $x->businessCategory->name }}</td>
                             <td>{{ $x->country }}</td>
@@ -54,7 +54,7 @@
                             <td class="text-center">{{ $x->is_active ? 'Y' : 'N' }}</td>
                             <td class="">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button data-url="{{ route('SA10.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                    <button data-url="{{ route('SA02.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
                                         <i class="ph ph-trash"></i>
                                     </button>
                                 </div>

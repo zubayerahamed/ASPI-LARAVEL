@@ -9,28 +9,24 @@
             <table class="table table-hover table-bordered p-0 m-0 datatable-fragment">
                 <thead>
                     <tr>
-                        <th>Menu Code</th>
-                        <th>Title</th>
-                        <th>Parent Menu</th>
+                        <th>Category Name</th>
+                        <th class="text-center">Category Code</th>
                         <th class="text-center">Sequence</th>
-                        <th>Icon</th>
-                        <th data-nosort='Y'>Actions</th>
+                        <th class="text-center">Is Active?</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($detailList as $x)
                         <tr>
                             <td>
-                                <a data-reloadurl="{{ route('SA05', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->xmenu }}</a>
+                                <a data-reloadurl="{{ route('SA01', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->name }}</a>
                             </td>
-                            <td>{{ $x->title }}</td>
-                            <td>
-                                <span class="badge bg-{{ $x->parent_menu_id ? 'primary' : 'warning' }}">{{ $x->parent_menu_id ? $x->xmenu . ' - ' . $x->parentMenu->title : 'No Parent' }}</span>
-                            </td>
+                            <td class="text-center">{{ $x->xcode }}</td>
                             <td class="text-center">{{ $x->seqn }}</td>
-                            <td>{{ $x->icon }}</td>
+                            <td class="text-center">{{ $x->is_active ? 'Y' : 'N' }}</td>
                             <td class="d-flex justify-content-start gap-2">
-                                <button data-url="{{ route('SA05.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                <button data-url="{{ route('SA01.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
                                     <i class="ph ph-trash"></i>
                                 </button>
                             </td>
