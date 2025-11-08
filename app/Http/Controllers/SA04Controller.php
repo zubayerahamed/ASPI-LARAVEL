@@ -21,8 +21,8 @@ class SA04Controller extends ZayaanController
                         'screen' => new Screen(),
                         'detailList' => Screen::orderBy('seqn', 'asc')->get()
                     ])->render(),
-                    'content_header_title' => 'Screen Management',
-                    'subtitle' => 'Screen',
+                    'content_header_title' => 'Page Management',
+                    'subtitle' => 'Page',
                 ]);
             }
 
@@ -54,8 +54,8 @@ class SA04Controller extends ZayaanController
         // When url is directly hit from url bar
         return view('index', [
             'page' => 'pages.SA04.SA04',
-            'content_header_title' => 'Screen Management',
-            'subtitle' => 'Screen',
+            'content_header_title' => 'Page Management',
+            'subtitle' => 'Page',
             'screen' => new Screen(),
             'detailList' => Screen::orderBy('seqn', 'asc')->get()
         ]);

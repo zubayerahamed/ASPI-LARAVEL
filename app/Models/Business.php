@@ -21,6 +21,9 @@ class Business extends Model
         'is_pickup',
         'is_delivery',
         'is_active',
+        'is_allow_custom_menu',
+        'is_allow_custom_category',
+        'is_allow_custom_attribute',
 
         'business_category_id',
     ];

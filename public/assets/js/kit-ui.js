@@ -179,19 +179,65 @@ kit.ui.config.initDatatable = function (tableClass = 'datatable', allowButtons =
 }
 
 kit.ui.config.initFilePond = function () {
-    $.fn.filepond.registerPlugin(FilePondPluginImagePreview);
-    $.fn.filepond.registerPlugin(FilePondPluginFileValidateSize);
-    $.fn.filepond.registerPlugin(FilePondPluginImageResize);
-    $.fn.filepond.registerPlugin(FilePondPluginFileValidateType);
-    $.fn.filepond.registerPlugin(FilePondPluginImageCrop);
-    $.fn.filepond.registerPlugin(FilePondPluginImageResize);
-    $.fn.filepond.registerPlugin(FilePondPluginImageTransform);
+    $.fn.filepond.registerPlugin(
+        FilePondPluginFileValidateType,
+        FilePondPluginFileValidateSize,
+        FilePondPluginImageExifOrientation,
+        FilePondPluginImagePreview,
+        FilePondPluginImageCrop,
+        FilePondPluginImageResize,
+        FilePondPluginImageTransform,
+        FilePondPluginImageEdit,
+        FilePondPluginFileEncode,
+        FilePondPluginFileRename,
+        FilePondPluginFileMetadata,
+        FilePondPluginFilePoster
+    );
 
     $.fn.filepond.setDefaults({
-        maxFileSize: '3MB',
-        acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+        // File validation
+        allowFileTypeValidation: true,
+        acceptedFileTypes: ['image/*', 'application/pdf'],
+        allowFileSizeValidation: true,
+        maxFileSize: '5MB',
+
+        // Image editing
+        allowImagePreview: true,
+        allowImageExifOrientation: true,
         allowImageCrop: true,
-        imageCropAspectRatio: null,
+        allowImageResize: true,
+        allowImageTransform: true,
+        allowImageEdit: true,
+
+        // Image transformation settings
+        imageCropAspectRatio: '1:1',
+        imageResizeTargetWidth: 200,
+        imageResizeTargetHeight: 200,
+        imageResizeMode: 'cover',
+        imageTransformOutputQuality: 90,
+        imageTransformOutputMimeType: 'image/jpeg',
+
+        // File metadata and encoding
+        allowFileEncode: true,
+        allowFileRename: true,
+        fileRenameFunction: (file) => {
+            return `upload_${Date.now()}_${file.name}`;
+        },
+        allowFileMetadata: true,
+        fileMetadataObject: {
+            uploadedBy: 'demo-user',
+            uploadDate: new Date().toISOString()
+        },
+
+        // File poster for non-image files
+        allowFilePoster: true,
+
+        // Multiple files
+        // allowMultiple: true,
+        // maxFiles: 5,
+        
+        // Instant upload disabled for demo
+        instantUpload: false
     });
 
     $('.filepond').each(function () {
@@ -199,17 +245,17 @@ kit.ui.config.initFilePond = function () {
         if (!FilePond.find(this)) {
             $(this).filepond({
                 allowMultiple: allowMultiple,
+                chunkUploads: allowMultiple,
             });
         }
     });
-
 
     $.fn.filepond.setOptions({
         server: {
             process: getBasepath() + '/filepond',
             revert: getBasepath() + '/filepond',
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'X-CSRF-TOKEN': getCSRFToken(),
             },
         },
     });

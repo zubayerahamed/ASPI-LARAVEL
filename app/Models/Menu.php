@@ -52,41 +52,6 @@ class Menu extends Model
         });
     }
 
-
-    // public static function generateMenuTree($business_id = null)
-    // {
-    //     // Eager load all nested submenus recursively
-    //     $menus = Menu::with('allSubMenus')
-    //         ->when($business_id, function ($query) use ($business_id) {
-    //             return $query->where('business_id', $business_id);
-    //         })
-    //         ->whereNull('parent_menu_id')
-    //         ->where('business_id', $business_id)
-    //         ->orderBy('seqn', 'asc')
-    //         ->get();
-
-    //     $buildTree = function ($menus) use (&$buildTree) {
-    //         $tree = [];
-    //         foreach ($menus as $menu) {
-    //             $node = [
-    //                 'id' => $menu->id,
-    //                 'xmenu' => $menu->xmenu,
-    //                 'title' => $menu->title,
-    //                 'icon' => $menu->icon,
-    //                 'seqn' => $menu->seqn,
-    //                 'business_id' => $menu->business_id,
-    //                 'parent_menu_id' => $menu->parent_menu_id,
-    //                 'children' => $buildTree($menu->allSubMenus),
-    //             ];
-    //             $tree[] = $node;
-    //         }
-    //         return $tree;
-    //     };
-
-    //     return $buildTree($menus);
-    // }
-
-
     public static function generateMenuTree($business_id = null, $excludeMenuId = null)
     {
         // Get all menus for the business in a single query

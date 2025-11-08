@@ -9,9 +9,10 @@ use App\Http\Controllers\SA01Controller;
 use App\Http\Controllers\SA02Controller;
 use App\Http\Controllers\SA03Controller;
 use App\Http\Controllers\SA04Controller;
+use App\Http\Controllers\AD01Controller;
+use App\Http\Controllers\AD02Controller;
+use App\Http\Controllers\AD03Controller;
 use App\Http\Controllers\SA05Controller;
-use App\Http\Controllers\SA06Controller;
-use App\Http\Controllers\SA07Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -52,24 +53,29 @@ Route::post('/SA04', [SA04Controller::class, 'create'])->name('SA04.create');
 Route::put('/SA04/{id}', [SA04Controller::class, 'update'])->name('SA04.update');
 Route::delete('/SA04/{id}', [SA04Controller::class, 'delete'])->name('SA04.delete');
 
+Route::get('/AD01', [AD01Controller::class, 'index'])->name('AD01');
+Route::get('/AD01/header-table', [AD01Controller::class, 'headerTable'])->name('AD01.header-table');
+Route::post('/AD01', [AD01Controller::class, 'create'])->name('AD01.create');
+Route::put('/AD01/{id}', [AD01Controller::class, 'update'])->name('AD01.update');
+Route::delete('/AD01/{id}', [AD01Controller::class, 'delete'])->name('AD01.delete');
+
+Route::get('/AD02', [AD02Controller::class, 'index'])->name('AD02');
+Route::get('/AD02/header-table', [AD02Controller::class, 'headerTable'])->name('AD02.header-table');
+Route::post('/AD02', [AD02Controller::class, 'create'])->name('AD02.create');
+Route::put('/AD02/{id}', [AD02Controller::class, 'update'])->name('AD02.update');
+Route::delete('/AD02/{id}', [AD02Controller::class, 'delete'])->name('AD02.delete');
+
+
 Route::get('/SA05', [SA05Controller::class, 'index'])->name('SA05');
 Route::get('/SA05/header-table', [SA05Controller::class, 'headerTable'])->name('SA05.header-table');
 Route::post('/SA05', [SA05Controller::class, 'create'])->name('SA05.create');
 Route::put('/SA05/{id}', [SA05Controller::class, 'update'])->name('SA05.update');
 Route::delete('/SA05/{id}', [SA05Controller::class, 'delete'])->name('SA05.delete');
 
-Route::get('/SA06', [SA06Controller::class, 'index'])->name('SA06');
-Route::get('/SA06/header-table', [SA06Controller::class, 'headerTable'])->name('SA06.header-table');
-Route::post('/SA06', [SA06Controller::class, 'create'])->name('SA06.create');
-Route::put('/SA06/{id}', [SA06Controller::class, 'update'])->name('SA06.update');
-Route::delete('/SA06/{id}', [SA06Controller::class, 'delete'])->name('SA06.delete');
-
-
-Route::get('/SA07', [SA07Controller::class, 'index'])->name('SA07');
-Route::get('/SA07/header-table', [SA07Controller::class, 'headerTable'])->name('SA07.header-table');
-Route::post('/SA07', [SA07Controller::class, 'create'])->name('SA07.create');
-Route::put('/SA07/{id}', [SA07Controller::class, 'update'])->name('SA07.update');
-Route::delete('/SA07/{id}', [SA07Controller::class, 'delete'])->name('SA07.delete');
-
+Route::get('/AD03', [AD03Controller::class, 'index'])->name('AD03');
+Route::get('/AD03/header-table', [AD03Controller::class, 'headerTable'])->name('AD03.header-table');
+Route::post('/AD03', [AD03Controller::class, 'create'])->name('AD03.create');
+Route::put('/AD03/{id}', [AD03Controller::class, 'update'])->name('AD03.update');
+Route::delete('/AD03/{id}', [AD03Controller::class, 'delete'])->name('AD03.delete');
 
 Route::get('/business-selection/{id}', [BusinessSelectionController::class, 'selectBusiness'])->name('business.selection');

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class SA06Controller extends ZayaanController
+class AD02Controller extends ZayaanController
 {
 
     public function recursiveToChilds($menu, $count = 1)
@@ -96,20 +96,20 @@ class SA06Controller extends ZayaanController
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
                 return response()->json([
-                    'page' => view('pages.SA06.SA06', [
+                    'page' => view('pages.AD02.AD02', [
                         'menus' => Menu::generateMenuTree(),
                         'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
                         'menuScreen' => new MenuScreen(),
                         'detailList' => $this->getMenuGroup()
                     ])->render(),
-                    'content_header_title' => 'Navigation Screen Management',
-                    'subtitle' => 'Navigation Screens',
+                    'content_header_title' => 'Navigation Management',
+                    'subtitle' => 'Navigation',
                 ]);
             }
 
             if ("RESET" == $id) {
                 return response()->json([
-                    'page' => view('pages.SA06.SA06-main-form', [
+                    'page' => view('pages.AD02.AD02-main-form', [
                         'menus' => Menu::generateMenuTree(),
                         'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
                         'menuScreen' => new MenuScreen(),
@@ -121,7 +121,7 @@ class SA06Controller extends ZayaanController
                 $menuScreen = MenuScreen::findOrFail($id);
 
                 return response()->json([
-                    'page' => view('pages.SA06.SA06-main-form', [
+                    'page' => view('pages.AD02.AD02-main-form', [
                         'menus' => Menu::generateMenuTree(),
                         'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
                         'menuScreen' => $menuScreen,
@@ -129,7 +129,7 @@ class SA06Controller extends ZayaanController
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
-                    'page' => view('pages.SA06.SA06-main-form', [
+                    'page' => view('pages.AD02.AD02-main-form', [
                         'menus' => Menu::generateMenuTree(),
                         'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
                         'menuScreen' => new MenuScreen(),
@@ -140,9 +140,9 @@ class SA06Controller extends ZayaanController
 
         // When url is directly hit from url bar
         return view('index', [
-            'page' => 'pages.SA06.SA06',
-            'content_header_title' => 'Navigation Screen Management',
-            'subtitle' => 'Navigation Screens',
+            'page' => 'pages.AD02.AD02',
+            'content_header_title' => 'Navigation Management',
+            'subtitle' => 'Navigation',
             'menus' => Menu::generateMenuTree(),
             'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
             'menuScreen' => new MenuScreen(),
@@ -153,7 +153,7 @@ class SA06Controller extends ZayaanController
     public function headerTable()
     {
         return response()->json([
-            'page' => view('pages.SA06.SA06-header-table', [
+            'page' => view('pages.AD02.AD02-header-table', [
                 'detailList' => $this->getMenuGroup()
             ])->render(),
         ]);
@@ -199,8 +199,8 @@ class SA06Controller extends ZayaanController
 
         if ($menuScreen) {
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('SA06', ['id' => 'RESET'])),
-                new ReloadSection('header-table-container', route('SA06.header-table')),
+                new ReloadSection('main-form-container', route('AD02', ['id' => 'RESET'])),
+                new ReloadSection('header-table-container', route('AD02.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Menu Screen created successfully");
             return $this->getResponse();
@@ -250,8 +250,8 @@ class SA06Controller extends ZayaanController
             ]));
 
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('SA06', ['id' => $menuScreen->id])),
-                new ReloadSection('header-table-container', route('SA06.header-table')),
+                new ReloadSection('main-form-container', route('AD02', ['id' => $menuScreen->id])),
+                new ReloadSection('header-table-container', route('AD02.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Menu Screen updated successfully");
             return $this->getResponse();
@@ -268,8 +268,8 @@ class SA06Controller extends ZayaanController
             $menuScreen->delete();
 
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('SA06', ['id' => 'RESET'])),
-                new ReloadSection('header-table-container', route('SA06.header-table')),
+                new ReloadSection('main-form-container', route('AD02', ['id' => 'RESET'])),
+                new ReloadSection('header-table-container', route('AD02.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Menu Screen deleted successfully");
             return $this->getResponse();

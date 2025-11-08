@@ -715,9 +715,24 @@ return [
                     'location' => 'https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css',
                 ],
                 [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://unpkg.com/filepond-plugin-file-poster@2.5.1/dist/filepond-plugin-file-poster.css',
+                ],
+                [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js',
+                    'location' => 'https://unpkg.com/filepond/dist/filepond.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js',
                 ],
                 [
                     'type' => 'js',
@@ -727,12 +742,12 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js',
+                    'location' => 'https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js',
+                    'location' => 'https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js',
                 ],
                 [
                     'type' => 'js',
@@ -752,7 +767,27 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'https://unpkg.com/filepond/dist/filepond.min.js',
+                    'location' => 'https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://unpkg.com/filepond-plugin-file-rename/dist/filepond-plugin-file-rename.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://unpkg.com/filepond-plugin-file-metadata/dist/filepond-plugin-file-metadata.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js',
                 ],
                 [
                     'type' => 'js',

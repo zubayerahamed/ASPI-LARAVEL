@@ -2,7 +2,7 @@
     <div class="card card-default">
 
         <div class="card-header">
-            <h3 class="card-title">Navigations with assigned Screens</h3>
+            <h3 class="card-title">Menu page allocations</h3>
         </div>
 
         <div class="card-body datatable-fragment">
@@ -11,20 +11,20 @@
                 <!-- Print assigned screens -->
                 @foreach ($x['menu_screens'] as $screen)
                     <p style="margin-left: 50px;">
-                        <a class="detail-dataindex" href="#" data-reloadid="main-form-container" data-reloadurl="{{ route('SA06', ['id' => $screen['id']]) }}">{{ $screen['screen_xscreen'] }}</a> - {{ $screen['alternate_title'] }}
+                        <a class="detail-dataindex" href="#" data-reloadid="main-form-container" data-reloadurl="{{ route('AD02', ['id' => $screen['id']]) }}">{{ $screen['screen_xscreen'] }}</a> - {{ $screen['alternate_title'] }}
                         @if ($screen['screen_type'] == 'Screen')
                             <span class="ml-2 badge bg-primary">{!! $screen['screen_type'] !!}</span>
                         @else
                             <span class="ml-2 badge bg-success">{!! $screen['screen_type'] !!}</span>
                         @endif
                         <span class="ml-2 badge bg-warning">{!! 'SN. ' . $screen['seqn'] !!}</span>
-                        <a href="" class="ml-2 badge bg-danger btn-table-delete" data-url="{{ route('SA06.delete', ['id' => $screen['id']]) }}"><i class="ph ph-trash"></i></a>
+                        <a href="" class="ml-2 badge bg-danger btn-table-delete" data-url="{{ route('AD02.delete', ['id' => $screen['id']]) }}"><i class="ph ph-trash"></i></a>
                     </p>
                 @endforeach
 
                 <!-- Print Child Menus recursively -->
                 @if (isset($x['children']) && count($x['children']) > 0)
-                    @include('pages.SA06.SA06-header-table-children', ['children' => $x['children'], 'margin' => 50])
+                    @include('pages.AD02.AD02-header-table-children', ['children' => $x['children'], 'margin' => 50])
                 @endif
             @endforeach
         </div>

@@ -25,6 +25,9 @@ return new class extends Migration
             $table->boolean('is_pickup')->default(false);
             $table->boolean('is_delivery')->default(false);
             $table->boolean('is_active')->default(false);
+            $table->boolean('is_allow_custom_menu')->default(false);
+            $table->boolean('is_allow_custom_category')->default(false);
+            $table->boolean('is_allow_custom_attribute')->default(false);
 
             $table->foreignId('business_category_id')->references('id')->on('business_categories')->onDelete('cascade');
 

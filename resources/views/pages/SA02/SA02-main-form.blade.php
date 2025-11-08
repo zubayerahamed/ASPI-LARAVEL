@@ -94,6 +94,32 @@
                 </div>
             </div>
 
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <h4 class="m-0">Business Specific Settings</h4>
+                    <span class="text-muted">Business specific settings for the selected business</span>
+                    <hr>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label d-block" for="is_allow_custom_menu">Is Allow Custom Menu?</label>
+                        <input type="checkbox" id="is_allow_custom_menu" name="is_allow_custom_menu" {{ $business->is_allow_custom_menu ? 'checked' : '' }}>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label d-block" for="is_allow_custom_category">Is Allow Custom Category?</label>
+                        <input type="checkbox" id="is_allow_custom_category" name="is_allow_custom_category" {{ $business->is_allow_custom_category ? 'checked' : '' }}>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label d-block" for="is_allow_custom_attribute">Is Allow Custom Attribute?</label>
+                        <input type="checkbox" id="is_allow_custom_attribute" name="is_allow_custom_attribute" {{ $business->is_allow_custom_attribute ? 'checked' : '' }}>
+                    </div>
+                </div>
+            </div>
+
             <div class="d-flex justify-content-between align-items-center">
                 <div class="flex-grow-1 text-left">
                     <button 

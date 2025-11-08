@@ -2,35 +2,35 @@
     <div class="card card-default">
 
         <div class="card-header">
-            <h3 class="card-title">List of Business Admins</h3>
+            <h3 class="card-title">List of menus</h3>
         </div>
 
         <div class="table-responsive data-table-responsive">
             <table class="table table-hover table-bordered p-0 m-0 datatable-fragment">
                 <thead>
                     <tr>
-                        <th>Email</th>
-                        <th>Name</th>
-                        <th>Businesses</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-right">Action</th>
+                        <th>Menu Code</th>
+                        <th>Title</th>
+                        <th>Parent Menu</th>
+                        <th class="text-center">Sequence</th>
+                        <th>Icon</th>
+                        <th data-nosort='Y'>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($detailList as $x)
                         <tr>
                             <td>
-                                <a data-reloadurl="{{ route('SA03', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->email }}</a>
+                                <a data-reloadurl="{{ route('AD03', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->xmenu }}</a>
                             </td>
-                            <td>{{ $x->name }}</td>
+                            <td>{{ $x->title }}</td>
                             <td>
-                                @foreach ($x->businesses as $business)
-                                    <span class="badge bg-primary">{{ $business->name }}</span>
-                                @endforeach
+                                <span class="badge bg-{{ $x->parent_menu_id ? 'primary' : 'warning' }}">{{ $x->parent_menu_id ? $x->parentMenu->xmenu . ' - ' . $x->parentMenu->title : 'No Parent' }}</span>
                             </td>
-                            <td class="text-center">{{ $x->status }}</td>
-                            <td class="d-flex justify-content-end gap-2">
-                                <button data-url="{{ route('SA03.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                            <td class="text-center">{{ $x->seqn }}</td>
+                            <td>{{ $x->icon }}</td>
+                            <td class="d-flex justify-content-start gap-2">
+                                <button data-url="{{ route('AD03.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
                                     <i class="ph ph-trash"></i>
                                 </button>
                             </td>
@@ -47,7 +47,7 @@
         $(document).ready(function() {
             kit.ui.config.initDatatable('datatable-fragment');
 
-            $('a.detail-dataindex').off('click').on('click', function(e) {
+            $('.datatable-fragment').on('click', 'a.detail-dataindex', function(e){
                 e.preventDefault();
 
                 sectionReloadAjaxReq({
@@ -56,7 +56,7 @@
                 });
             });
 
-            $('.btn-table-delete').off('click').on('click', function(e) {
+            $('.datatable-fragment').on('click', 'button.btn-table-delete', function(e){
                 e.preventDefault();
                 if (!confirm("Are you sure, to delete this?")) {
                     return;

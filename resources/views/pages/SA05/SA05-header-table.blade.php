@@ -2,33 +2,29 @@
     <div class="card card-default">
 
         <div class="card-header">
-            <h3 class="card-title">Business Categories List</h3>
+            <h3 class="card-title">List of Codes & Parameters</h3>
         </div>
 
         <div class="table-responsive data-table-responsive">
             <table class="table table-hover table-bordered p-0 m-0 datatable-fragment">
                 <thead>
                     <tr>
-                        <th>Menu Code</th>
-                        <th>Title</th>
-                        <th>Parent Menu</th>
+                        <th>Code Type</th>
+                        <th>Code</th>
+                        <th>Description</th>
                         <th class="text-center">Sequence</th>
-                        <th>Icon</th>
-                        <th data-nosort='Y'>Actions</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($detailList as $x)
                         <tr>
                             <td>
-                                <a data-reloadurl="{{ route('SA05', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->xmenu }}</a>
+                                <a data-reloadurl="{{ route('SA05', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->type }}</a>
                             </td>
-                            <td>{{ $x->title }}</td>
-                            <td>
-                                <span class="badge bg-{{ $x->parent_menu_id ? 'primary' : 'warning' }}">{{ $x->parent_menu_id ? $x->parentMenu->xmenu . ' - ' . $x->parentMenu->title : 'No Parent' }}</span>
-                            </td>
+                            <td>{{ $x->xcode }}</td>
+                            <td>{{ $x->description }}</td>
                             <td class="text-center">{{ $x->seqn }}</td>
-                            <td>{{ $x->icon }}</td>
                             <td class="d-flex justify-content-start gap-2">
                                 <button data-url="{{ route('SA05.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
                                     <i class="ph ph-trash"></i>

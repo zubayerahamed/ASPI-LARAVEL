@@ -116,6 +116,9 @@ class SA02Controller extends ZayaanController
         $request['is_inhouse'] = $request->has('is_inhouse');
         $request['is_pickup'] = $request->has('is_pickup');
         $request['is_delivery'] = $request->has('is_delivery');
+        $request['is_allow_custom_menu'] = $request->has('is_allow_custom_menu');
+        $request['is_allow_custom_category'] = $request->has('is_allow_custom_category');
+        $request['is_allow_custom_attribute'] = $request->has('is_allow_custom_attribute');
 
         // Atleast one service type must be selected
         if (!($request['is_inhouse'] || $request['is_pickup'] || $request['is_delivery'])) {
@@ -133,6 +136,9 @@ class SA02Controller extends ZayaanController
             'is_inhouse',
             'is_pickup',
             'is_delivery',
+            'is_allow_custom_menu',
+            'is_allow_custom_category',
+            'is_allow_custom_attribute',
             'business_category_id',
         ]));
 
@@ -179,6 +185,9 @@ class SA02Controller extends ZayaanController
         $request['is_inhouse'] = $request->has('is_inhouse');
         $request['is_pickup'] = $request->has('is_pickup');
         $request['is_delivery'] = $request->has('is_delivery');
+        $request['is_allow_custom_menu'] = $request->has('is_allow_custom_menu');
+        $request['is_allow_custom_category'] = $request->has('is_allow_custom_category');
+        $request['is_allow_custom_attribute'] = $request->has('is_allow_custom_attribute');
 
         // Atleast one service type must be selected
         if (!($request['is_inhouse'] || $request['is_pickup'] || $request['is_delivery'])) {
@@ -202,6 +211,9 @@ class SA02Controller extends ZayaanController
             'is_inhouse',
             'is_pickup',
             'is_delivery',
+            'is_allow_custom_menu',
+            'is_allow_custom_category',
+            'is_allow_custom_attribute',
             'business_category_id',
         ]));
 

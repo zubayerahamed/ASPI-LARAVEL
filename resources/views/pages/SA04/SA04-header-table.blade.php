@@ -2,14 +2,14 @@
     <div class="card card-default">
 
         <div class="card-header">
-            <h3 class="card-title">Business Categories List</h3>
+            <h3 class="card-title">List of pages</h3>
         </div>
 
         <div class="table-responsive data-table-responsive">
             <table class="table table-hover table-bordered p-0 m-0 datatable-fragment">
                 <thead>
                     <tr>
-                        <th>Screen Code</th>
+                        <th>Page Code</th>
                         <th>Title</th>
                         <th>Type</th>
                         <th class="text-center">Sequence</th>

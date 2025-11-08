@@ -75,7 +75,7 @@ class ShareMenuData
                 ],
             ];
             $menu[] = [
-                'text' => 'Screen Management',
+                'text' => 'Pages',
                 'route' => 'SA04',
                 'icon' => 'ph ph-monitor',
                 'classes' => 'screen-item d-flex align-items-center',
@@ -84,30 +84,39 @@ class ShareMenuData
                 ],
             ];
             $menu[] = [
-                'text' => 'Navigation Management',
-                'route' => 'SA05',
+                'text' => 'Menus',
+                'route' => 'AD01',
                 'icon' => 'ph ph-align-left',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'AD01',
+                ],
+            ];
+            $menu[] = [
+                'text' => 'Navigation Management',
+                'route' => 'AD02',
+                'icon' => 'ph ph-anchor-simple',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'AD02',
+                ],
+            ];
+            $menu[] = [
+                'text' => 'Codes & Parameters',
+                'route' => 'SA05',
+                'icon' => 'ph ph-tree-structure',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
                     'screen' => 'SA05',
                 ],
             ];
             $menu[] = [
-                'text' => 'Navigation Screens',
-                'route' => 'SA06',
-                'icon' => 'ph ph-anchor-simple',
+                'text' => 'Category',
+                'route' => 'AD03',
+                'icon' => 'ph ph-sort-ascending',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
-                    'screen' => 'SA06',
-                ],
-            ];
-            $menu[] = [
-                'text' => 'Codes & Parameters',
-                'route' => 'SA07',
-                'icon' => 'ph ph-tree-structure',
-                'classes' => 'screen-item d-flex align-items-center',
-                'data' => [
-                    'screen' => 'SA07',
+                    'screen' => 'AD03',
                 ],
             ];
 
