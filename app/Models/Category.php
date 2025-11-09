@@ -20,6 +20,15 @@ class Category extends Model
         'business_id',
     ];
 
+    // Default attributes
+    // protected $attributes = [
+    //     'is_featured' => false,
+    //     'is_system_defined' => false,
+    //     'is_active' => true,
+    //     'seqn' => 0,
+    // ];
+
+
     public function parentCategory()
     {
         return $this->belongsTo(Category::class, 'parent_category_id');

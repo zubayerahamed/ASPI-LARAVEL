@@ -21,7 +21,7 @@ class AD03Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD03.AD03', [
                         'categoryTree' => Category::generateCategoryTree(),
-                        'category' => new Category(),
+                        'category' => (new Category())->fill(['seqn' => 0]),
                         'detailList' => Category::with('parentCategory')->where('business_id', null)->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Category Management',
@@ -33,7 +33,7 @@ class AD03Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD03.AD03-main-form', [
                         'categoryTree' => Category::generateCategoryTree(),
-                        'category' => new Category(),
+                        'category' => (new Category())->fill(['seqn' => 0]),
                     ])->render(),
                 ]);
             }
@@ -51,7 +51,7 @@ class AD03Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD03.AD03-main-form', [
                         'categoryTree' => Category::generateCategoryTree(),
-                        'category' => new Category(),
+                        'category' => (new Category())->fill(['seqn' => 0]),
                     ])->render(),
                 ]);
             }
@@ -63,7 +63,7 @@ class AD03Controller extends ZayaanController
             'content_header_title' => 'Category Management',
             'subtitle' => 'Category',
             'categoryTree' => Category::generateCategoryTree(),
-            'category' => new Category(),
+            'category' => (new Category())->fill(['seqn' => 0]),
             'detailList' => Category::with('parentCategory')->where('business_id', null)->orderBy('seqn', 'asc')->get()
         ]);
     }

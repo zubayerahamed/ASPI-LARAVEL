@@ -46,7 +46,7 @@ class ShareMenuData
 
         // Add role-specific menus
         if ($user->is_system_admin) {
-            $menu[] = ['header' => 'System Administrator'];
+            $menu[] = ['header' => 'Platform Administration'];
             $menu[] = [
                 'text' => 'Business Category',
                 'route' => 'SA01',
