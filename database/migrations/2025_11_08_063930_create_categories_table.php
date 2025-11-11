@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name', 50);
             $table->string('slug', 50)->unique();
             $table->string('icon', 50)->nullable();
-            $table->string('thumbnail', 255)->nullable();
 
             $table->text('description')->nullable();
 
@@ -26,6 +25,8 @@ return new class extends Migration
 
             $table->integer('seqn')->default(0);
 
+
+            $table->foreignId("thumbnail_id")->nullable()->references("id")->on("cadocs")->onDelete("cascade");
             $table->foreignId("parent_category_id")->nullable()->references("id")->on("categories")->onDelete("cascade");
             $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
             $table->unique(['slug', 'business_id']);  // category will be unique per business

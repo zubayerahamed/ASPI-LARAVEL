@@ -202,35 +202,35 @@ kit.ui.config.initFilePond = function () {
         maxFileSize: '5MB',
 
         // Image editing
-        allowImagePreview: true,
-        allowImageExifOrientation: true,
-        allowImageCrop: true,
-        allowImageResize: true,
-        allowImageTransform: true,
-        allowImageEdit: true,
+        // allowImagePreview: true,
+        // allowImageExifOrientation: true,
+        // allowImageCrop: true,
+        // allowImageResize: true,
+        // allowImageTransform: true,
+        // allowImageEdit: true,
 
         // Image transformation settings
-        imageCropAspectRatio: '1:1',
-        imageResizeTargetWidth: 200,
-        imageResizeTargetHeight: 200,
-        imageResizeMode: 'cover',
-        imageTransformOutputQuality: 90,
-        imageTransformOutputMimeType: 'image/jpeg',
+        // imageCropAspectRatio: '1:1',
+        // imageResizeTargetWidth: 200,
+        // imageResizeTargetHeight: 200,
+        // imageResizeMode: 'cover',
+        // imageTransformOutputQuality: 90,
+        // imageTransformOutputMimeType: 'image/jpeg',
 
         // File metadata and encoding
-        allowFileEncode: true,
-        allowFileRename: true,
-        fileRenameFunction: (file) => {
-            return `upload_${Date.now()}_${file.name}`;
-        },
-        allowFileMetadata: true,
-        fileMetadataObject: {
-            uploadedBy: 'demo-user',
-            uploadDate: new Date().toISOString()
-        },
+        // allowFileEncode: true,
+        // allowFileRename: true,
+        // fileRenameFunction: (file) => {
+        //     return `upload_${Date.now()}_${file.name}`;
+        // },
+        // allowFileMetadata: true,
+        // fileMetadataObject: {
+        //     uploadedBy: 'demo-user',
+        //     uploadDate: new Date().toISOString()
+        // },
 
         // File poster for non-image files
-        allowFilePoster: true,
+        // allowFilePoster: true,
 
         // Multiple files
         // allowMultiple: true,
@@ -242,6 +242,7 @@ kit.ui.config.initFilePond = function () {
 
     $('.filepond').each(function () {
         var allowMultiple = $(this).data('multiple-upload') != undefined && $(this).data('multiple-upload') == 'Y' ? true : false;
+
         if (!FilePond.find(this)) {
             $(this).filepond({
                 allowMultiple: allowMultiple,
@@ -252,11 +253,49 @@ kit.ui.config.initFilePond = function () {
 
     $.fn.filepond.setOptions({
         server: {
-            process: getBasepath() + '/filepond',
-            revert: getBasepath() + '/filepond',
-            headers: {
-                'X-CSRF-TOKEN': getCSRFToken(),
+            process: {
+                url: $('a.filepond-process-url').attr('href'),
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': getCSRFToken(),
+                },
+                onload: (response) => {
+                    // Assuming the server returns a JSON object with a 'fileId' property
+                    console.log("FilePond upload response:", response);
+                    const res = JSON.parse(response);
+
+                    if(res.error){
+                        showMessage('error', res.error);
+                        return;
+                    }
+
+                    return res.media_id; // Adjust based on your server response
+                }
             },
+            revert: (uniqueFileId, load, error) => {
+                console.log('Reverting file with ID:', uniqueFileId);
+                // Make the DELETE request to your server
+                fetch($('a.filepond-revert-url').attr('href') + '?id=' + uniqueFileId, { // Example of sending ID as query param
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': getCSRFToken(),
+                    },
+                })
+                .then(res => {
+                    if (res.ok) {
+                        load(); // Call load() to inform FilePond the revert is successful
+                    } else {
+                        error('Error reverting file'); // Call error() if something went wrong
+                        showMessage('error', 'Error reverting file');
+                    }
+                })
+                .catch(() => {
+                    error('Network error during revert');
+                    showMessage('error', 'Network error during revert');
+                });
+            },
+            // work with return data from server
+            
         },
     });
 }

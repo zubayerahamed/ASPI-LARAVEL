@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -10,7 +11,6 @@ class Category extends Model
         'name',
         'slug',
         'icon',
-        'thumbnail',
         'description',
         'is_featured',
         'is_system_defined',
@@ -18,15 +18,13 @@ class Category extends Model
         'seqn',
         'parent_category_id',
         'business_id',
+        'thumbnail_id',
     ];
 
-    // Default attributes
-    // protected $attributes = [
-    //     'is_featured' => false,
-    //     'is_system_defined' => false,
-    //     'is_active' => true,
-    //     'seqn' => 0,
-    // ];
+    public function thumbnail()
+    {
+        return $this->belongsTo(Cadoc::class, 'thumbnail_id');
+    }
 
 
     public function parentCategory()
@@ -55,15 +53,32 @@ class Category extends Model
     public static function boot()
     {
         parent::boot();
-        static::creating(function ($model) {
-            $exists = Category::where('slug', $model->slug)
-                ->where('business_id', $model->business_id)
-                ->exists();
+        static::creating(function ($category) {
+            // Generate a unique slug when creating a new category
+            $category->slug = $category->generateUniqueSlug($category->name, $category->business_id);
+        });
 
-            if ($exists) {
-                throw new \Exception('Category with this slug already exists for the given business.');
+        static::updating(function ($category) {
+            // Regenerate the slug if the name changes during update
+            if ($category->isDirty('name')) {
+                $category->slug = $category->generateUniqueSlug($category->name, $category->business_id);
             }
         });
+    }
+
+    // Generate a unique slug for a given business_id
+    public function generateUniqueSlug($name, $business_id)
+    {
+        $slug = Str::slug($name);
+        $originalSlug = $slug;
+        $count = 1;
+
+        // Check if the slug is unique for the given business_id
+        while (Category::where('slug', $slug)->where('business_id', $business_id)->exists()) {
+            $slug = $originalSlug . '-' . $count++;
+        }
+
+        return $slug;
     }
 
     public static function generateCategoryTree($business_id = null, $excludeCategoryId = null)

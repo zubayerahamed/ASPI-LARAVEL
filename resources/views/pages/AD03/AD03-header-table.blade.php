@@ -9,11 +9,13 @@
             <table class="table table-hover table-bordered p-0 m-0 datatable-fragment">
                 <thead>
                     <tr>
-                        <th>Menu Code</th>
-                        <th>Title</th>
-                        <th>Parent Menu</th>
+                        <th>Thumbnail</th>
+                        <th>Category Name</th>
+                        <th>Parent Category</th>
                         <th class="text-center">Sequence</th>
                         <th>Icon</th>
+                        <th>Is Featured?</th>
+                        <th>Is Active?</th>
                         <th data-nosort='Y'>Actions</th>
                     </tr>
                 </thead>
@@ -21,14 +23,34 @@
                     @foreach ($detailList as $x)
                         <tr>
                             <td>
-                                <a data-reloadurl="{{ route('AD03', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->xmenu }}</a>
+                                @if ($x->thumbnail)
+                                    <img src="{{ asset('storage/' . $x->thumbnail->path) }}" alt="Thumbnail" class="img-thumbnail" style="width: 50px; height: 50px;">
+                                @else
+                                    <span class="text-muted">No Thumbnail</span>
+                                @endif
                             </td>
-                            <td>{{ $x->title }}</td>
                             <td>
-                                <span class="badge bg-{{ $x->parent_menu_id ? 'primary' : 'warning' }}">{{ $x->parent_menu_id ? $x->parentMenu->xmenu . ' - ' . $x->parentMenu->title : 'No Parent' }}</span>
+                                <a data-reloadurl="{{ route('AD03', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->name }}</a>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ $x->parent_category_id ? 'primary' : 'warning' }}">{{ $x->parent_category_id ? $x->parentCategory->name : 'No Parent' }}</span>
                             </td>
                             <td class="text-center">{{ $x->seqn }}</td>
                             <td>{{ $x->icon }}</td>
+                            <td>
+                                @if ($x->is_featured)
+                                    <span class="badge bg-success">Yes</span>
+                                @else
+                                    <span class="badge bg-secondary">No</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($x->is_active)
+                                    <span class="badge bg-success">Active</span>
+                                @else
+                                    <span class="badge bg-secondary">Inactive</span>
+                                @endif
+                            </td>
                             <td class="d-flex justify-content-start gap-2">
                                 <button data-url="{{ route('AD03.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
                                     <i class="ph ph-trash"></i>

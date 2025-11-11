@@ -12,6 +12,7 @@ use App\Http\Controllers\SA04Controller;
 use App\Http\Controllers\AD01Controller;
 use App\Http\Controllers\AD02Controller;
 use App\Http\Controllers\AD03Controller;
+use App\Http\Controllers\AD18Controller;
 use App\Http\Controllers\SA05Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -77,5 +78,9 @@ Route::get('/AD03/header-table', [AD03Controller::class, 'headerTable'])->name('
 Route::post('/AD03', [AD03Controller::class, 'create'])->name('AD03.create');
 Route::put('/AD03/{id}', [AD03Controller::class, 'update'])->name('AD03.update');
 Route::delete('/AD03/{id}', [AD03Controller::class, 'delete'])->name('AD03.delete');
+
+
+Route::post('/AD18', [AD18Controller::class, 'create'])->name('AD18.create');
+Route::delete('/AD18', [AD18Controller::class, 'destroy'])->name('AD18.destroy');
 
 Route::get('/business-selection/{id}', [BusinessSelectionController::class, 'selectBusiness'])->name('business.selection');

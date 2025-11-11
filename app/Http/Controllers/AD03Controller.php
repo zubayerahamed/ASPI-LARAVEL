@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ReloadSection;
+use App\Models\Cadoc;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -21,8 +22,8 @@ class AD03Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD03.AD03', [
                         'categoryTree' => Category::generateCategoryTree(),
-                        'category' => (new Category())->fill(['seqn' => 0]),
-                        'detailList' => Category::with('parentCategory')->where('business_id', null)->orderBy('seqn', 'asc')->get()
+                        'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true]),
+                        'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Category Management',
                     'subtitle' => 'Category',
@@ -33,7 +34,7 @@ class AD03Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD03.AD03-main-form', [
                         'categoryTree' => Category::generateCategoryTree(),
-                        'category' => (new Category())->fill(['seqn' => 0]),
+                        'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true]),
                     ])->render(),
                 ]);
             }
@@ -51,7 +52,7 @@ class AD03Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD03.AD03-main-form', [
                         'categoryTree' => Category::generateCategoryTree(),
-                        'category' => (new Category())->fill(['seqn' => 0]),
+                        'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true]),
                     ])->render(),
                 ]);
             }
@@ -63,8 +64,8 @@ class AD03Controller extends ZayaanController
             'content_header_title' => 'Category Management',
             'subtitle' => 'Category',
             'categoryTree' => Category::generateCategoryTree(),
-            'category' => (new Category())->fill(['seqn' => 0]),
-            'detailList' => Category::with('parentCategory')->where('business_id', null)->orderBy('seqn', 'asc')->get()
+            'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true]),
+            'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
         ]);
     }
 
@@ -72,7 +73,7 @@ class AD03Controller extends ZayaanController
     {
         return response()->json([
             'page' => view('pages.AD03.AD03-header-table', [
-                'detailList' => Category::with('parentCategory')->where('business_id', null)->orderBy('seqn', 'asc')->get()
+                'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }
@@ -81,7 +82,6 @@ class AD03Controller extends ZayaanController
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
-            'slug' => 'required|string|max:50|unique:categories,slug,except,id',
             'icon' => 'nullable|string|max:50',
             'thumbnail' => 'nullable|string|max:255',
             'description' => 'nullable|string',
@@ -90,8 +90,6 @@ class AD03Controller extends ZayaanController
         ], [
             'name.required' => 'The category name is required.',
             'name.max' => 'The category name may not be greater than 50 characters.',
-            'slug.required' => 'The category slug is required.',
-            'slug.max' => 'The category slug may not be greater than 50 characters.',
             'icon.max' => 'The category icon may not be greater than 50 characters.',
             'thumbnail.max' => 'The category thumbnail may not be greater than 255 characters.',
             'description.max' => 'The category description may not be greater than 255 characters.',
@@ -109,18 +107,29 @@ class AD03Controller extends ZayaanController
 
         $request->merge(['business_id' => null]); // For now, set business_id to null
 
+        if($request->has('thumbnail')){
+            // Assuming Cadoc is the model for handling file uploads
+            $cadoc = Cadoc::find($request->input('thumbnail'));
+            if($cadoc) {
+                // You might want to add additional logic here, like associating the Cadoc with the Category later
+                $cadoc->temp = false; // Mark as permanent
+                $cadoc->save();
+            }
+            $request->merge(['thumbnail_id' => $cadoc->id]);
+        }
+        
         $category = Category::create($request->only([
             'name',
             'slug',
             'icon',
-            'thumbnail',
             'description',
             'is_featured',
             'is_system_defined',
             'is_active',
             'seqn',
             'parent_category_id',
-            'business_id'
+            'business_id',
+            'thumbnail_id'
         ]));
 
         if ($category) {
@@ -170,6 +179,40 @@ class AD03Controller extends ZayaanController
         $request['is_featured'] = $request->has('is_featured');
         $request['is_system_defined'] = $request->has('is_system_defined');
         $request['is_active'] = $request->has('is_active');
+
+        if($request->has('thumbnail')){
+            // Assuming Cadoc is the model for handling file uploads
+            $cadoc = Cadoc::find($request->input('thumbnail'));
+            if($cadoc) {
+                // You might want to add additional logic here, like associating the Cadoc with the Category later
+                $cadoc->temp = false; // Mark as permanent
+                $cadoc->save();
+            }
+            $request->merge(['thumbnail_id' => $cadoc->id]);
+        }
+
+        // Remove Thumbnail Triggered
+        if($request->remove_thumbnail == 'YES' || $request->has('thumbnail')){
+            if($category->thumbnail_id != null){
+                $oldCadoc = Cadoc::find($category->thumbnail_id);
+                if($oldCadoc){
+                    $oldCadoc->delete(); // Delete old thumbnail record
+
+                    // Remove the physical file if needed
+                    // AD18Controller::deletePhysicalFiles([
+                    //     'original_file' => 'storage' . $oldCadoc->file_path . $oldCadoc->file_name,
+                    //     'compressed_file' => 'storage' . $oldCadoc->file_path_compressed . $oldCadoc->file_name,
+                    //     'file_name' => $oldCadoc->file_name,
+                    //     'original_name' => $oldCadoc->original_file_name
+                    // ]);
+                }
+            }
+
+            if($request->has('thumbnail')){
+                $request->merge(['thumbnail_id' => null]);
+            }
+        }
+
         $category->update($request->only([
             'name',
             'slug',

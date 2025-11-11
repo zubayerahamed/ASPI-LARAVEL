@@ -701,6 +701,21 @@ return [
                 ],
             ],
         ],
+        'DropZone' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.js',
+                ],
+            ],
+        ],
         'filepond' => [
             'active' => true,
             'files' => [

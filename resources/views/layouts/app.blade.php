@@ -32,6 +32,8 @@
 {{-- Rename section content to content_body --}}
 @section('content')
     <a href="{{ route('home') }}" class="basePath"></a>
+    <a href="{{ route('AD18.create') }}" class="filepond-process-url"></a>
+    <a href="{{ route('AD18.destroy') }}" class="filepond-revert-url"></a>
 
     @yield('content_body')
 
