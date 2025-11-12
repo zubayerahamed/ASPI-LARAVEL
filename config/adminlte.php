@@ -906,6 +906,16 @@ return [
                 ],
             ]
         ],
+        'Typeahead' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js',
+                ],
+            ]
+        ],
     ],
 
     /*

@@ -8,6 +8,24 @@ function getBasepath() {
     return basePath ? `${href[0]}//${href[2]}/${basePath}` : `${href[0]}//${href[2]}`;
 }
 
+function sweetAlertConfirm(confirmCallback, title, text, confirmButtonText, cancelButtonText) {
+    Swal.fire({
+        title: title == undefined || title == null ? 'Are you sure?' : title,
+        text: text == undefined || text == null ? "You won't be able to revert this!" : text,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: confirmButtonText == undefined || confirmButtonText == null ? 'Yes, proceed!' : confirmButtonText,
+        cancelButtonText: cancelButtonText == undefined || cancelButtonText == null ? 'No, cancel!' : cancelButtonText,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (confirmCallback != undefined && confirmCallback != null) {
+                confirmCallback();
+            }
+        }
+    });
+}
 
 
 function disableBtn(btnClasses) {

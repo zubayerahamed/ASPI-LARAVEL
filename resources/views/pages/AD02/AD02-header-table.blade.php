@@ -45,10 +45,9 @@
 
             $('.datatable-fragment').on('click', 'a.btn-table-delete', function(e) {
                 e.preventDefault();
-                if (!confirm("Are you sure, to delete this?")) {
-                    return;
-                }
-                deleteRequest($(this).data('url'));
+                sweetAlertConfirm(() => {
+                    deleteRequest($(this).data('url'));
+                });
             });
         })
     </script>

@@ -101,10 +101,9 @@
 
         $('.btn-delete').off('click').on('click', function(e) {
             e.preventDefault();
-            if (!confirm("Are you sure, to delete this?")) {
-                return;
-            }
-            deleteRequest($(this).data('url'));
+            sweetAlertConfirm(() => {
+                deleteRequest($(this).data('url'));
+            });
         });
     })
 </script>

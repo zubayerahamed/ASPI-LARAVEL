@@ -99,7 +99,7 @@ class AD02Controller extends ZayaanController
                     'page' => view('pages.AD02.AD02', [
                         'menus' => Menu::generateMenuTree(),
                         'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
-                        'menuScreen' => new MenuScreen(),
+                        'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
                         'detailList' => $this->getMenuGroup()
                     ])->render(),
                     'content_header_title' => 'Navigation Management',
@@ -112,7 +112,7 @@ class AD02Controller extends ZayaanController
                     'page' => view('pages.AD02.AD02-main-form', [
                         'menus' => Menu::generateMenuTree(),
                         'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
-                        'menuScreen' => new MenuScreen(),
+                        'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
                     ])->render(),
                 ]);
             }
@@ -132,7 +132,7 @@ class AD02Controller extends ZayaanController
                     'page' => view('pages.AD02.AD02-main-form', [
                         'menus' => Menu::generateMenuTree(),
                         'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
-                        'menuScreen' => new MenuScreen(),
+                        'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
                     ])->render(),
                 ]);
             }
@@ -145,7 +145,7 @@ class AD02Controller extends ZayaanController
             'subtitle' => 'Navigation',
             'menus' => Menu::generateMenuTree(),
             'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
-            'menuScreen' => new MenuScreen(),
+            'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
             'detailList' => $this->getMenuGroup()
         ]);
     }

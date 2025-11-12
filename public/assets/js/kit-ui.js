@@ -10,13 +10,96 @@ kit.ui = kit.ui || {};
 kit.ui.config = kit.ui.config || {};
 
 kit.ui.config.initSelect2 = function () {
-    $('.select2').select2({ width: '100%' });
+    $('.select2').select2({
+        width: '100%'
+    });
 
     // Select2 with boostrap4 theme
     $('.select2bs4').select2({
         theme: 'bootstrap4',
         width: '100%'
     });
+
+    // Select2 with ajax data source
+    $('.select2-ajax').each(function () {
+        var sourceUrl = $(this).data('source-url');
+        var placeholder = $(this).data('placeholder') != undefined ? $(this).data('placeholder') : 'Search...';
+
+        $(this).select2({
+            width: '100%',
+            theme: 'bootstrap4',
+            placeholder: placeholder,
+            minimumInputLength: 1 ,// only start searching when the user has input 1 or more characters
+            maximumInputLength: 20, // only allow terms up to 20 characters long
+            ajax: {
+                url: sourceUrl,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (data, params) {
+                    // parse the results into the format expected by Select2
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data, except to indicate that infinite
+                    // scrolling can be used
+                    params.page = params.page || 1;
+
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+        });
+    });
+}
+
+kit.ui.config.initTypeahead = function () {
+    $('.typeahead').each(function () {
+        var sourceUrl = $(this).data('source-url');
+        var minLength = $(this).data('min-length') != undefined ? parseInt($(this).data('min-length')) : 1;
+
+        $(this).typeahead({
+            minLength: minLength,
+            highlight: true,
+        }, {
+            name: 'typeahead-dataset',
+            limit: 10,
+            source: function (query, syncResults, asyncResults) {
+                $.get(sourceUrl, {
+                        query: query
+                    })
+                    .done(function (data) {
+                        asyncResults(data);
+                    })
+                    .fail(function () {
+                        asyncResults([]);
+                    });
+            },
+        });
+    });
+
+    // controller example for typeahead source URL
+    // public function search(Request $request)
+    // {
+    //     $users = [];
+    //     $query = $request->get('query');
+    //
+    //     if($query){
+    //         $users = User::select("name")
+    //                     ->where('name', 'LIKE', '%'. $query. '%')
+    //                     ->get();
+    //     }
+    //    
+    //     return response()->json($users);
+    // }
 }
 
 kit.ui.config.initColorpicker = function () {
@@ -235,7 +318,7 @@ kit.ui.config.initFilePond = function () {
         // Multiple files
         // allowMultiple: true,
         // maxFiles: 5,
-        
+
         // Instant upload disabled for demo
         instantUpload: false
     });
@@ -264,7 +347,7 @@ kit.ui.config.initFilePond = function () {
                     console.log("FilePond upload response:", response);
                     const res = JSON.parse(response);
 
-                    if(res.error){
+                    if (res.error) {
                         showMessage('error', res.error);
                         return;
                     }
@@ -276,41 +359,42 @@ kit.ui.config.initFilePond = function () {
                 console.log('Reverting file with ID:', uniqueFileId);
                 // Make the DELETE request to your server
                 fetch($('a.filepond-revert-url').attr('href') + '?id=' + uniqueFileId, { // Example of sending ID as query param
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': getCSRFToken(),
-                    },
-                })
-                .then(res => {
-                    if (res.ok) {
-                        load(); // Call load() to inform FilePond the revert is successful
-                    } else {
-                        error('Error reverting file'); // Call error() if something went wrong
-                        showMessage('error', 'Error reverting file');
-                    }
-                })
-                .catch(() => {
-                    error('Network error during revert');
-                    showMessage('error', 'Network error during revert');
-                });
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': getCSRFToken(),
+                        },
+                    })
+                    .then(res => {
+                        if (res.ok) {
+                            load(); // Call load() to inform FilePond the revert is successful
+                        } else {
+                            error('Error reverting file'); // Call error() if something went wrong
+                            showMessage('error', 'Error reverting file');
+                        }
+                    })
+                    .catch(() => {
+                        error('Network error during revert');
+                        showMessage('error', 'Network error during revert');
+                    });
             },
             // work with return data from server
-            
+
         },
     });
 }
 
-kit.ui.config.formRequiredLabel = function(){
-	$('form').each(function () {
-		$(this).find(':input[required]').each(function () {
-			// Find the label inside the same .form-group and mark it
-			$(this).closest('.form-group').find('label').addClass('required');
-		});
-	});
+kit.ui.config.formRequiredLabel = function () {
+    $('form').each(function () {
+        $(this).find(':input[required]').each(function () {
+            // Find the label inside the same .form-group and mark it
+            $(this).closest('.form-group').find('label').addClass('required');
+        });
+    });
 }
 
 kit.ui.init = function () {
     kit.ui.config.initSelect2();
+    kit.ui.config.initTypeahead();
     kit.ui.config.initDatatable();
     kit.ui.config.initColorpicker();
     kit.ui.config.initToastr();
@@ -320,7 +404,7 @@ kit.ui.init = function () {
     kit.ui.config.initSummernote();
     kit.ui.config.initFilePond();
     kit.ui.config.formRequiredLabel();
-	console.log("KIT-UI JS code initialization done");
+    console.log("KIT-UI JS code initialization done");
 }
 
 $(document).ready(function () {
@@ -368,9 +452,9 @@ $(document).ready(function () {
         }, (data) => {
             // Update content header title and document title
             $(".content_header_title").html("");
-            if(data.content_header_title) $(".content_header_title").html(data.content_header_title);
+            if (data.content_header_title) $(".content_header_title").html(data.content_header_title);
 
-            if(data.subtitle) {
+            if (data.subtitle) {
                 document.title = "ASPI | " + data.subtitle;
             } else {
                 document.title = "ASPI";

@@ -24,7 +24,7 @@ class SA02Controller extends ZayaanController
                         'countries' => $this->countriesList(),
                         'currencies' => $this->currenciesList(),
                         'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
-                        'business' => new Business(),
+                        'business' => (new Business())->fill(['is_active' => true]),
                         'detailList' => Business::with(['businessCategory'])->orderBy('name', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Business',
@@ -38,7 +38,7 @@ class SA02Controller extends ZayaanController
                         'countries' => $this->countriesList(),
                         'currencies' => $this->currenciesList(),
                         'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
-                        'business' => new Business(),
+                        'business' => (new Business())->fill(['is_active' => true]),
                     ])->render(),
                 ]);
             }
@@ -61,7 +61,7 @@ class SA02Controller extends ZayaanController
                         'countries' => $this->countriesList(),
                         'currencies' => $this->currenciesList(),
                         'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
-                        'business' => new Business(),
+                        'business' => (new Business())->fill(['is_active' => true]),
                     ])->render(),
                 ]);
             }
@@ -75,7 +75,7 @@ class SA02Controller extends ZayaanController
             'countries' => $this->countriesList(),
             'currencies' => $this->currenciesList(),
             'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
-            'business' => new Business(),
+            'business' => (new Business())->fill(['is_active' => true]),
             'detailList' => Business::with(['businessCategory'])->orderBy('name', 'asc')->get()
         ]);
     }

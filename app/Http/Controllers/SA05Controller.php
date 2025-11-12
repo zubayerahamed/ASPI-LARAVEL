@@ -19,7 +19,7 @@ class SA05Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.SA05.SA05', [
                         'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-                        'xcodes' => new Xcodes(),
+                        'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
                         'detailList' => Xcodes::orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Codes & Parameters',
@@ -31,7 +31,7 @@ class SA05Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.SA05.SA05-main-form', [
                         'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-                        'xcodes' => new Xcodes(),
+                        'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
                     ])->render(),
                 ]);
             }
@@ -49,7 +49,7 @@ class SA05Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.SA05.SA05-main-form', [
                         'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-                        'xcodes' => new Xcodes(),
+                        'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
                     ])->render(),
                 ]);
             }
@@ -61,7 +61,7 @@ class SA05Controller extends ZayaanController
             'content_header_title' => 'Business Category',
             'subtitle' => 'Business Category',
             'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-            'xcodes' => new Xcodes(),
+            'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
             'detailList' => Xcodes::orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
         ]);
     }

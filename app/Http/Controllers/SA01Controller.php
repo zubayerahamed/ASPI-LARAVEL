@@ -18,7 +18,7 @@ class SA01Controller extends ZayaanController
             if ($frommenu == 'Y') {
                 return response()->json([
                     'page' => view('pages.SA01.SA01', [
-                        'businessCategory' => new BusinessCategory(),
+                        'businessCategory' => (new BusinessCategory())->fill(['seqn' => 0, 'is_active' => 1]),
                         'detailList' => BusinessCategory::orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Business Category',
@@ -29,7 +29,7 @@ class SA01Controller extends ZayaanController
             if ("RESET" == $id) {
                 return response()->json([
                     'page' => view('pages.SA01.SA01-main-form', [
-                        'businessCategory' => new BusinessCategory(),
+                        'businessCategory' => (new BusinessCategory())->fill(['seqn' => 0, 'is_active' => 1]),
                     ])->render(),
                 ]);
             }
@@ -45,7 +45,7 @@ class SA01Controller extends ZayaanController
             } catch (\Throwable $th) {
                 return response()->json([
                     'page' => view('pages.SA01.SA01-main-form', [
-                        'businessCategory' => new BusinessCategory(),
+                        'businessCategory' => (new BusinessCategory())->fill(['seqn' => 0, 'is_active' => 1]),
                     ])->render(),
                 ]);
             }
@@ -56,7 +56,7 @@ class SA01Controller extends ZayaanController
             'page' => 'pages.SA01.SA01',
             'content_header_title' => 'Business Category',
             'subtitle' => 'Business Category',
-            'businessCategory' => new BusinessCategory(),
+            'businessCategory' => (new BusinessCategory())->fill(['seqn' => 0, 'is_active' => 1]),
             'detailList' => BusinessCategory::orderBy('seqn', 'asc')->get()
         ]);
     }

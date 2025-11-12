@@ -27,10 +27,14 @@
                     </div>
                 </div>
 
+                <div class="col-md-12"></div>
+
                 <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label class="form-label d-block" for="is_active">Is Active?</label>
-                        <input type="checkbox" id="is_active" name="is_active" {{ $businessCategory->is_active ? 'checked' : '' }}>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $businessCategory->is_active ? 'checked' : '' }}>
+                            <label for="is_active" class="custom-control-label form-label">Is Active?</label>
+                        </div>
                     </div>
                 </div>
 
@@ -92,10 +96,9 @@
 
         $('.btn-delete').off('click').on('click', function(e) {
             e.preventDefault();
-            if (!confirm("Are you sure, to delete this?")) {
-                return;
-            }
-            deleteRequest($(this).data('url'));
+            sweetAlertConfirm(() => {
+                deleteRequest($(this).data('url'));
+            });
         });
     })
 </script>

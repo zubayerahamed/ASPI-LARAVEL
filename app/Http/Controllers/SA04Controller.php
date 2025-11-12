@@ -18,7 +18,7 @@ class SA04Controller extends ZayaanController
             if ($frommenu == 'Y') {
                 return response()->json([
                     'page' => view('pages.SA04.SA04', [
-                        'screen' => new Screen(),
+                        'screen' => (new Screen())->fill(['seqn' => 0, 'icon' => 'ph ph-monitor', 'xnum' => 0]),
                         'detailList' => Screen::orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Page Management',
@@ -29,7 +29,7 @@ class SA04Controller extends ZayaanController
             if ("RESET" == $id) {
                 return response()->json([
                     'page' => view('pages.SA04.SA04-main-form', [
-                        'screen' => new Screen(),
+                        'screen' => (new Screen())->fill(['seqn' => 0, 'icon' => 'ph ph-monitor', 'xnum' => 0]),
                     ])->render(),
                 ]);
             }
@@ -45,7 +45,7 @@ class SA04Controller extends ZayaanController
             } catch (\Throwable $th) {
                 return response()->json([
                     'page' => view('pages.SA04.SA04-main-form', [
-                        'screen' => new Screen(),
+                        'screen' => (new Screen())->fill(['seqn' => 0, 'icon' => 'ph ph-monitor', 'xnum' => 0]),
                     ])->render(),
                 ]);
             }
@@ -56,7 +56,7 @@ class SA04Controller extends ZayaanController
             'page' => 'pages.SA04.SA04',
             'content_header_title' => 'Page Management',
             'subtitle' => 'Page',
-            'screen' => new Screen(),
+            'screen' => (new Screen())->fill(['seqn' => 0, 'icon' => 'ph ph-monitor', 'xnum' => 0]),
             'detailList' => Screen::orderBy('seqn', 'asc')->get()
         ]);
     }

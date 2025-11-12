@@ -19,7 +19,7 @@ class AD01Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD01.AD01', [
                         'menuTree' => Menu::generateMenuTree(),
-                        'menu' => new Menu(),
+                        'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
                         'detailList' => Menu::with('parentMenu')->where('business_id', null)->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Menu Management',
@@ -31,7 +31,7 @@ class AD01Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD01.AD01-main-form', [
                         'menuTree' => Menu::generateMenuTree(),
-                        'menu' => new Menu(),
+                        'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
                     ])->render(),
                 ]);
             }
@@ -49,7 +49,7 @@ class AD01Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD01.AD01-main-form', [
                         'menuTree' => Menu::generateMenuTree(),
-                        'menu' => new Menu(),
+                        'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
                     ])->render(),
                 ]);
             }
@@ -61,7 +61,7 @@ class AD01Controller extends ZayaanController
             'content_header_title' => 'Menu Management',
             'subtitle' => 'Menu',
             'menuTree' => Menu::generateMenuTree(),
-            'menu' => new Menu(),
+            'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
             'detailList' => Menu::with('parentMenu')->where('business_id', null)->orderBy('seqn', 'asc')->get()
         ]);
     }

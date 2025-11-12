@@ -60,64 +60,88 @@
                     </div>
                 </div>
 
+                <div class="col-md-12"></div>
+
                 <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label class="form-label d-block" for="is_active">Is Active?</label>
-                        <input type="checkbox" id="is_active" name="is_active" {{ $business->is_active ? 'checked' : '' }}>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $business->is_active ? 'checked' : '' }}>
+                            <label for="is_active" class="custom-control-label form-label">Is Active?</label>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row mt-3">
+            <div class="row mt-4">
                 <div class="col-md-12">
-                    <h4 class="m-0">Select Services</h4>
+                    <h5 class="m-0 text-bold">Select Services</h5>
                     <span class="text-muted">Atleast one service must be selected</span>
                     <hr>
                 </div>
+
                 <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label class="form-label d-block" for="is_inhouse">Is Inhouse?</label>
-                        <input type="checkbox" id="is_inhouse" name="is_inhouse" {{ $business->is_inhouse ? 'checked' : '' }}>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_inhouse" name="is_inhouse" {{ $business->is_inhouse ? 'checked' : '' }}>
+                            <label for="is_inhouse" class="custom-control-label form-label">Is Inhouse?</label>
+                        </div>
                     </div>
                 </div>
+
                 <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label class="form-label d-block" for="is_pickup">Is Pickup?</label>
-                        <input type="checkbox" id="is_pickup" name="is_pickup" {{ $business->is_pickup ? 'checked' : '' }}>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_pickup" name="is_pickup" {{ $business->is_pickup ? 'checked' : '' }}>
+                            <label for="is_pickup" class="custom-control-label form-label">Is Pickup?</label>
+                        </div>
                     </div>
                 </div>
+
                 <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label class="form-label d-block" for="is_delivery">Is Delivery?</label>
-                        <input type="checkbox" id="is_delivery" name="is_delivery" {{ $business->is_delivery ? 'checked' : '' }}>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_delivery" name="is_delivery" {{ $business->is_delivery ? 'checked' : '' }}>
+                            <label for="is_delivery" class="custom-control-label form-label">Is Delivery?</label>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
-            <div class="row mt-3">
+            <div class="row mt-4">
                 <div class="col-md-12">
-                    <h4 class="m-0">Business Specific Settings</h4>
+                    <h5 class="m-0 text-bold">Business Specific Settings</h5>
                     <span class="text-muted">Business specific settings for the selected business</span>
                     <hr>
                 </div>
+
                 <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label class="form-label d-block" for="is_allow_custom_menu">Is Allow Custom Menu?</label>
-                        <input type="checkbox" id="is_allow_custom_menu" name="is_allow_custom_menu" {{ $business->is_allow_custom_menu ? 'checked' : '' }}>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_allow_custom_menu" name="is_allow_custom_menu" {{ $business->is_allow_custom_menu ? 'checked' : '' }}>
+                            <label for="is_allow_custom_menu" class="custom-control-label form-label">Is Allow Custom Menu?</label>
+                        </div>
                     </div>
                 </div>
+
                 <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label class="form-label d-block" for="is_allow_custom_category">Is Allow Custom Category?</label>
-                        <input type="checkbox" id="is_allow_custom_category" name="is_allow_custom_category" {{ $business->is_allow_custom_category ? 'checked' : '' }}>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_allow_custom_category" name="is_allow_custom_category" {{ $business->is_allow_custom_category ? 'checked' : '' }}>
+                            <label for="is_allow_custom_category" class="custom-control-label form-label">Is Allow Custom Category?</label>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label class="form-label d-block" for="is_allow_custom_attribute">Is Allow Custom Attribute?</label>
-                        <input type="checkbox" id="is_allow_custom_attribute" name="is_allow_custom_attribute" {{ $business->is_allow_custom_attribute ? 'checked' : '' }}>
+
+                 <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_allow_custom_attribute" name="is_allow_custom_attribute" {{ $business->is_allow_custom_attribute ? 'checked' : '' }}>
+                            <label for="is_allow_custom_attribute" class="custom-control-label form-label">Is Allow Custom Attribute?</label>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="d-flex justify-content-between align-items-center">
@@ -176,10 +200,9 @@
 
         $('.btn-delete').off('click').on('click', function(e) {
             e.preventDefault();
-            if (!confirm("Are you sure, to delete this?")) {
-                return;
-            }
-            deleteRequest($(this).data('url'));
+            sweetAlertConfirm(() => {
+                deleteRequest($(this).data('url'));
+            });
         });
     })
 </script>
