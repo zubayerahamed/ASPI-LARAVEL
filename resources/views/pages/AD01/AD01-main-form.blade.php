@@ -40,7 +40,31 @@
                 <div class="col-md-3">
                     <div class="form-group mb-3">
                         <label class="form-label" for="icon">Icon</label>
-                        <input type="text" class="form-control" id="icon" name="icon" value="{{ $menu->icon }}">
+                        <div class="icon-picker-container">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i id="selectedIconPreview" class="{{ $menu->icon }}"></i></span>
+                                </div>
+                                <input type="text" class="form-control icon-input" name="icon" value="{{ $menu->icon }}">
+                                <div class="input-group-append">
+                                    <div class="input-group-text toggle-icon-picker"><i class="ph ph-caret-down"></i></div>
+                                </div>
+                            </div>
+
+                            <div class="icon-picker-dropdown" id="iconPickerDropdown">
+                                <div class="icon-picker-search">
+                                    <div class="input-group">
+                                        <input type="text" id="iconSearch" class="form-control icon-search" placeholder="Search icons...">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text reset-icon-search"><i class="ph ph-arrows-clockwise"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="icon-picker-icons" id="iconPickerIcons">
+                                    <!-- Icons will be populated here -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-3">

@@ -13,7 +13,7 @@
                         <th>Name</th>
                         <th>Businesses</th>
                         <th class="text-center">Status</th>
-                        <th class="text-right">Action</th>
+                        <th class="text-right" data-no-sort="Y">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,10 +29,12 @@
                                 @endforeach
                             </td>
                             <td class="text-center">{{ $x->status }}</td>
-                            <td class="d-flex justify-content-end gap-2">
-                                <button data-url="{{ route('SA03.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
-                                    <i class="ph ph-trash"></i>
-                                </button>
+                            <td>
+                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                    <button data-url="{{ route('SA03.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

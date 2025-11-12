@@ -13,7 +13,7 @@
                         <th class="text-center">Category Code</th>
                         <th class="text-center">Sequence</th>
                         <th class="text-center">Is Active?</th>
-                        <th>Actions</th>
+                        <th class="text-right" data-no-sort="Y">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,10 +25,12 @@
                             <td class="text-center">{{ $x->xcode }}</td>
                             <td class="text-center">{{ $x->seqn }}</td>
                             <td class="text-center">{{ $x->is_active ? 'Y' : 'N' }}</td>
-                            <td class="d-flex justify-content-start gap-2">
-                                <button data-url="{{ route('SA01.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
-                                    <i class="ph ph-trash"></i>
-                                </button>
+                            <td>
+                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                    <button data-url="{{ route('SA01.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -43,7 +45,7 @@
         $(document).ready(function() {
             kit.ui.config.initDatatable('datatable-fragment');
 
-            $('.datatable-fragment').on('click', 'a.detail-dataindex', function(e){
+            $('.datatable-fragment').on('click', 'a.detail-dataindex', function(e) {
                 e.preventDefault();
 
                 sectionReloadAjaxReq({
@@ -52,7 +54,7 @@
                 });
             });
 
-            $('.datatable-fragment').on('click', 'button.btn-table-delete', function(e){
+            $('.datatable-fragment').on('click', 'button.btn-table-delete', function(e) {
                 e.preventDefault();
                 sweetAlertConfirm(() => {
                     deleteRequest($(this).data('url'));

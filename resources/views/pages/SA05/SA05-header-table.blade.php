@@ -13,7 +13,7 @@
                         <th>Code</th>
                         <th>Description</th>
                         <th class="text-center">Sequence</th>
-                        <th>Actions</th>
+                        <th class="text-right" data-no-sort="Y">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,10 +25,12 @@
                             <td>{{ $x->xcode }}</td>
                             <td>{{ $x->description }}</td>
                             <td class="text-center">{{ $x->seqn }}</td>
-                            <td class="d-flex justify-content-start gap-2">
-                                <button data-url="{{ route('SA05.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
-                                    <i class="ph ph-trash"></i>
-                                </button>
+                            <td>
+                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                    <button data-url="{{ route('SA05.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

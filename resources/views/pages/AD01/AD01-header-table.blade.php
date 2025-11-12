@@ -13,8 +13,8 @@
                         <th>Title</th>
                         <th>Parent Menu</th>
                         <th class="text-center">Sequence</th>
-                        <th>Icon</th>
-                        <th data-nosort='Y'>Actions</th>
+                        <th data-no-sort="Y">Icon</th>
+                        <th class="text-right" data-no-sort="Y">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,11 +28,13 @@
                                 <span class="badge bg-{{ $x->parent_menu_id ? 'primary' : 'warning' }}">{{ $x->parent_menu_id ? $x->parentMenu->xmenu . ' - ' . $x->parentMenu->title : 'No Parent' }}</span>
                             </td>
                             <td class="text-center">{{ $x->seqn }}</td>
-                            <td>{{ $x->icon }}</td>
-                            <td class="d-flex justify-content-start gap-2">
-                                <button data-url="{{ route('AD01.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
-                                    <i class="ph ph-trash"></i>
-                                </button>
+                            <td><i class="{{ $x->icon }}"></i></td>
+                            <td>
+                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                    <button data-url="{{ route('AD01.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

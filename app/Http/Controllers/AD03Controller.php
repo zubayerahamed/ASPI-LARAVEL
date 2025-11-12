@@ -22,7 +22,7 @@ class AD03Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD03.AD03', [
                         'categoryTree' => Category::generateCategoryTree(),
-                        'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true]),
+                        'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true, 'icon' => 'ph ph-sort-ascending']),
                         'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Category Management',
@@ -34,7 +34,7 @@ class AD03Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD03.AD03-main-form', [
                         'categoryTree' => Category::generateCategoryTree(),
-                        'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true]),
+                        'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true, 'icon' => 'ph ph-sort-ascending']),
                     ])->render(),
                 ]);
             }
@@ -52,7 +52,7 @@ class AD03Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD03.AD03-main-form', [
                         'categoryTree' => Category::generateCategoryTree(),
-                        'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true]),
+                        'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true, 'icon' => 'ph ph-sort-ascending']),
                     ])->render(),
                 ]);
             }
@@ -64,7 +64,7 @@ class AD03Controller extends ZayaanController
             'content_header_title' => 'Category Management',
             'subtitle' => 'Category',
             'categoryTree' => Category::generateCategoryTree(),
-            'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true]),
+            'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true, 'icon' => 'ph ph-sort-ascending']),
             'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
         ]);
     }

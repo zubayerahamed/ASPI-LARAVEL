@@ -81,6 +81,83 @@
 
 
 
+/**=== Phosphor icon picker css
+*/
+
+.toggle-icon-picker, .reset-icon-search{
+	cursor: pointer;
+}
+
+.icon-picker-container {
+	position: relative;
+	width: 100%;
+}
+
+.icon-picker-dropdown {
+	position: absolute;
+	top: 105%;
+	left: 0;
+	width: 100%;
+	max-height: 300px;
+	background-color: white;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+	margin-top: 2px;
+	z-index: 1000;
+	display: none;
+}
+
+.icon-picker-search {
+	padding: 0.5rem;
+	border-bottom: 1px solid #ced4da;
+}
+
+.icon-picker-icons {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+	gap: 5px;
+	padding: 0.5rem;
+	max-height: 245px;
+	overflow-y: auto;
+}
+
+.icon-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 40px;
+	cursor: pointer;
+	border-radius: 0.25rem;
+	transition: background-color 0.15s ease-in-out;
+	border: 1px solid #ddd;
+}
+
+.icon-item:hover {
+	background-color: #dfe1e3;
+}
+
+.icon-item.selected {
+	background-color: #007bff;
+	color: white;
+}
+
+.icon-preview {
+	font-size: 1.5rem;
+}
+.icon-input-group {
+	position: relative;
+}
+.icon-preview-input {
+	position: absolute;
+	left: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	pointer-events: none;
+}
+
+
+
 
 
 

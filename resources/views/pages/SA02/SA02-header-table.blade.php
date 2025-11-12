@@ -11,13 +11,13 @@
                     <tr>
                         <th>Business Name</th>
                         <th>Business Category</th>
-                        <th>Country</th>
+                        <th class="text-center">Country</th>
                         <th class="text-center">Currency</th>
                         <th>Email</th>
                         <th>Mobile</th>
-                        <th>Services</th>
                         <th class="text-center">Active</th>
-                        <th class="text-right">Action</th>
+                        <th data-no-sort="Y">Services</th>
+                        <th class="text-right" data-no-sort="Y">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,10 +27,11 @@
                                 <a data-reloadurl="{{ route('SA02', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->name }}</a>
                             </td>
                             <td>{{ $x->businessCategory->name }}</td>
-                            <td>{{ $x->country }}</td>
+                            <td class="text-center">{{ $x->country }}</td>
                             <td class="text-center">{{ $x->currency }}</td>
                             <td>{{ $x->email }}</td>
                             <td>{{ $x->mobile }}</td>
+                            <td class="text-center">{{ $x->is_active ? 'Y' : 'N' }}</td>
                             <td>
                                 <!-- Display service icons based on boolean fields -->
                                 <div class="d-flex align-items-center gap-3">
@@ -51,9 +52,8 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="text-center">{{ $x->is_active ? 'Y' : 'N' }}</td>
-                            <td class="">
-                                <div class="d-flex justify-content-end gap-2">
+                            <td>
+                                <div class="d-flex justify-content-end align-items-center gap-2">
                                     <button data-url="{{ route('SA02.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
                                         <i class="ph ph-trash"></i>
                                     </button>

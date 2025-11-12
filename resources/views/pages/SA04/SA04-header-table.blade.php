@@ -14,7 +14,7 @@
                         <th>Type</th>
                         <th class="text-center">Sequence</th>
                         <th>Icon</th>
-                        <th data-nosort='Y'>Actions</th>
+                        <th class="text-right" data-no-sort="Y">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,10 +29,12 @@
                             </td>
                             <td class="text-center">{{ $x->seqn }}</td>
                             <td>{{ $x->icon }}</td>
-                            <td class="d-flex justify-content-start gap-2">
-                                <button data-url="{{ route('SA04.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
-                                    <i class="ph ph-trash"></i>
-                                </button>
+                            <td>
+                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                    <button data-url="{{ route('SA04.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

@@ -36,7 +36,31 @@
                 <div class="col-md-6">
                     <div class="form-group mb-3">
                         <label class="form-label" for="icon">Icon</label>
-                        <input type="text" class="form-control" id="icon" name="icon" value="{{ $category->icon }}">
+                        <div class="icon-picker-container">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i id="selectedIconPreview" class="{{ $category->icon }}"></i></span>
+                                </div>
+                                <input type="text" class="form-control icon-input" name="icon" value="{{ $category->icon }}">
+                                <div class="input-group-append">
+                                    <div class="input-group-text toggle-icon-picker"><i class="ph ph-caret-down"></i></div>
+                                </div>
+                            </div>
+
+                            <div class="icon-picker-dropdown" id="iconPickerDropdown">
+                                <div class="icon-picker-search">
+                                    <div class="input-group">
+                                        <input type="text" id="iconSearch" class="form-control icon-search" placeholder="Search icons...">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text reset-icon-search"><i class="ph ph-arrows-clockwise"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="icon-picker-icons" id="iconPickerIcons">
+                                    <!-- Icons will be populated here -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -72,34 +96,6 @@
                         </div>
                     </div>
                 </div>
-
-                {{-- <div class="col-md-12">
-                    <div class="form-group mb-3">
-                        <label class="form-label text-muted opacity-75 fw-medium" for="formImage">Image</label>
-                        <div class="dropzone-drag-area form-control" id="previews">
-                            <div class="dz-message text-muted opacity-50" data-dz-message>
-                                <span>Drag file here to upload</span>
-                            </div>    
-                            <div class="d-none" id="dzPreviewContainer">
-                                <div class="dz-preview dz-file-preview">
-                                    <div class="dz-photo">
-                                        <img class="dz-thumbnail" data-dz-thumbnail>
-                                    </div>
-                                    <button class="dz-delete border-0 p-0" type="button" data-dz-remove>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="times"><path fill="#FFFFFF" d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"></path></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="invalid-feedback fw-bold">Please upload an image.</div>
-                    </div>
-                </div>
-
-                <div class="dropzone" id="formDropzone" data-url="{{ route('AD18.create') }}">
-                    <div class="fallback">
-                        <input name="file" type="file" multiple />
-                    </div>
-                </div> --}}
 
                 <div class="col-md-12">
                     <div class="form-group">
@@ -189,115 +185,3 @@
         });
     })
 </script>
-<script>
-    Dropzone.autoDiscover = false;
-
-    /**
-     * Setup dropzone
-     */
-    $('#mddainform').dropzone({
-        previewTemplate: $('#dzPreviewContainer').html(),
-        url: '/form-submit',
-        addRemoveLinks: true,
-        autoProcessQueue: false,       
-        uploadMultiple: false,
-        parallelUploads: 1,
-        maxFiles: 1,
-        acceptedFiles: '.jpeg, .jpg, .png, .gif',
-        thumbnailWidth: 900,
-        thumbnailHeight: 600,
-        previewsContainer: "#previews",
-        timeout: 0,
-        init: function() 
-        {
-            myDropzone = this;
-
-            // when file is dragged in
-            this.on('addedfile', function(file) { 
-                $('.dropzone-drag-area').removeClass('is-invalid').next('.invalid-feedback').hide();
-            });
-        },
-        success: function(file, response) 
-        {
-            // hide form and show success message
-            $('#formDropzone').fadeOut(600);
-            setTimeout(function() {
-                $('#successMessage').removeClass('d-none');
-            }, 600);
-        }
-    });
-
-    /**
-     * Form on submit
-     */
-    $('#formSubmit').on('click', function(event) {
-        event.preventDefault();
-        var $this = $(this);
-        
-        // show submit button spinner
-        $this.children('.spinner-border').removeClass('d-none');
-        
-        // validate form & submit if valid
-        if ($('#formDropzone')[0].checkValidity() === false) {
-            event.stopPropagation();
-
-            // show error messages & hide button spinner    
-            $('#formDropzone').addClass('was-validated'); 
-            $this.children('.spinner-border').addClass('d-none');
-
-            // if dropzone is empty show error message
-            if (!myDropzone.getQueuedFiles().length > 0) {                        
-                $('.dropzone-drag-area').addClass('is-invalid').next('.invalid-feedback').show();
-            }
-        } else {
-
-            // if everything is ok, submit the form
-            myDropzone.processQueue();
-        }
-    });
-
-</script>
-<script>
-        Dropzone.options.dropzone = {
-            maxFilesize: 12,
-            renameFile: function(file) {
-                var dt = new Date();
-                var time = dt.getTime();
-                return time + file.name;
-            },
-            acceptedFiles: ".jpeg,.jpg,.png,.gif,.ico,.pdf,.doc,.docx,.ppt,.pptx,.pps,.ppsx,.odt,.csv,.xls,.xlsx,.PSD",
-            addRemoveLinks: true,
-            timeout: 5000,
-            removedfile: function(file) {
-                var name = file.upload.filename;
-                loadingMask2.show();
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                    },
-                    type: 'POST',
-                    url: '{{ route('AD18.create') }}',
-                    data: {
-                        filename: name
-                    },
-                    success: function(data) {
-                        loadingMask2.hide();
-                        showMessage(data.status, data.message);
-                    },
-                    error: function(e) {
-                        loadingMask2.hide();
-                        console.log(e);
-                    }
-                });
-                var fileRef;
-                return (fileRef = file.previewElement) != null ?
-                    fileRef.parentNode.removeChild(file.previewElement) : void 0;
-            },
-            success: function(file, response) {
-                showMessage(response.status, response.message);
-            },
-            error: function(file, response) {
-                return false;
-            }
-        };
-    </script>

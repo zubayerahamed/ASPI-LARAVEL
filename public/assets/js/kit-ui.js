@@ -219,46 +219,66 @@ kit.ui.config.initSummernote = function () {
 }
 
 kit.ui.config.initDatatable = function (tableClass = 'datatable', allowButtons = true) {
-    $("." + tableClass).DataTable({
-        "responsive": true,
-        "lengthChange": true,
-        "autoWidth": false,
-        // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"], 
-        // dom: '<"datatable-header justify-content-start"f<"ms-sm-auto"l><"ms-sm-3"B>><"datatable-scroll-wrap"t><"datatable-footer"ip>',
-        buttons: {
-            dom: {
-                button: {
-                    className: 'btn btn-secondary btn-sm'
-                }
+    $("." + tableClass).each(function() {
+        var table = $(this);
+        var columns = [];
+        
+        // Find all th elements and check for data-no-sort attribute
+        table.find('thead th').each(function(index) {
+            var th = $(this);
+            var columnConfig = {};
+            
+            // If data-no-sort='Y', disable sorting for this column
+            if (th.data('no-sort') === 'Y') {
+                columnConfig.orderable = false;
+            }
+            
+            columns.push(columnConfig);
+        });
+        
+        // Initialize DataTable with column configurations
+        var dataTable = table.DataTable({
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
+            "columns": columns,
+            buttons: {
+                dom: {
+                    button: {
+                        className: 'btn btn-secondary btn-sm'
+                    }
+                },
+                buttons: [{
+                        extend: 'copy'
+                    },
+                    {
+                        extend: 'csv'
+                    },
+                    {
+                        extend: 'excel'
+                    },
+                    {
+                        extend: 'pdf'
+                    },
+                    {
+                        extend: 'print'
+                    },
+                    {
+                        extend: 'colvis'
+                    }
+                ]
             },
-            buttons: [{
-                    extend: 'copy'
-                },
-                {
-                    extend: 'csv'
-                },
-                {
-                    extend: 'excel'
-                },
-                {
-                    extend: 'pdf'
-                },
-                {
-                    extend: 'print'
-                },
-                {
-                    extend: 'colvis'
-                }
-            ]
-        },
-    }).buttons().container().css({
-        width: '100%'
-    }).appendTo('.dataTables_wrapper .col-md-6:eq(1)');
+        });
+        
+        dataTable.buttons().container().css({
+            width: '100%'
+        }).appendTo(table.closest('.dataTables_wrapper').find('.col-md-6:eq(1)'));
 
-    if (!allowButtons) {
-        // Remove buttons container
-        $("." + tableClass).DataTable().buttons().remove();
-    }
+        if (!allowButtons) {
+            // Remove buttons container
+            dataTable.buttons().remove();
+        }
+    });
 }
 
 kit.ui.config.initFilePond = function () {
@@ -399,6 +419,99 @@ kit.ui.config.formRequiredLabel = function () {
     });
 }
 
+kit.ui.config.phosphorIconPicker = function(){
+    // Selected icon preview
+    const existIconClass = $('.icon-input').val();
+
+    // Update the preview if it's a valid Phosphor icon class
+    if (existIconClass != undefined  && existIconClass != null && existIconClass != '' && existIconClass.startsWith('ph ')) {
+        $('#selectedIconPreview').attr('class', existIconClass);
+        
+        // Try to highlight the icon in the picker if it exists
+        $('.icon-item').removeClass('selected');
+        $(`.icon-item[data-icon="${existIconClass}"]`).addClass('selected');
+        $('.icon-search').val(existIconClass);
+
+        const filteredIcons = phosphorIcons.filter(iconClass => 
+            iconClass.toLowerCase().includes(existIconClass.toLowerCase())
+        );
+
+        populateIcons(filteredIcons);
+    } else {
+        // Initialize the icon picker
+        populateIcons();
+    }
+
+    // Toggle the dropdown
+    $('.toggle-icon-picker').off('click').on('click', function() {
+        $('.icon-picker-dropdown').toggle();
+        if ($('.icon-picker-dropdown').is(':visible')) {
+            $('.icon-search').trigger("focus");
+        }
+    });
+
+    // Reset search
+    $('.reset-icon-search').off('click').on('click', function() {
+        $('.icon-search').val('');
+        populateIcons(phosphorIcons);
+    });
+
+    // Handle icon selection
+    $(document).on('click', '.icon-item', function() {
+        const iconClass = $(this).data('icon');
+        
+        // Update the input field
+        $('.icon-input').val(iconClass);
+        
+        // Update the preview
+        $('#selectedIconPreview').attr('class', iconClass);
+        
+        // Highlight the selected icon
+        $('.icon-item').removeClass('selected');
+        $(this).addClass('selected');
+        
+        // Close the dropdown
+        $('#iconPickerDropdown').hide();
+    });
+
+    // Handle search
+    $('.icon-search').on('input', function() {
+        const searchTerm = $(this).val().toLowerCase();
+        
+        if (searchTerm === '') {
+            populateIcons(phosphorIcons);
+            return;
+        }
+        
+        const filteredIcons = phosphorIcons.filter(iconClass => 
+            iconClass.toLowerCase().includes(searchTerm)
+        );
+        
+        populateIcons(filteredIcons);
+    });
+
+    // Handle manual input
+    $('.icon-input').on('input', function() {
+        const iconClass = $(this).val();
+        
+        // Update the preview if it's a valid Phosphor icon class
+        if (iconClass.startsWith('ph ')) {
+            $('#selectedIconPreview').attr('class', iconClass);
+            
+            // Try to highlight the icon in the picker if it exists
+            $('.icon-item').removeClass('selected');
+            $(`.icon-item[data-icon="${iconClass}"]`).addClass('selected');
+        }
+    });
+
+    // Close dropdown when clicking outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.icon-picker-container').length) {
+            $('#iconPickerDropdown').hide();
+        }
+    });
+}
+
 kit.ui.init = function () {
     kit.ui.config.initSelect2();
     kit.ui.config.initTypeahead();
@@ -411,10 +524,11 @@ kit.ui.init = function () {
     kit.ui.config.initSummernote();
     kit.ui.config.initFilePond();
     kit.ui.config.formRequiredLabel();
+    kit.ui.config.phosphorIconPicker();
     console.log("KIT-UI JS code initialization done");
 }
 
-$(document).ready(function () {
+jQuery(function() { 
     kit.ui.init();
 
     $(document).on('click', '.screen-item', function (e) {
@@ -467,6 +581,9 @@ $(document).ready(function () {
                 document.title = "ASPI";
             }
         });
-    })
-
+    });
 });
+// $(document).ready(function () {
+    
+
+// });
