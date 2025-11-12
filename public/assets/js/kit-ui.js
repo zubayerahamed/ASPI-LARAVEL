@@ -280,9 +280,9 @@ kit.ui.config.initFilePond = function () {
     $.fn.filepond.setDefaults({
         // File validation
         allowFileTypeValidation: true,
-        acceptedFileTypes: ['image/*', 'application/pdf'],
         allowFileSizeValidation: true,
         maxFileSize: '5MB',
+        acceptedFileTypes: ['image/*', 'application/pdf'],
 
         // Image editing
         // allowImagePreview: true,
@@ -324,16 +324,23 @@ kit.ui.config.initFilePond = function () {
     });
 
     $('.filepond').each(function () {
-        var allowMultiple = $(this).data('multiple-upload') != undefined && $(this).data('multiple-upload') == 'Y' ? true : false;
+        var $element = $(this);
 
-        if (!FilePond.find(this)) {
-            $(this).filepond({
-                allowMultiple: allowMultiple,
-                chunkUploads: allowMultiple,
-            });
+        // Skip if already initialized
+        if (FilePond.find(this)) {
+            return;
         }
+
+        // Get configuration from data attributes
+        var config = getFilePondConfig($element);
+        // config.allowImagePreview = true;
+        // config.allowImageExifOrientation = true;
+
+        // Initialize with individual configuration
+        $(this).filepond(config);
     });
 
+    // Set server options (common for all instances)
     $.fn.filepond.setOptions({
         server: {
             process: {

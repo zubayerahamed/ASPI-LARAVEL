@@ -24,7 +24,7 @@
                         <tr>
                             <td>
                                 @if ($x->thumbnail)
-                                    <img src="{{ asset('storage/' . $x->thumbnail->path) }}" alt="Thumbnail" class="img-thumbnail" style="width: 50px; height: 50px;">
+                                    <img src="{{ $x->thumbnail->originalFile }}" class="media-file img-thumbnail" style="width: 50px; height: 50px;" />
                                 @else
                                     <span class="text-muted">No Thumbnail</span>
                                 @endif
@@ -36,7 +36,7 @@
                                 <span class="badge bg-{{ $x->parent_category_id ? 'primary' : 'warning' }}">{{ $x->parent_category_id ? $x->parentCategory->name : 'No Parent' }}</span>
                             </td>
                             <td class="text-center">{{ $x->seqn }}</td>
-                            <td>{{ $x->icon }}</td>
+                            <td><i class="{{ $x->icon }}"></i></td>
                             <td>
                                 @if ($x->is_featured)
                                     <span class="badge bg-success">Yes</span>

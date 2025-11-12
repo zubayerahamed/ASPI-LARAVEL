@@ -57,7 +57,17 @@
                                 </div>
                             @endif --}}
                             <div class="col-md-12">
-                                <input type="file" class="filepond" name="thumbnail" id="thumbnail">
+                                <input  type="file" 
+                                        class="filepond" 
+                                        name="thumbnail" 
+                                        id="thumbnail"
+                                        data-multiple-upload="N" 
+                                        data-max-file-size="2MB" 
+                                        data-accepted-file-types="image/*, application/pdf, video/*"
+                                        data-instant-upload="true" 
+                                        data-allow-image-edit="true"
+                                        data-allow-image-preview="true"
+                                    >
                             </div>
                         </div>
                     </div>

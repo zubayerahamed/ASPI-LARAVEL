@@ -24,4 +24,35 @@ class Cadoc extends Model
         'use_for_global',
         'temp',
     ];
+
+    /**
+     * Get the compressed file URL
+     */
+    public function getCompressedFileAttribute()
+    {
+        if (self::isImageFile()) {
+            return "/storage" . $this->file_path_compressed . $this->file_name;
+        }
+
+        // For non-image files, return the original file
+        return $this->file;
+    }
+
+    /**
+     * Get the original file URL
+     */
+    public function getOriginalFileAttribute()
+    {
+        if (self::isImageFile()) {
+            return "/storage" . $this->file_path . $this->file_name;
+        }
+
+        return $this->file;
+    }
+
+    public function isImageFile()
+    {
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'ico'];
+        return in_array(strtolower($this->file_extension), $imageExtensions);
+    }
 }

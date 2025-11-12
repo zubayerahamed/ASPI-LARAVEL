@@ -27,6 +27,92 @@ function sweetAlertConfirm(confirmCallback, title, text, confirmButtonText, canc
     });
 }
 
+// Helper function to extract configuration from data attributes
+function getFilePondConfig($element) {
+    var config = {};
+    
+    // Multiple files configuration
+    if ($element.data('multiple-upload') !== undefined) {
+        config.allowMultiple = $element.data('multiple-upload') === 'Y';
+        config.chunkUploads = $element.data('multiple-upload') === 'Y';
+    }
+    
+    // Max files
+    if ($element.data('max-files') !== undefined) {
+        config.maxFiles = $element.data('max-files');
+    }
+    
+    // File size
+    if ($element.data('max-file-size') !== undefined) {
+        config.maxFileSize = $element.data('max-file-size');
+    }
+    
+    // Accepted file types
+    if ($element.data('accepted-file-types') !== undefined) {
+        let fileTypes = $element.data('accepted-file-types');
+        console.log('Raw file types data:', fileTypes);
+        console.log('Type of fileTypes:', typeof fileTypes);
+        
+        if (typeof fileTypes === 'string') {
+            try {
+                fileTypes = fileTypes.replace(/'/g, '"');
+                config.acceptedFileTypes = JSON.parse(fileTypes);
+            } catch (e) {
+                console.log('JSON parse failed, trying comma separation');
+                config.acceptedFileTypes = fileTypes.split(',').map(item => item.trim());
+            }
+        } else {
+            config.acceptedFileTypes = fileTypes;
+        }
+    }
+    
+    // Instant upload
+    if ($element.data('instant-upload') !== undefined) {
+        config.instantUpload = $element.data('instant-upload') === 'true';
+    }
+    
+    // Image editing features
+    if ($element.data('allow-image-edit') !== undefined) {
+        config.allowImageEdit = $element.data('allow-image-edit');
+        config.allowImagePreview = $element.data('allow-image-preview');
+        config.allowImageCrop = $element.data('allow-image-crop');
+        config.allowImageResize = $element.data('allow-image-resize');
+        config.allowImageTransform = $element.data('allow-image-transform');
+        config.allowImageExifOrientation = $element.data('allow-image-exif-orientation');
+    }
+    
+    // Image resize dimensions
+    if ($element.data('image-resize-target-width') !== undefined) {
+        config.imageResizeTargetWidth = $element.data('image-resize-target-width');
+    }
+    
+    if ($element.data('image-resize-target-height') !== undefined) {
+        config.imageResizeTargetHeight = $element.data('image-resize-target-height');
+    }
+    
+    // Image crop aspect ratio
+    if ($element.data('image-crop-aspect-ratio') !== undefined) {
+        config.imageCropAspectRatio = $element.data('image-crop-aspect-ratio');
+    }
+    
+    // Image quality and format
+    if ($element.data('image-transform-output-quality') !== undefined) {
+        config.imageTransformOutputQuality = $element.data('image-transform-output-quality');
+    }
+    
+    if ($element.data('image-transform-output-mime-type') !== undefined) {
+        config.imageTransformOutputMimeType = $element.data('image-transform-output-mime-type');
+    }
+    
+    // File metadata
+    if ($element.data('file-metadata') !== undefined) {
+        config.allowFileMetadata = true;
+        config.fileMetadataObject = $element.data('file-metadata');
+    }
+    
+    return config;
+}
+
 
 function disableBtn(btnClasses) {
     $.each(btnClasses, function (i, btn) {
