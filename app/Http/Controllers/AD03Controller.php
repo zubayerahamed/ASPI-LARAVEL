@@ -263,6 +263,14 @@ class AD03Controller extends ZayaanController
             return $this->getResponse();
         }
 
+        // Optionally, delete associated thumbnail
+        if ($category->thumbnail_id != null) {
+            $oldCadoc = Cadoc::find($category->thumbnail_id);
+            if ($oldCadoc) {
+                $oldCadoc->delete(); // Delete old thumbnail record
+            }
+        }
+
         $category->delete();
 
         $this->setReloadSections([

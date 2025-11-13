@@ -13,6 +13,7 @@ use App\Http\Controllers\AD01Controller;
 use App\Http\Controllers\AD02Controller;
 use App\Http\Controllers\AD03Controller;
 use App\Http\Controllers\AD04Controller;
+use App\Http\Controllers\AD05Controller;
 use App\Http\Controllers\AD18Controller;
 use App\Http\Controllers\SA05Controller;
 use Illuminate\Support\Facades\Auth;
@@ -85,6 +86,16 @@ Route::get('/AD04/header-table', [AD04Controller::class, 'headerTable'])->name('
 Route::post('/AD04', [AD04Controller::class, 'create'])->name('AD04.create');
 Route::put('/AD04/{id}', [AD04Controller::class, 'update'])->name('AD04.update');
 Route::delete('/AD04/{id}', [AD04Controller::class, 'delete'])->name('AD04.delete');
+
+Route::get('/AD05', [AD05Controller::class, 'index'])->name('AD05');
+Route::get('/AD05/header-table', [AD05Controller::class, 'headerTable'])->name('AD05.header-table');
+Route::post('/AD05', [AD05Controller::class, 'create'])->name('AD05.create');
+Route::put('/AD05/{id}', [AD05Controller::class, 'update'])->name('AD05.update');
+Route::delete('/AD05/{id}', [AD05Controller::class, 'delete'])->name('AD05.delete');
+
+
+
+
 
 Route::post('/AD18', [AD18Controller::class, 'create'])->name('AD18.create');
 Route::delete('/AD18', [AD18Controller::class, 'destroy'])->name('AD18.destroy');
