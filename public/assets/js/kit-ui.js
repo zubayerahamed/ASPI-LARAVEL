@@ -248,7 +248,8 @@ kit.ui.config.initDatatable = function (tableClass = 'datatable', allowButtons =
                         className: 'btn btn-secondary btn-sm'
                     }
                 },
-                buttons: [{
+                buttons: [
+                    {
                         extend: 'copy'
                     },
                     {

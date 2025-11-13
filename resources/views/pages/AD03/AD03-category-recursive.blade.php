@@ -1,6 +1,6 @@
 @foreach ($categoryTree as $m)
     @php
-        $indent = str_repeat('|&nbsp;&nbsp;&nbsp;&nbsp;', $count) . '|--';
+        $indent = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $count);
     @endphp
     <option value="{{ $m['id'] }}" {{ $category->parent_category_id == $m['id'] ? 'selected' : '' }}>{!! $indent . $m['name'] !!}</option>
     @if (!empty($m['children']))

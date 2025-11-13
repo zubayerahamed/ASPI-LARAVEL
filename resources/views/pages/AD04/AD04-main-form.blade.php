@@ -1,6 +1,6 @@
 <div class="card card-default">
     <div class="card-body">
-        <form id="mainform" action="{{ $category->id == null ? route('AD03.create') : route('AD03.update', ['id' => $category->id]) }}" method="POST">
+        <form id="mainform" action="{{ $category->id == null ? route('AD04.create') : route('AD04.update', ['id' => $category->id]) }}" method="POST">
             @csrf
             @if ($category->id != null)
                 @method('PUT')
@@ -13,18 +13,6 @@
                     <div class="form-group mb-3">
                         <label class="form-label" for="name">Category Name</label>
                         <input type="text" class="form-control" id="name" name="name" value="{{ $category->name }}" required>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="form-label" for="type">Parent category</label>
-                        <select class="form-control select2bs4" id="parent_category_id" name="parent_category_id">
-                            <option value="">-- Select Parent Category --</option>
-                            @include('pages.AD03.AD03-category-recursive', [
-                                'categoryTree' => $categoryTree,
-                                'count' => 0,
-                            ])
-                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -121,9 +109,9 @@
                 <div class="flex-grow-1 text-left">
                     <button
                             data-reloadid="main-form-container"
-                            data-reloadurl="{{ route('AD03', ['id' => 'RESET']) }}"
+                            data-reloadurl="{{ route('AD04', ['id' => 'RESET']) }}"
                             data-detailreloadid="header-table-container"
-                            data-detailreloadurl="{{ route('AD03.header-table') }}"
+                            data-detailreloadurl="{{ route('AD04.header-table') }}"
                             type="reset"
                             class="btn btn-sm btn-default btn-reset d-flex align-items-center gap-2">
                         <i class="ph ph-broom"></i> <span>Clear</span>
@@ -135,7 +123,7 @@
                             <i class="ph ph-floppy-disk"></i> <span>Save</span>
                         </button>
                     @else
-                        <button data-url="{{ route('AD03.delete', ['id' => $category->id]) }}" type="button" class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
+                        <button data-url="{{ route('AD04.delete', ['id' => $category->id]) }}" type="button" class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
                             <i class="ph ph-trash"></i> <span>Delete</span>
                         </button>
                         <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">

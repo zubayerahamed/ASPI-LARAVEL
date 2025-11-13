@@ -119,6 +119,15 @@ class ShareMenuData
                     'screen' => 'AD03',
                 ],
             ];
+            $menu[] = [
+                'text' => 'Attribute',
+                'route' => 'AD04',
+                'icon' => 'ph ph-arrows-split',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'AD04',
+                ],
+            ];
 
             return $menu;
         }

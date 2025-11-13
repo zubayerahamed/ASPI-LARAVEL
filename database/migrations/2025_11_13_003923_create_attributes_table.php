@@ -11,24 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
             $table->string('slug', 50);
-            $table->string('icon', 50)->nullable();
 
-            $table->text('description')->nullable();
+            $table->enum('display_layout', ['TEXT_SWATCH', 'DROPDOWN_SWATCH', 'VISUAL_SWATCH'])->default('TEXT_SWATCH');
 
-            $table->boolean('is_featured')->default(false);
-            $table->boolean('is_system_defined')->default(false);
+            $table->boolean('is_image_visual_swatch')->default(false);
+            $table->boolean('is_searchable')->default(false);
+            $table->boolean('is_comparable')->default(false);
+            $table->boolean('is_used_in_product_listing')->default(false);
             $table->boolean('is_active')->default(true);
 
             $table->integer('seqn')->default(0);
 
-            $table->foreignId("thumbnail_id")->nullable()->references("id")->on("cadocs")->nullOnDelete();
-            $table->foreignId("parent_category_id")->nullable()->references("id")->on("categories")->nullOnDelete();
             $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
-            $table->unique(['slug', 'business_id']);  // category will be unique per business
+            $table->unique(['slug', 'business_id']);  // attribute will be unique per business
 
             $table->timestamps();
         });
@@ -39,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('attributes');
     }
 };

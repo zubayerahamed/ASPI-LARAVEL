@@ -11,24 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('terms', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
             $table->string('slug', 50);
-            $table->string('icon', 50)->nullable();
+            $table->string('color', 7)->nullable(); // Hex color code
 
-            $table->text('description')->nullable();
-
-            $table->boolean('is_featured')->default(false);
-            $table->boolean('is_system_defined')->default(false);
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_default')->default(false);
 
             $table->integer('seqn')->default(0);
 
             $table->foreignId("thumbnail_id")->nullable()->references("id")->on("cadocs")->nullOnDelete();
-            $table->foreignId("parent_category_id")->nullable()->references("id")->on("categories")->nullOnDelete();
+            $table->foreignId("attribute_id")->references("id")->on("attributes")->onDelete("cascade");
             $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
-            $table->unique(['slug', 'business_id']);  // category will be unique per business
+
+            $table->unique(['slug', 'attribute_id', 'business_id']);  // term will be unique per attribute and business
 
             $table->timestamps();
         });
@@ -39,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('terms');
     }
 };
