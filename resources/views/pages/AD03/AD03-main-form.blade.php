@@ -37,7 +37,7 @@
                     <div class="form-group mb-3">
                         <label class="form-label" for="icon">Icon</label>
                         <div class="icon-picker-container">
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i id="selectedIconPreview" class="{{ $category->icon }}"></i></span>
                                 </div>

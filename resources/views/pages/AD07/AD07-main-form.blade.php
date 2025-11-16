@@ -13,23 +13,23 @@
                     <div class="form-group mb-3">
                         <label class="form-label" for="icon">Profile</label>
                         <div class="icon-picker-container">
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <input  type="text" 
                                         class="form-control icon-input searchsuggest2" 
                                         name="name" 
                                         value="{{ $profile->name }}"
-                                        disabled="{{ $profile->id != null }}"
-                                        required="{{ $profile->id == null }}">
-                                <div class="input-group-append">
-                                    <div    class="input-group-text toggle-icon-picker"
-                                            data-reloadurl=""
-                                            data-reloadid=""
-                                            data-fieldid=""
-                                            data-mainscreen=true
-                                            data-mainreloadurl=""
-                                            data-mainreloadid=""
-                                            data-detailreloadurl=""
-                                    >
+                                        {{ $profile->id != null ? 'disabled' : '' }}
+                                        {{ $profile->id == null ? 'required' : '' }}>
+                                <div class="input-group-append btn-search"
+                                    data-reloadurl="{{ route('search.index', ['fragmentcode' => 'LAD07', 'suffix' => 0]) }}"
+                                    data-reloadid="search-suggest-results-container"
+                                    data-fieldid="name"
+                                    data-mainscreen=true
+                                    data-mainreloadurl="{{ route('AD07', ['id' => '']) }}"
+                                    data-mainreloadid="main-form-container"
+                                    data-detailreloadurl="{{ route('AD07.detail-table', ['id' => 'RESET', 'profile_id' => '']) }}"
+                                    data-detailreloadid="detail-table-container">
+                                    <div class="input-group-text">
                                         <i class="ph ph-magnifying-glass"></i>
                                     </div>
                                 </div>
@@ -38,14 +38,6 @@
                     </div>
                 </div>
 
-
-
-                <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label class="form-label" for="name">Profile name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ $profile->name }}" required>
-                    </div>
-                </div>
                 <div class="col-md-3">
                     <div class="form-group mb-3">
                         <label class="form-label" for="description">Description</label>
@@ -77,8 +69,8 @@
                     <button 
                         data-reloadid="main-form-container" 
                         data-reloadurl="{{ route('AD07', ['id' => 'RESET']) }}" 
-                        data-detailreloadid="header-table-container" 
-                        data-detailreloadurl="{{ route('AD07.header-table') }}"
+                        data-detailreloadid="detail-table-container" 
+                        data-detailreloadurl="{{ route('AD07.detail-table', ['id' => 'RESET', 'profile_id' => 'RESET']) }}"
                         type="reset" 
                         class="btn btn-sm btn-default btn-reset d-flex align-items-center gap-2">
                         <i class="ph ph-broom"></i> <span>Clear</span>

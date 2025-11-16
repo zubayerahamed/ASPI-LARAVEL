@@ -37,7 +37,8 @@
 
     @yield('content_body')
 
-    {{-- Loading Mask --}}
+    {{-- Loading Mask, Search Suggest Modal --}}
+    @include('partials.search-suggest-modal')
     @include('partials.loading-mask')
 @stop
 

@@ -8,8 +8,8 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="header-table-container">
-            {{-- @include('pages.AD07.AD07-header-table') --}}
+        <div class="detail-table-container">
+            {{-- @include('pages.AD07.AD07-detail-table') --}}
         </div>
     </div>
 </div>

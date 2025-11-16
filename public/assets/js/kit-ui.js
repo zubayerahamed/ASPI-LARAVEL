@@ -513,6 +513,62 @@ kit.ui.config.phosphorIconPicker = function(){
     });
 }
 
+kit.ui.config.advancedSearch = function () {
+    $('input.searchsuggest2').off('keypress').on("keypress", function(e) {
+		var keycode = (e.keyCode ? e.keyCode : e.which);
+        console.log('Keycode pressed: ' + keycode);
+		if(keycode == '13'){   // Enter pressed
+			e.preventDefault();
+			$(this).siblings('.btn-search').trigger('click');
+		}
+	});
+
+    $('.btn-search').off('click').on('click', function(e){
+        e.preventDefault();
+
+        $('#searchSuggestTableModal').modal('show');
+		$('.search-suggest-results-container').html("");
+
+        var searchValue = '';
+		if($(this).siblings('input.searchsuggest2').length > 0){
+			searchValue = $(this).siblings('input.searchsuggest2').val();
+		} 
+
+        sectionReloadAjaxPostReq({
+			id : $(this).data('reloadid'),
+			url : $(this).data('reloadurl') + searchValue
+		}, {
+			"fieldId" : $(this).data('fieldid'),
+			"mainscreen" : $(this).data('mainscreen'),
+			"mainreloadurl" : $(this).data('mainreloadurl'),
+			"mainreloadid" : $(this).data('mainreloadid'),
+			"extrafieldcontroller" : $(this).data('extrafieldcontroller'),
+			"detailreloadurl" : $(this).data('detailreloadurl'),
+			"detailreloadid" : $(this).data('detailreloadid'),
+			"additionalreloadurl" : $(this).data('additionalreloadurl'),
+			"additionalreloadid" : $(this).data('additionalreloadid'),
+		});
+    });
+
+    $('.btn-search-clear').off('click').on('click', function(e){
+		e.preventDefault();
+		$(this).siblings('input.searchsuggest2').val("");
+		$(this).siblings('input.search-val').val("");
+
+		var ids = $(this).data('dependentfieldsid');
+		if(ids == undefined) return;
+
+		const idarr = ids.split(',');
+
+		$.each(idarr, function(index, value) {
+			$('#' + value).val("");
+		});
+	});
+
+}
+
+
+
 kit.ui.init = function () {
     kit.ui.config.initSelect2();
     kit.ui.config.initTypeahead();
@@ -526,11 +582,17 @@ kit.ui.init = function () {
     kit.ui.config.initFilePond();
     kit.ui.config.formRequiredLabel();
     kit.ui.config.phosphorIconPicker();
+    kit.ui.config.advancedSearch();
     console.log("KIT-UI JS code initialization done");
 }
 
 jQuery(function() { 
     kit.ui.init();
+
+    $(document).on('click', '.search-suggest-modal-close-btn', function (e) {
+        $('#searchSuggestTableModal').modal('hide');
+        $('.search-suggest-results-container').html('');
+    });
 
     $(document).on('click', '.screen-item', function (e) {
         e.preventDefault();

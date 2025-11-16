@@ -97,7 +97,7 @@
 /**=== Phosphor icon picker css
 */
 
-.toggle-icon-picker, .reset-icon-search{
+.toggle-icon-picker, .reset-icon-search, .btn-search {
 	cursor: pointer;
 }
 

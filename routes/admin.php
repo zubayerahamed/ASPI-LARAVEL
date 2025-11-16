@@ -95,7 +95,7 @@ Route::delete('/AD06/{id}', [AD06Controller::class, 'delete'])->name('AD06.delet
 
 
 Route::get('/AD07', [AD07Controller::class, 'index'])->name('AD07');
-Route::get('/AD07/header-table', [AD07Controller::class, 'headerTable'])->name('AD07.header-table');
+Route::get('/AD07/detail-table', [AD07Controller::class, 'detailTable'])->name('AD07.detail-table');
 Route::post('/AD07', [AD07Controller::class, 'create'])->name('AD07.create');
 Route::put('/AD07/{id}', [AD07Controller::class, 'update'])->name('AD07.update');
 Route::delete('/AD07/{id}', [AD07Controller::class, 'delete'])->name('AD07.delete');
@@ -106,3 +106,6 @@ Route::post('/AD18', [AD18Controller::class, 'create'])->name('AD18.create');
 Route::delete('/AD18', [AD18Controller::class, 'destroy'])->name('AD18.destroy');
 
 Route::get('/business-selection/{id}', [BusinessSelectionController::class, 'selectBusiness'])->name('business.selection');
+
+Route::post('/search/table/{fragmentcode}/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'index'])->name('search.index');
+Route::post('/search/LAD07/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LAD07'])->name('search.LAD07');
