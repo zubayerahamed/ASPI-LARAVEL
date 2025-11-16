@@ -28,6 +28,19 @@ class Business extends Model
         'business_category_id',
     ];
 
+
+    // cast
+    protected $casts = [
+        'is_inhouse' => 'boolean',
+        'is_pickup' => 'boolean',
+        'is_delivery' => 'boolean',
+        'is_active' => 'boolean',
+        'is_allow_custom_menu' => 'boolean',
+        'is_allow_custom_category' => 'boolean',
+        'is_allow_custom_attribute' => 'boolean',
+    ];
+
+
     public function businessCategory()
     {
         return $this->belongsTo(BusinessCategory::class, 'business_category_id', 'id');

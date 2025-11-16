@@ -137,7 +137,12 @@ class ShareMenuData
                     'screen' => 'AD06',
                 ],
             ];
-             $menu[] = [
+
+            return $menu;
+        }
+
+        if ($user->is_business_admin) {
+            $menu[] = [
                 'text' => 'Access Profiles',
                 'route' => 'AD07',
                 'icon' => 'ph ph-fingerprint',
@@ -147,10 +152,6 @@ class ShareMenuData
                 ],
             ];
 
-            return $menu;
-        }
-
-        if ($user->is_business_admin) {
             return $menu;
         }
 

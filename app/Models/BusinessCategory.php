@@ -16,6 +16,11 @@ class BusinessCategory extends Model
         'is_active',
     ];
 
+    // cast
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public function businesses()
     {
         return $this->hasMany(Business::class, 'business_category_id', 'id');
