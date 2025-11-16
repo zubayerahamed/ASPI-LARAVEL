@@ -1,3 +1,16 @@
+
+.dark-mode .select2-container--bootstrap4 .select2-selection {
+    background-color: #343a40;
+	border-color: #6c757d;
+}
+
+.dark-mode .select2-selection--single .select2-selection__rendered {
+    color: #fff !important;
+}
+.dark-mode .select2-selection--single .select2-selection__arrow b{
+    border-color: #ffffff transparent transparent transparent;
+}
+
 .dropzone {
 	overflow-y: auto;
 	border: 0;

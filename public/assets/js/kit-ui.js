@@ -242,33 +242,33 @@ kit.ui.config.initDatatable = function (tableClass = 'datatable', allowButtons =
             "lengthChange": true,
             "autoWidth": false,
             "columns": columns,
-            buttons: {
-                dom: {
-                    button: {
-                        className: 'btn btn-secondary btn-sm'
-                    }
-                },
-                buttons: [
-                    {
-                        extend: 'copy'
-                    },
-                    {
-                        extend: 'csv'
-                    },
-                    {
-                        extend: 'excel'
-                    },
-                    {
-                        extend: 'pdf'
-                    },
-                    {
-                        extend: 'print'
-                    },
-                    {
-                        extend: 'colvis'
-                    }
-                ]
-            },
+            // buttons: {
+            //     dom: {
+            //         button: {
+            //             className: 'btn btn-secondary btn-sm'
+            //         }
+            //     },
+            //     buttons: [
+            //         {
+            //             extend: 'copy'
+            //         },
+            //         {
+            //             extend: 'csv'
+            //         },
+            //         {
+            //             extend: 'excel'
+            //         },
+            //         {
+            //             extend: 'pdf'
+            //         },
+            //         {
+            //             extend: 'print'
+            //         },
+            //         {
+            //             extend: 'colvis'
+            //         }
+            //     ]
+            // },
         });
         
         dataTable.buttons().container().css({
@@ -543,7 +543,7 @@ jQuery(function() {
         var fromdef = $(this).data('def') != undefined && $(this).data('def') != null && 'Y' == $(this).data('def');
         if (fromdef) $(this).removeAttr('data-def');
 
-        var url = '/' + screenCode;
+        var url = getBasepath() + '/' + screenCode;
         const questionCount = url.split("?").length - 1;
         if (questionCount === 1) {
             if (fromfav) {

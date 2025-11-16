@@ -22,10 +22,14 @@ function getCSRFToken() {
     return $('meta[name="csrf-token"]').attr('content');
 }
 
+// function getBasepath() {
+//     const basePath = $('a.basePath').attr('href').split('/')[1];
+//     const href = location.href.split('/');
+//     return basePath ? `${href[0]}//${href[2]}/${basePath}` : `${href[0]}//${href[2]}`;
+// }
+
 function getBasepath() {
-    const basePath = $('a.basePath').attr('href').split('/')[1];
-    const href = location.href.split('/');
-    return basePath ? `${href[0]}//${href[2]}/${basePath}` : `${href[0]}//${href[2]}`;
+    return $('a.basePath').attr('href');
 }
 
 function sweetAlertConfirm(confirmCallback, title, text, confirmButtonText, cancelButtonText) {
@@ -221,6 +225,17 @@ var loadingMask2 = {
         $("div#loadingmask2, div.loadingdots, div#loadingdots").addClass("nodisplay");
     },
 };
+
+function updateSelect2ForDarkMode() {
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    
+    if (isDarkMode) {
+        // Add dark mode class to all Select2 containers
+        $('.select2-container').addClass('dark-mode-select2');
+    } else {
+        $('.select2-container').removeClass('dark-mode-select2');
+    }
+}
 
 
 function sectionReloadAjaxReq(section, callback, disableloadingmaskeffect) {

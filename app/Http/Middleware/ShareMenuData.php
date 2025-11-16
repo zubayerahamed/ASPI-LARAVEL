@@ -128,6 +128,24 @@ class ShareMenuData
                     'screen' => 'AD04',
                 ],
             ];
+            $menu[] = [
+                'text' => 'Tags',
+                'route' => 'AD06',
+                'icon' => 'ph ph-tag-chevron',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'AD06',
+                ],
+            ];
+             $menu[] = [
+                'text' => 'Access Profiles',
+                'route' => 'AD07',
+                'icon' => 'ph ph-fingerprint',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'AD07',
+                ],
+            ];
 
             return $menu;
         }
