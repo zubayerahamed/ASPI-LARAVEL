@@ -131,20 +131,6 @@ class LoginController extends Controller
                 'is_customer' => $user->is_customer,
                 'selected_business' => null,
             ]);
-            // $request->session()->put('user_info', [
-            //     'id' => $user->id,
-            //     'name' => $user->name,
-            //     'email' => $user->email,
-            //     'is_system_admin' => $user->is_system_admin,
-            //     'is_business_admin' => $user->is_business_admin,
-            //     'is_driver' => $user->is_driver,
-            //     'is_customer' => $user->is_customer,
-            // ]);
-
-            // If the user is Business Admin, then redirect to business selection page
-            if ($user->is_business_admin) {
-                return redirect()->intended('/business/select');
-            }
 
             return redirect()->intended($this->redirectPath());
         }

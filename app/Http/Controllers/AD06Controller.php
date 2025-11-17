@@ -33,7 +33,7 @@ class AD06Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD06.AD06', [
                         'tag' => $att,
-                        'detailList' => Tag::where('business_id', null)->get()
+                        'detailList' => Tag::where('business_id', getBusinessId())->get()
                     ])->render(),
                     'content_header_title' => 'Tags Management',
                     'subtitle' => 'Tags',
@@ -71,7 +71,7 @@ class AD06Controller extends ZayaanController
             'content_header_title' => 'Tags Management',
             'subtitle' => 'Tags',
             'tag' => (new Tag())->fill(['is_active' => true]),
-            'detailList' => Tag::where('business_id', null)->get()
+            'detailList' => Tag::where('business_id', getBusinessId())->get()
         ]);
     }
 
@@ -79,7 +79,7 @@ class AD06Controller extends ZayaanController
     {
         return response()->json([
             'page' => view('pages.AD06.AD06-header-table', [
-                'detailList' => Tag::where('business_id', null)->get()
+                'detailList' => Tag::where('business_id', getBusinessId())->get()
             ])->render(),
         ]);
     }
@@ -98,7 +98,7 @@ class AD06Controller extends ZayaanController
 
         $request['is_active'] = $request->has('is_active');
 
-        $request->merge(['business_id' => null]); // For now, set business_id to null
+        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
 
         $tag = Tag::create($request->only([
             'name',

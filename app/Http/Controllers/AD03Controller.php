@@ -24,7 +24,7 @@ class AD03Controller extends ZayaanController
                     'page' => view('pages.AD03.AD03', [
                         'categoryTree' => Category::generateCategoryTree(),
                         'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true, 'icon' => 'ph ph-sort-ascending']),
-                        'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
+                        'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Category Management',
                     'subtitle' => 'Category',
@@ -66,7 +66,7 @@ class AD03Controller extends ZayaanController
             'subtitle' => 'Category',
             'categoryTree' => Category::generateCategoryTree(),
             'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true, 'icon' => 'ph ph-sort-ascending']),
-            'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
+            'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
         ]);
     }
 
@@ -74,7 +74,7 @@ class AD03Controller extends ZayaanController
     {
         return response()->json([
             'page' => view('pages.AD03.AD03-header-table', [
-                'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
+                'detailList' => Category::with(['parentCategory', 'thumbnail'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }
@@ -106,7 +106,7 @@ class AD03Controller extends ZayaanController
         $request['is_system_defined'] = $request->has('is_system_defined');
         $request['is_active'] = $request->has('is_active');
 
-        $request->merge(['business_id' => null]); // For now, set business_id to null
+        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
 
         if ($request->has('thumbnail')) {
             // Assuming Cadoc is the model for handling file uploads

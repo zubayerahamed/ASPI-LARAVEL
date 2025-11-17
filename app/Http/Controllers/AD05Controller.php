@@ -35,7 +35,7 @@ class AD05Controller extends ZayaanController
                     'page' => view('pages.AD05.AD05', [
                         'attribute' => $attribute,
                         'term' => (new Term())->fill(['seqn' => 0, 'color' => '#ffffff', 'attribute_id' => $attribute_id]),
-                        'detailList' => Term::with(['attribute', 'thumbnail'])->where('attribute_id', $attribute_id)->where('business_id', null)->orderBy('seqn', 'asc')->get()
+                        'detailList' => Term::with(['attribute', 'thumbnail'])->where('attribute_id', $attribute_id)->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Attribute Option for : ' . $attribute->name,
                     'subtitle' => 'Attribute Options',
@@ -77,7 +77,7 @@ class AD05Controller extends ZayaanController
             'subtitle' => 'Attribute Options',
             'attribute' => $attribute,
             'term' => (new Term())->fill(['seqn' => 0, 'color' => '#ffffff', 'attribute_id' => $attribute_id]),
-            'detailList' => Term::with(['attribute', 'thumbnail'])->where('attribute_id', $attribute_id)->where('business_id', null)->orderBy('seqn', 'asc')->get()
+            'detailList' => Term::with(['attribute', 'thumbnail'])->where('attribute_id', $attribute_id)->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
         ]);
     }
 
@@ -96,7 +96,7 @@ class AD05Controller extends ZayaanController
         return response()->json([
             'page' => view('pages.AD05.AD05-header-table', [
                 'attribute' => $attribute,
-                'detailList' => Term::with(['attribute', 'thumbnail'])->where('attribute_id', $attribute_id)->where('business_id', null)->orderBy('seqn', 'asc')->get()
+                'detailList' => Term::with(['attribute', 'thumbnail'])->where('attribute_id', $attribute_id)->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }
@@ -127,7 +127,7 @@ class AD05Controller extends ZayaanController
         $request['seqn'] = $request->input('seqn') ?? 0;
         $request['is_default'] = $request->has('is_default');
 
-        $request->merge(['business_id' => null]); // For now, set business_id to null
+        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
 
         if ($request->has('thumbnail')) {
             // Assuming Cadoc is the model for handling file uploads
@@ -143,7 +143,7 @@ class AD05Controller extends ZayaanController
         // if is_default is set, unset previous defaults
         if ($request->input('is_default')) {
             Term::where('attribute_id', $request->input('attribute_id'))
-                ->where('business_id', null)
+                ->where('business_id', getBusinessId())
                 ->update(['is_default' => false]);
         }
 
@@ -256,7 +256,7 @@ class AD05Controller extends ZayaanController
         // if is_default is set, unset previous defaults
         if ($request->input('is_default')) {
             Term::where('attribute_id', $request->input('attribute_id'))
-                ->where('business_id', null)
+                ->where('business_id', getBusinessId())
                 ->update(['is_default' => false]);
         }
 

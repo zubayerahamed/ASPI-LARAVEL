@@ -133,11 +133,20 @@
                     </div>
                 </div>
 
-                 <div class="col-md-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" type="checkbox" id="is_allow_custom_attribute" name="is_allow_custom_attribute" {{ $business->is_allow_custom_attribute ? 'checked' : '' }}>
                             <label for="is_allow_custom_attribute" class="custom-control-label form-label">Is Allow Custom Attribute?</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_allow_custom_xcodes" name="is_allow_custom_xcodes" {{ $business->is_allow_custom_xcodes ? 'checked' : '' }}>
+                            <label for="is_allow_custom_xcodes" class="custom-control-label form-label">Is Allow Custom Codes & Parameters?</label>
                         </div>
                     </div>
                 </div>

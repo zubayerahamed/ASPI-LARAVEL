@@ -45,10 +45,10 @@ class BusinessSelectionController extends ZayaanController
             'is_allow_custom_menu' => $business->is_allow_custom_menu,
             'is_allow_custom_category' => $business->is_allow_custom_category,
             'is_allow_custom_attribute' => $business->is_allow_custom_attribute,
+            'is_allow_custom_xcodes' => $business->is_allow_custom_xcodes,
             'business_category_code' => $business->businessCategory->xcode,
         ];
         ZayaanSessionManager::update('user_info', $loggedInUser);
-        // $request->session()->put('selected_business', $business);
 
         // if user is system admin, then go to dashboard
         if ($user->is_system_admin) {

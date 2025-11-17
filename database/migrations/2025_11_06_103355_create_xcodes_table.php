@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->integer('seqn')->default(0);
 
-            $table->unique(['type', 'xcode']);
+            $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
+
+            $table->unique(['type', 'xcode', 'business_id']);
 
             $table->timestamps();
         });

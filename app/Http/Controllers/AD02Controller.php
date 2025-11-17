@@ -24,7 +24,7 @@ class AD02Controller extends ZayaanController
             }
 
             // Find the menu screens associated with this menu
-            $menuScreens = MenuScreen::with(['menu', 'screen'])->where('menu_id', $child['id'])->where('business_id', null)->orderBy('seqn', 'asc')->get();
+            $menuScreens = MenuScreen::with(['menu', 'screen'])->where('menu_id', $child['id'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get();
 
             foreach ($menuScreens as $ms) {
                 Log::debug(str_repeat('   ', $count) . '-> Menu Screen: ' . $ms->screen->xscreen . ' - ' . $ms->screen->title . ' (Alternate Title: ' . ($ms->alternate_title ?? 'N/A') . ')');
@@ -63,7 +63,7 @@ class AD02Controller extends ZayaanController
             }
 
             // Find the menu screens associated with this menu
-            $menuScreens = MenuScreen::with(['menu', 'screen'])->where('menu_id', $menu['id'])->where('business_id', null)->orderBy('seqn', 'asc')->get();
+            $menuScreens = MenuScreen::with(['menu', 'screen'])->where('menu_id', $menu['id'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get();
 
             foreach ($menuScreens as $ms) {
                 Log::debug("-> Menu Screen: " . $ms->screen->xscreen . " - " . $ms->screen->title . " (Alternate Title: " . ($ms->alternate_title ?? 'N/A') . ")");
@@ -176,12 +176,12 @@ class AD02Controller extends ZayaanController
         $validator->validate();
 
         $request['seqn'] = $request->input('seqn') ?? 0;
-        $request->merge(['business_id' => null]); // For now, set business_id to null
+        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
 
         // CHeck uniqueness
         $exists = MenuScreen::where('menu_id', $request->input('menu_id'))
             ->where('screen_id', $request->input('screen_id'))
-            ->where('business_id', null)
+            ->where('business_id', getBusinessId())
             ->first();
 
         if ($exists) {
@@ -231,7 +231,7 @@ class AD02Controller extends ZayaanController
         // CHeck uniqueness
         $exists = MenuScreen::where('menu_id', $request->input('menu_id'))
             ->where('screen_id', $request->input('screen_id'))
-            ->where('business_id', null)
+            ->where('business_id', getBusinessId())
             ->where('id', '!=', $id)
             ->first();
 

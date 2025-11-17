@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('business_categories', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 100);
             $table->string("xcode", 4)->unique();
+            $table->string("name", 100);
             $table->integer("seqn")->default(0);
             $table->boolean("is_active")->default(true);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

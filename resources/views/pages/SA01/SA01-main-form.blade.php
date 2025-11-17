@@ -5,24 +5,25 @@
             @if ($businessCategory->id != null)
                 @method('PUT')
                 <input type="hidden" name="id" value="{{ $businessCategory->id }}">
+                <input type="hidden" name="xcode" value="{{ $businessCategory->xcode }}">
             @endif
 
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group mb-3">
-                        <label class="form-label" for="name">Category name</label>
+                        <label class="form-label" for="xcode">Code</label>
+                        <input type="text" class="form-control" id="xcode" name="xcode" value="{{ $businessCategory->xcode }}" {{ $businessCategory->id == null ? 'required' : '' }} {{ $businessCategory->id != null ? 'disabled' : '' }}>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name" value="{{ $businessCategory->name }}" required>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group mb-3">
-                        <label class="form-label" for="xcode">Category code</label>
-                        <input type="text" class="form-control" id="xcode" name="xcode" value="{{ $businessCategory->xcode }}" required>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label class="form-label" for="seqn">Sequence number</label>
+                        <label class="form-label" for="seqn">Sequence</label>
                         <input type="number" class="form-control" id="seqn" name="seqn" value="{{ $businessCategory->seqn }}" min="0" required>
                     </div>
                 </div>

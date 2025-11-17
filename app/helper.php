@@ -27,3 +27,14 @@ if (!function_exists('getSelectedBusiness')) {
     }
 }
 
+if (!function_exists('getBusinessId')) {
+    function getBusinessId()
+    {
+        if (getSelectedBusiness()) {
+            $selectedBusiness = getSelectedBusiness();
+            return $selectedBusiness['id'];
+        }
+        return null;
+    }
+}
+

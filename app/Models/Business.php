@@ -21,9 +21,11 @@ class Business extends Model
         'is_pickup',
         'is_delivery',
         'is_active',
+
         'is_allow_custom_menu',
         'is_allow_custom_category',
         'is_allow_custom_attribute',
+        'is_allow_custom_xcodes',
 
         'business_category_id',
     ];
@@ -38,6 +40,7 @@ class Business extends Model
         'is_allow_custom_menu' => 'boolean',
         'is_allow_custom_category' => 'boolean',
         'is_allow_custom_attribute' => 'boolean',
+        'is_allow_custom_xcodes' => 'boolean',
     ];
 
 

@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BusinessCategory extends Model
 {
-    use SoftDeletes;
-
     protected $fillable = [
         'xcode',
         'name',

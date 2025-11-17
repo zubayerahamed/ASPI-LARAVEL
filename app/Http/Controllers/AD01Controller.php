@@ -20,7 +20,7 @@ class AD01Controller extends ZayaanController
                     'page' => view('pages.AD01.AD01', [
                         'menuTree' => Menu::generateMenuTree(),
                         'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
-                        'detailList' => Menu::with('parentMenu')->where('business_id', null)->orderBy('seqn', 'asc')->get()
+                        'detailList' => Menu::with('parentMenu')->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Menu Management',
                     'subtitle' => 'Menu',
@@ -62,7 +62,7 @@ class AD01Controller extends ZayaanController
             'subtitle' => 'Menu',
             'menuTree' => Menu::generateMenuTree(),
             'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
-            'detailList' => Menu::with('parentMenu')->where('business_id', null)->orderBy('seqn', 'asc')->get()
+            'detailList' => Menu::with('parentMenu')->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
         ]);
     }
 
@@ -70,7 +70,7 @@ class AD01Controller extends ZayaanController
     {
         return response()->json([
             'page' => view('pages.AD01.AD01-header-table', [
-                'detailList' => Menu::with('parentMenu')->where('business_id', null)->orderBy('seqn', 'asc')->get()
+                'detailList' => Menu::with('parentMenu')->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }
@@ -78,7 +78,7 @@ class AD01Controller extends ZayaanController
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'xmenu' => 'required|string|max:10|unique:menus,xmenu,NULL,id,business_id,NULL',  // Menu must be unique per business
+            'xmenu' => 'required|string|max:10|unique:menus,xmenu,NULL,id,business_id,' . getBusinessId(),  // Menu must be unique per business
             'title' => 'required|string|max:50',
             'icon' => 'nullable|string|max:50',
             'seqn' => 'nullable|integer',
@@ -97,7 +97,7 @@ class AD01Controller extends ZayaanController
 
         $request['seqn'] = $request->input('seqn') ?? 0;
         $request['icon'] = $request->input('icon') ?? 'ph ph-align-left';
-        $request->merge(['business_id' => null]); // For now, set business_id to null
+        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
 
         $menu = Menu::create($request->only([
             'xmenu',
@@ -124,7 +124,7 @@ class AD01Controller extends ZayaanController
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'xmenu' => 'required|string|max:10|unique:menus,xmenu,' . $id . ',id,business_id,NULL',  // Menu must be unique per business
+            'xmenu' => 'required|string|max:10|unique:menus,xmenu,' . $id . ',id,business_id,' . getBusinessId(),  // Menu must be unique per business
             'title' => 'required|string|max:50',
             'icon' => 'nullable|string|max:50',
             'seqn' => 'nullable|integer',

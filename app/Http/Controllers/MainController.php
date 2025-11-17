@@ -20,16 +20,25 @@ class MainController extends ZayaanController
     {
         // dd(Config::get('adminlte.menu'));
         // dd(getLoggedInUserDetails());
+        // dd(getSelectedBusiness());
 
 
         // Get Auth User's businesses
-        $user = Auth::user();
-        $loggedInUser = User::find($user->id); // Refresh user data
+        $loggedInUser = User::find(getLoggedInUserDetails()['id']); // Refresh user data
         $businesses = $loggedInUser->businesses()->with(['businessCategory'])->orderBy('name', 'asc')->get();
+
+        // Check if user has selected business
+        if (getSelectedBusiness()) {
+            // Filter and remove the selected business from the list
+            $selectedBusinessId = getSelectedBusiness()['id'];
+            $businesses = $businesses->filter(function ($business) use ($selectedBusinessId) {
+                return $business->id !== $selectedBusinessId;
+            });
+        }
 
         return view('index', [
             'page' => 'pages.business-selection',
-            'content_header_title' => 'Select Your Business',
+            'content_header_title' => getSelectedBusiness() == null ? 'Select Business' : 'Switch Business',
             'subtitle' => 'Business Selection',
             'businesses' => $businesses
         ]);

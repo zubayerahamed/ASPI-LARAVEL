@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\ZayaanSessionManager;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,12 +18,21 @@ class ShareMenuData
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
             return $next($request);
         }
 
         Config::set('adminlte.menu', $this->buildMenu());
+        Config::set('adminlte.title', $this->setSiteTitle());
         return $next($request);
+    }
+
+    protected function setSiteTitle(){
+        $title = Config::get('adminlte.title');
+        if(getSelectedBusiness() !== null){
+            $title = getSelectedBusiness()['name'];
+        }
+        return $title;
     }
 
     protected function buildMenu()
@@ -41,11 +51,16 @@ class ShareMenuData
 
     protected function getAuthenticatedMenu()
     {
-        $user = Auth::user();
+
+        // dd(ZayaanSessionManager::get('user_info'));
+        $loggedInUser = getLoggedInUserDetails();
+
+        // dd($loggedInUser['is_business_admin'] ?? false);
+
         $menu = Config::get('adminlte.menu');
 
         // Add role-specific menus
-        if ($user->is_system_admin) {
+        if ($loggedInUser['is_system_admin'] ?? false) {
             $menu[] = ['header' => 'Platform Administration'];
             $menu[] = [
                 'text' => 'Business Category',
@@ -138,10 +153,31 @@ class ShareMenuData
                 ],
             ];
 
+            // dd(getSelectedBusiness());
+            if (getSelectedBusiness() === null) {
+                return $menu;  // No selected business, return default menu
+            }
+
+            $menu = Config::get('adminlte.menu');
+            
+            $menu[] = [
+                'text' => 'Access Profiles',
+                'route' => 'AD07',
+                'icon' => 'ph ph-fingerprint',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'AD07',
+                ],
+            ];
+
             return $menu;
         }
 
-        if ($user->is_business_admin) {
+        if ($loggedInUser['is_business_admin'] ?? false) {
+            if (getSelectedBusiness() === null) {
+                return $menu;  // No selected business, return default menu
+            }
+
             $menu[] = [
                 'text' => 'Access Profiles',
                 'route' => 'AD07',

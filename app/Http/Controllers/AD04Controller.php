@@ -32,7 +32,7 @@ class AD04Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD04.AD04', [
                         'attribute' => $att,
-                        'detailList' => Attribute::with(['terms'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
+                        'detailList' => Attribute::with(['terms'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Attribute Management',
                     'subtitle' => 'Attribute',
@@ -70,7 +70,7 @@ class AD04Controller extends ZayaanController
             'content_header_title' => 'Attribute Management',
             'subtitle' => 'Attribute',
             'attribute' => (new Attribute())->fill(['seqn' => 0, 'is_active' => true]),
-            'detailList' => Attribute::with(['terms'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
+            'detailList' => Attribute::with(['terms'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
         ]);
     }
 
@@ -78,7 +78,7 @@ class AD04Controller extends ZayaanController
     {
         return response()->json([
             'page' => view('pages.AD04.AD04-header-table', [
-                'detailList' => Attribute::with(['terms'])->where('business_id', null)->orderBy('seqn', 'asc')->get()
+                'detailList' => Attribute::with(['terms'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }
@@ -108,7 +108,7 @@ class AD04Controller extends ZayaanController
         $request['is_used_in_product_listing'] = $request->has('is_used_in_product_listing');
         $request['is_active'] = $request->has('is_active');
 
-        $request->merge(['business_id' => null]); // For now, set business_id to null
+        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
 
         $attribute = Attribute::create($request->only([
             'name',

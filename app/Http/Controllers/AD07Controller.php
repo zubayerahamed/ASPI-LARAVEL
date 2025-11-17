@@ -76,11 +76,13 @@ class AD07Controller extends ZayaanController
         $validator->validate();
 
         $request['is_active'] = $request->has('is_active');
+        $request['business_id'] = getBusinessId();
 
         $profile = Profile::create($request->only([
             'name',
             'seqn',
-            'is_active'
+            'is_active',
+            'business_id'
         ]));
 
         if ($profile) {
