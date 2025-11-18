@@ -63,4 +63,10 @@ class Business extends Model
     {
         return $this->hasMany(Store::class, 'business_id', 'id');
     }
+
+    public function activeBranches()
+    {
+        return $this->hasMany(Branch::class, 'business_id', 'id')->where('is_active', true)->count();
+    }
+
 }

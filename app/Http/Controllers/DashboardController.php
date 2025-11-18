@@ -13,19 +13,21 @@ class DashboardController extends ZayaanController
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $html = view('pages.dashboard')->render();
-            return response()->json([
-                'page' => $html,
-                'content_header_title' => 'Dashboard',
-                'subtitle' => 'Dashboard',
-            ]);
+        $id = $request->query('id', 'RESET'); // Returns null if not present
+        $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
 
-            //return view('pages.dashboard')->render();
+        if ($request->ajax()) {
+            if ($frommenu == 'Y') {
+                return response()->json([
+                    'page' => view('pages.DASH.DASH', [])->render(),
+                    'content_header_title' => 'Dashboard',
+                    'subtitle' => 'Dashboard',
+                ]);
+            }
         }
 
         return view('index', [
-            'page' => 'pages.dashboard',
+            'page' => 'pages.DASH.DASH',
             'content_header_title' => 'Dashboard',
             'subtitle' => 'Dashboard',
         ]);

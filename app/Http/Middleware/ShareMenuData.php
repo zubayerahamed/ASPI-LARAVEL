@@ -161,6 +161,15 @@ class ShareMenuData
             $menu = Config::get('adminlte.menu');
             
             $menu[] = [
+                'text' => 'Dashboard',
+                'route' => 'DASH',
+                'icon' => 'ph ph-speedometer',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'DASH',
+                ],
+            ];
+            $menu[] = [
                 'text' => 'Access Profiles',
                 'route' => 'AD07',
                 'icon' => 'ph ph-fingerprint',

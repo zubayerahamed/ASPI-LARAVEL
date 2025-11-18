@@ -8,22 +8,40 @@
             </div>
         @endif
         @foreach ($businesses as $business)
-            <div class="col-md-4">
-                <a href="{{ route('business.selection', ['id' => $business->id]) }}" class="d-block business-card text-center pt-4 pb-4 p-3 mb-4 border rounded bg-white text-white cursor-pointer">
-                    <h4>{{ $business->name }}</h4>
-                    <p class="text-sm text-muted">Joined {{ date('d-M-Y', strtotime($business->created_at)) }}</p>
-                    <div class="col-md-12 d-flex justify-content-between align-items-center gap-3">
-                        <div class="d-flex flex-column justify-content-center">
-                            <div><i class="ph ph-check text-success"></i></div>
-                            <div>In house</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                            <div><i class="ph ph-check text-success"></i></div>
-                            <div>Pickup</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                            <div><i class="ph ph-check text-success"></i></div>
-                            <div>Delivery</div>
+            <div class="col-md-3">
+                <a  href="{{ route('business.selection', ['id' => $business->id]) }}" 
+                    class="d-block business-card text-center mb-4 border bg-white cursor-pointer" style="border-radius: 10px; overflow: hidden; box-shadow: 0px 0px 5px #ddd">
+                    <div class="bg-success p-2">
+                        <h4 class="mt-2 mb-0 text-bold">{{ $business->name }}</h4>
+                        <p class="text-sm">Joined {{ date('d-M-Y', strtotime($business->created_at)) }}</p>
+                    </div>
+                    <div class="bg-white p-2">
+                        <div class="mt-2 mb-2">Active {{ $business->activeBranches() }} Branches</div>
+                        <div class="col-md-12 d-flex justify-content-between align-items-center">
+                            <div class="d-flex flex-column justify-content-center flex-grow-1 p-2">
+                                @if ($business->is_inhouse)
+                                    <div><i class="ph ph-check text-success"></i></div>
+                                @else
+                                    <div><i class="ph ph-x text-danger"></i></div>
+                                @endif
+                                <div class="text-uppercase">In house</div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center border-left border-right flex-grow-1 p-2">
+                                @if ($business->is_pickup)
+                                    <div><i class="ph ph-check text-success"></i></div>
+                                @else
+                                    <div><i class="ph ph-x text-danger"></i></div>
+                                @endif
+                                <div class="text-uppercase">Pickup</div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center flex-grow-1 p-2">
+                                @if ($business->is_delivery)
+                                    <div><i class="ph ph-check text-success"></i></div>
+                                @else
+                                    <div><i class="ph ph-x text-danger"></i></div>
+                                @endif
+                                <div class="text-uppercase">Delivery</div>
+                            </div>
                         </div>
                     </div>
                 </a>
