@@ -2,9 +2,9 @@
     <div class="d-flex justify-content-center flex-wrap" style="width: 100%;">
         @if ($businesses->isEmpty())
             <div class="col-12">
-                <div class="alert alert-info text-center">
-                    No businesses available.
-                </div>
+                <h1 class="text-center">
+                    Business Not Created Yet.
+                </h1>
             </div>
         @endif
         @foreach ($businesses as $business)

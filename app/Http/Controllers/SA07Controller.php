@@ -19,7 +19,7 @@ class SA07Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.SA07.SA07', [
                         'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-                        'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
+                        'xcodes' => (new Xcodes())->fill(['seqn' => 0, 'is_active' => true]),
                         'detailList' => Xcodes::orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Codes & Parameters',
@@ -31,7 +31,7 @@ class SA07Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.SA07.SA07-main-form', [
                         'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-                        'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
+                        'xcodes' => (new Xcodes())->fill(['seqn' => 0, 'is_active' => true]),
                     ])->render(),
                 ]);
             }
@@ -49,7 +49,7 @@ class SA07Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.SA07.SA07-main-form', [
                         'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-                        'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
+                        'xcodes' => (new Xcodes())->fill(['seqn' => 0, 'is_active' => true]),
                     ])->render(),
                 ]);
             }
@@ -61,7 +61,7 @@ class SA07Controller extends ZayaanController
             'content_header_title' => 'Business Category',
             'subtitle' => 'Business Category',
             'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-            'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
+            'xcodes' => (new Xcodes())->fill(['seqn' => 0, 'is_active' => true]),
             'detailList' => Xcodes::orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
         ]);
     }
@@ -78,13 +78,15 @@ class SA07Controller extends ZayaanController
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'type' => 'required|string|max:100',
-            'xcode' => 'required|string|max:100',
-            'description' => 'nullable|string|max:255',
+            'type' => 'required|string|max:50',
+            'xcode' => 'required|string|max:50',
+            'description' => 'nullable|string|max:100',
+            'symbol' => 'nullable|string|max:50',
         ], [
             'type.required' => 'The Type field is required.',
             'xcode.required' => 'The Code field is required.',
-            'description.max' => 'The Description may not be greater than 255 characters.',
+            'description.max' => 'The Description may not be greater than 100 characters.',
+            'symbol.max' => 'The Symbol may not be greater than 50 characters.',
         ]);
 
         $validator->validate();
@@ -100,12 +102,18 @@ class SA07Controller extends ZayaanController
         }
 
         $request['seqn'] = $request->input('seqn') ?? 0;
+        $request['is_active'] = $request->has('is_active') ?? false;
+        $request['business_id'] = getBusinessId();
+
 
         $xcodes = Xcodes::create($request->only([
             'type',
             'xcode',
             'description',
+            'symbol',
+            'is_active',
             'seqn',
+            'business_id',
         ]));
 
         if ($xcodes) {
@@ -124,13 +132,15 @@ class SA07Controller extends ZayaanController
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'type' => 'required|string|max:100',
-            'xcode' => 'required|string|max:100',
-            'description' => 'nullable|string|max:255',
+            'type' => 'required|string|max:50',
+            'xcode' => 'required|string|max:50',
+            'description' => 'nullable|string|max:100',
+            'symbol' => 'nullable|string|max:50',
         ], [
             'type.required' => 'The Type field is required.',
             'xcode.required' => 'The Code field is required.',
-            'description.max' => 'The Description may not be greater than 255 characters.',
+            'description.max' => 'The Description may not be greater than 100 characters.',
+            'symbol.max' => 'The Symbol may not be greater than 50 characters.',
         ]);
 
         $validator->validate();
@@ -138,6 +148,7 @@ class SA07Controller extends ZayaanController
         // check data exist with same type and xcode excluding current id
         $existingXcode = Xcodes::where('type', $request->input('type'))
             ->where('xcode', $request->input('xcode'))
+            ->where('business_id', getBusinessId())
             ->where('id', '!=', $id)
             ->first();
 
@@ -147,6 +158,8 @@ class SA07Controller extends ZayaanController
         }
 
         $request['seqn'] = $request->input('seqn') ?? 0;
+        $request['is_active'] = $request->has('is_active') ?? false;
+        $request['business_id'] = getBusinessId();
 
         $xcodes = Xcodes::find($id);
         if (!$xcodes) {
@@ -158,7 +171,10 @@ class SA07Controller extends ZayaanController
             'type',
             'xcode',
             'description',
+            'symbol',
+            'is_active',
             'seqn',
+            'business_id',
         ]));
 
         $this->setReloadSections([

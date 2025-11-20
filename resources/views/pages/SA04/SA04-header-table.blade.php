@@ -28,7 +28,11 @@
                                 <span class="badge bg-{{ $x->type == 'SCREEN' ? 'primary' : ($x->type == 'REPORT' ? 'success' : ($x->type == 'SYSTEM' ? 'info' : 'warning')) }}">{{ $x->type }}</span>
                             </td>
                             <td class="text-center">{{ $x->seqn }}</td>
-                            <td>{{ $x->icon }}</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <i class="{{ $x->icon }}"></i> <span>{{ $x->icon }}</span>
+                                </div>
+                            </td>
                             <td>
                                 <div class="d-flex justify-content-end align-items-center gap-2">
                                     <button data-url="{{ route('SA04.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">

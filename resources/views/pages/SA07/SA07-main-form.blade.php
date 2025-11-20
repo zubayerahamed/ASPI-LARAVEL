@@ -40,10 +40,28 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group mb-3">
+                        <label class="form-label" for="symbol">Symbol</label>
+                        <input type="text" class="form-control" id="symbol" name="symbol" value="{{ $xcodes->symbol }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
                         <label class="form-label" for="seqn">Sequence number</label>
                         <input type="number" class="form-control" id="seqn" name="seqn" value="{{ $xcodes->seqn }}" min="0" required>
                     </div>
                 </div>
+
+                <div class="col-md-12"></div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $xcodes->is_active ? 'checked' : '' }}>
+                            <label for="is_active" class="custom-control-label form-label">Is Active?</label>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="d-flex justify-content-between align-items-center">

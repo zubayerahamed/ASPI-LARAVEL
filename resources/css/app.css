@@ -1,3 +1,6 @@
+@import "./plugins/dataTables.bootstrap4.min.css";
+@import "./plugins/responsive.bootstrap4.min.css";
+@import "./plugins/buttons.bootstrap4.min.css";
 
 
 /* Phosphor Icons */

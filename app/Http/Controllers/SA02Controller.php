@@ -6,6 +6,7 @@ use App\Helpers\ReloadSection;
 use App\Models\Business;
 use App\Models\BusinessCategory;
 use App\Models\User;
+use App\Models\Xcodes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Illuminate\Support\Facades\Validator;
@@ -21,9 +22,9 @@ class SA02Controller extends ZayaanController
             if ($frommenu == 'Y') {
                 return response()->json([
                     'page' => view('pages.SA02.SA02', [
-                        'countries' => $this->countriesList(),
-                        'currencies' => $this->currenciesList(),
-                        'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
+                        'countries' => Xcodes::active()->where('business_id', getBusinessId())->where('type', 'Country')->orderBy('seqn', 'asc')->get(),
+                        'currencies' => Xcodes::active()->where('business_id', getBusinessId())->where('type', 'Currency')->orderBy('seqn', 'asc')->get(),
+                        'businessCategories' => BusinessCategory::active()->orderBy('seqn', 'asc')->get(),
                         'business' => (new Business())->fill(['is_active' => true]),
                         'detailList' => Business::with(['businessCategory'])->orderBy('name', 'asc')->get()
                     ])->render(),
@@ -35,9 +36,9 @@ class SA02Controller extends ZayaanController
             if ("RESET" == $id) {
                 return response()->json([
                     'page' => view('pages.SA02.SA02-main-form', [
-                        'countries' => $this->countriesList(),
-                        'currencies' => $this->currenciesList(),
-                        'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
+                        'countries' => Xcodes::active()->where('business_id', getBusinessId())->where('type', 'Country')->orderBy('seqn', 'asc')->get(),
+                        'currencies' => Xcodes::active()->where('business_id', getBusinessId())->where('type', 'Currency')->orderBy('seqn', 'asc')->get(),
+                        'businessCategories' => BusinessCategory::active()->orderBy('seqn', 'asc')->get(),
                         'business' => (new Business())->fill(['is_active' => true]),
                     ])->render(),
                 ]);
@@ -49,18 +50,18 @@ class SA02Controller extends ZayaanController
 
                 return response()->json([
                     'page' => view('pages.SA02.SA02-main-form', [
-                        'countries' => $this->countriesList(),
-                        'currencies' => $this->currenciesList(),
-                        'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
+                        'countries' => Xcodes::active()->where('business_id', getBusinessId())->where('type', 'Country')->orderBy('seqn', 'asc')->get(),
+                        'currencies' => Xcodes::active()->where('business_id', getBusinessId())->where('type', 'Currency')->orderBy('seqn', 'asc')->get(),
+                        'businessCategories' => BusinessCategory::active()->orderBy('seqn', 'asc')->get(),
                         'business' => $business,
                     ])->render(),
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
                     'page' => view('pages.SA02.SA02-main-form', [
-                        'countries' => $this->countriesList(),
-                        'currencies' => $this->currenciesList(),
-                        'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
+                        'countries' => Xcodes::active()->where('business_id', getBusinessId())->where('type', 'Country')->orderBy('seqn', 'asc')->get(),
+                        'currencies' => Xcodes::active()->where('business_id', getBusinessId())->where('type', 'Currency')->orderBy('seqn', 'asc')->get(),
+                        'businessCategories' => BusinessCategory::active()->orderBy('seqn', 'asc')->get(),
                         'business' => (new Business())->fill(['is_active' => true]),
                     ])->render(),
                 ]);
@@ -72,9 +73,9 @@ class SA02Controller extends ZayaanController
             'page' => 'pages.SA02.SA02',
             'content_header_title' => 'Business',
             'subtitle' => 'Business',
-            'countries' => $this->countriesList(),
-            'currencies' => $this->currenciesList(),
-            'businessCategories' => BusinessCategory::orderBy('seqn', 'asc')->get(),
+            'countries' => Xcodes::active()->where('business_id', getBusinessId())->where('type', 'Country')->orderBy('seqn', 'asc')->get(),
+            'currencies' => Xcodes::active()->where('business_id', getBusinessId())->where('type', 'Currency')->orderBy('seqn', 'asc')->get(),
+            'businessCategories' => BusinessCategory::active()->orderBy('seqn', 'asc')->get(),
             'business' => (new Business())->fill(['is_active' => true]),
             'detailList' => Business::with(['businessCategory'])->orderBy('name', 'asc')->get()
         ]);
@@ -167,15 +168,12 @@ class SA02Controller extends ZayaanController
             'name' => 'required',
             'country' => 'required',
             'currency' => 'required',
-            'business_category_id' => 'required|exists:business_categories,id',
             'email' => 'required|email',
             'mobile' => 'required|string',
         ], [
             'name.required' => 'The business name field is required.',
             'country.required' => 'The country field is required.',
             'currency.required' => 'The currency field is required.',
-            'business_category_id.required' => 'The business category field is required.',
-            'business_category_id.exists' => 'The selected business category is invalid.',
             'email.required' => 'The email field is required.',
             'email.email' => 'The email must be a valid email address.',
             'mobile.required' => 'The mobile field is required.',
@@ -218,7 +216,6 @@ class SA02Controller extends ZayaanController
             'is_allow_custom_category',
             'is_allow_custom_attribute',
             'is_allow_custom_xcodes',
-            'business_category_id',
         ]));
 
         if ($business->save()) {

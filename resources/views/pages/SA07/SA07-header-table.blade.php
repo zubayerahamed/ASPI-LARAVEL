@@ -12,7 +12,9 @@
                         <th>Code Type</th>
                         <th>Code</th>
                         <th>Description</th>
+                        <th>Symbol</th>
                         <th class="text-center">Sequence</th>
+                        <th class="text-center">Is Active?</th>
                         <th class="text-right" data-no-sort="Y">Actions</th>
                     </tr>
                 </thead>
@@ -20,11 +22,21 @@
                     @foreach ($detailList as $x)
                         <tr>
                             <td>
-                                <a data-reloadurl="{{ route('SA07', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->type }}</a>
+                                {{ $x->type }}
                             </td>
-                            <td>{{ $x->xcode }}</td>
+                            <td>
+                                <a data-reloadurl="{{ route('SA07', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->xcode }}</a>
+                            </td>
                             <td>{{ $x->description }}</td>
+                            <td class="text-center">{{ $x->symbol }}</td>
                             <td class="text-center">{{ $x->seqn }}</td>
+                            <td class="text-center">
+                                @if ($x->is_active)
+                                    <i class="ph ph-check-circle text-success"></i>
+                                @else
+                                    <i class="ph ph-x-circle text-danger"></i>
+                                @endif
+                            </td>
                             <td>
                                 <div class="d-flex justify-content-end align-items-center gap-2">
                                     <button data-url="{{ route('SA07.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">

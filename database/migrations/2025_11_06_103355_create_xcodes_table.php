@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('xcodes', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('xcode');
-            $table->string('description')->nullable();
+            $table->string('type', 50);
+            $table->string('xcode', 50);
+            $table->string('description', 100)->nullable();
+            $table->string('symbol', 50)->nullable();
+
             $table->integer('seqn')->default(0);
+            $table->boolean('is_active')->default(true);
 
             $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
 

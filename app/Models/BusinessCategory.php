@@ -23,4 +23,9 @@ class BusinessCategory extends Model
     {
         return $this->hasMany(Business::class, 'business_category_id', 'id');
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

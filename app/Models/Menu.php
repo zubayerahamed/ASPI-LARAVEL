@@ -114,4 +114,9 @@ class Menu extends Model
         $getDescendants($menuId);
         return $descendantIds;
     }
+
+    public function screens()
+    {
+        return $this->belongsToMany(Screen::class, 'menu_screens', 'menu_id', 'screen_id');
+    }
 }

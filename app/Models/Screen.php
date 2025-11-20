@@ -17,4 +17,9 @@ class Screen extends Model
         'seqn',
     ];
 
+    public function menus()
+    {
+        return $this->belongsToMany(Menu::class, 'menu_screens', 'screen_id', 'menu_id');
+    }
+
 }
