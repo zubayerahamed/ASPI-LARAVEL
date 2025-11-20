@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ReloadSection;
-use App\Models\Xcodes;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,38 +18,38 @@ class SA05Controller extends ZayaanController
             if ($frommenu == 'Y') {
                 return response()->json([
                     'page' => view('pages.SA05.SA05', [
-                        'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-                        'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
-                        'detailList' => Xcodes::orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
+                        'menuTree' => Menu::generateMenuTree(),
+                        'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
+                        'detailList' => Menu::with('parentMenu')->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
                     ])->render(),
-                    'content_header_title' => 'Codes & Parameters',
-                    'subtitle' => 'Codes & Parameters',
+                    'content_header_title' => 'Menu Management',
+                    'subtitle' => 'Menu',
                 ]);
             }
 
             if ("RESET" == $id) {
                 return response()->json([
                     'page' => view('pages.SA05.SA05-main-form', [
-                        'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-                        'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
+                        'menuTree' => Menu::generateMenuTree(),
+                        'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
                     ])->render(),
                 ]);
             }
 
             try {
-                $xcodes = Xcodes::findOrFail($id);
+                $menu = Menu::findOrFail($id);
 
                 return response()->json([
                     'page' => view('pages.SA05.SA05-main-form', [
-                        'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-                        'xcodes' => $xcodes,
+                        'menuTree' => Menu::generateMenuTree($menu->business_id, $menu->id),
+                        'menu' => $menu,
                     ])->render(),
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
                     'page' => view('pages.SA05.SA05-main-form', [
-                        'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-                        'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
+                        'menuTree' => Menu::generateMenuTree(),
+                        'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
                     ])->render(),
                 ]);
             }
@@ -58,11 +58,11 @@ class SA05Controller extends ZayaanController
         // When url is directly hit from url bar
         return view('index', [
             'page' => 'pages.SA05.SA05',
-            'content_header_title' => 'Business Category',
-            'subtitle' => 'Business Category',
-            'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
-            'xcodes' => (new Xcodes())->fill(['seqn' => 0]),
-            'detailList' => Xcodes::orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
+            'content_header_title' => 'Menu Management',
+            'subtitle' => 'Menu',
+            'menuTree' => Menu::generateMenuTree(),
+            'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
+            'detailList' => Menu::with('parentMenu')->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
         ]);
     }
 
@@ -70,7 +70,7 @@ class SA05Controller extends ZayaanController
     {
         return response()->json([
             'page' => view('pages.SA05.SA05-header-table', [
-                'detailList' => Xcodes::orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
+                'detailList' => Menu::with('parentMenu')->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }
@@ -78,112 +78,114 @@ class SA05Controller extends ZayaanController
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'type' => 'required|string|max:100',
-            'xcode' => 'required|string|max:100',
-            'description' => 'nullable|string|max:255',
+            'xmenu' => 'required|string|max:10|unique:menus,xmenu,NULL,id,business_id,' . getBusinessId(),  // Menu must be unique per business
+            'title' => 'required|string|max:50',
+            'icon' => 'nullable|string|max:50',
+            'seqn' => 'nullable|integer',
+            'parent_menu_id' => 'nullable|exists:menus,id',
         ], [
-            'type.required' => 'The Type field is required.',
-            'xcode.required' => 'The Code field is required.',
-            'description.max' => 'The Description may not be greater than 255 characters.',
+            'xmenu.required' => 'The menu code is required.',
+            'xmenu.max' => 'The menu code may not be greater than 10 characters.',
+            'title.required' => 'The title is required.',
+            'title.max' => 'The title may not be greater than 50 characters.',
+            'icon.max' => 'The icon may not be greater than 50 characters.',
+            'seqn.integer' => 'The sequence must be an integer.',
+            'parent_menu_id.exists' => 'The selected parent menu is invalid.',
         ]);
 
         $validator->validate();
 
-        // check data exist with same type and xcode
-        $existingXcode = Xcodes::where('type', $request->input('type'))
-            ->where('xcode', $request->input('xcode'))
-            ->first();
-
-        if ($existingXcode) {
-            $this->setErrorStatusAndMessage("The combination of Type and Code already exists.");
-            return $this->getResponse();
-        }
-
         $request['seqn'] = $request->input('seqn') ?? 0;
+        $request['icon'] = $request->input('icon') ?? 'ph ph-align-left';
+        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
 
-        $xcodes = Xcodes::create($request->only([
-            'type',
-            'xcode',
-            'description',
+        $menu = Menu::create($request->only([
+            'xmenu',
+            'title',
+            'icon',
             'seqn',
+            'parent_menu_id',
+            'business_id'
         ]));
 
-        if ($xcodes) {
+        if ($menu) {
             $this->setReloadSections([
                 new ReloadSection('main-form-container', route('SA05', ['id' => 'RESET'])),
                 new ReloadSection('header-table-container', route('SA05.header-table')),
             ]);
-            $this->setSuccessStatusAndMessage("Codes created successfully");
+            $this->setSuccessStatusAndMessage("Menu created successfully");
             return $this->getResponse();
         }
 
-        $this->setErrorStatusAndMessage("Failed to create Codes");
+        $this->setErrorStatusAndMessage("Menu creation failed");
         return $this->getResponse();
     }
 
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'type' => 'required|string|max:100',
-            'xcode' => 'required|string|max:100',
-            'description' => 'nullable|string|max:255',
+            'xmenu' => 'required|string|max:10|unique:menus,xmenu,' . $id . ',id,business_id,' . getBusinessId(),  // Menu must be unique per business
+            'title' => 'required|string|max:50',
+            'icon' => 'nullable|string|max:50',
+            'seqn' => 'nullable|integer',
+            'parent_menu_id' => 'nullable|exists:menus,id',
         ], [
-            'type.required' => 'The Type field is required.',
-            'xcode.required' => 'The Code field is required.',
-            'description.max' => 'The Description may not be greater than 255 characters.',
+            'xmenu.required' => 'The menu code is required.',
+            'xmenu.max' => 'The menu code may not be greater than 10 characters.',
+            'title.required' => 'The title is required.',
+            'title.max' => 'The title may not be greater than 50 characters.',
+            'icon.max' => 'The icon may not be greater than 50 characters.',
+            'seqn.integer' => 'The sequence must be an integer.',
+            'parent_menu_id.exists' => 'The selected parent menu is invalid.',
         ]);
 
         $validator->validate();
 
-        // check data exist with same type and xcode excluding current id
-        $existingXcode = Xcodes::where('type', $request->input('type'))
-            ->where('xcode', $request->input('xcode'))
-            ->where('id', '!=', $id)
-            ->first();
-
-        if ($existingXcode) {
-            $this->setErrorStatusAndMessage("The combination of Type and Code already exists.");
+        $menu = Menu::find($id);
+        if(!$menu){
+            $this->setErrorStatusAndMessage("Menu not found");
             return $this->getResponse();
         }
 
         $request['seqn'] = $request->input('seqn') ?? 0;
+        $request['icon'] = $request->input('icon') ?? 'ph ph-align-left';
+        $menu->update($request->only([
+            'xmenu',
+            'title',
+            'icon',
+            'seqn',
+            'parent_menu_id',
+        ]));
 
-        $xcodes = Xcodes::find($id);
-        if (!$xcodes) {
-            $this->setErrorStatusAndMessage("Codes not found");
+        if ($menu) {
+            $this->setReloadSections([
+                new ReloadSection('main-form-container', route('SA05', ['id' => $menu->id])),
+                new ReloadSection('header-table-container', route('SA05.header-table')),
+            ]);
+            $this->setSuccessStatusAndMessage("Menu updated successfully");
             return $this->getResponse();
         }
 
-        $xcodes->update($request->only([
-            'type',
-            'xcode',
-            'description',
-            'seqn',
-        ]));
-
-        $this->setReloadSections([
-            new ReloadSection('main-form-container', route('SA05', ['id' => $xcodes->id])),
-            new ReloadSection('header-table-container', route('SA05.header-table')),
-        ]);
-        $this->setSuccessStatusAndMessage("Codes updated successfully");
+        $this->setErrorStatusAndMessage("Menu update failed");
         return $this->getResponse();
     }
 
     public function delete($id)
     {
-        $xcodes = Xcodes::find($id);
-        if (!$xcodes) {
-            $this->setErrorStatusAndMessage("Codes not found");
+        $menu = Menu::find($id);
+
+        if (!$menu) {
+            $this->setErrorStatusAndMessage("Menu not found");
             return $this->getResponse();
         }
 
-        $xcodes->delete();
+        $menu->delete();
 
         $this->setReloadSections([
             new ReloadSection('main-form-container', route('SA05', ['id' => 'RESET'])),
             new ReloadSection('header-table-container', route('SA05.header-table')),
         ]);
-        $this->setSuccessStatusAndMessage("Codes deleted successfully");
+        $this->setSuccessStatusAndMessage("Menu deleted successfully");
         return $this->getResponse();
     }
 }

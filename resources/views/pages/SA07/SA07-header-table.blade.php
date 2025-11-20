@@ -2,18 +2,17 @@
     <div class="card card-default">
 
         <div class="card-header">
-            <h3 class="card-title">List of menus</h3>
+            <h3 class="card-title">List of Codes & Parameters</h3>
         </div>
 
         <div class="table-responsive data-table-responsive">
             <table class="table table-hover table-bordered p-0 m-0 datatable-fragment">
                 <thead>
                     <tr>
-                        <th>Menu Code</th>
-                        <th>Title</th>
-                        <th>Parent Menu</th>
+                        <th>Code Type</th>
+                        <th>Code</th>
+                        <th>Description</th>
                         <th class="text-center">Sequence</th>
-                        <th data-no-sort="Y">Icon</th>
                         <th class="text-right" data-no-sort="Y">Actions</th>
                     </tr>
                 </thead>
@@ -21,17 +20,14 @@
                     @foreach ($detailList as $x)
                         <tr>
                             <td>
-                                <a data-reloadurl="{{ route('SA05', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->xmenu }}</a>
+                                <a data-reloadurl="{{ route('SA07', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->type }}</a>
                             </td>
-                            <td>{{ $x->title }}</td>
-                            <td>
-                                <span class="badge bg-{{ $x->parent_menu_id ? 'primary' : 'warning' }}">{{ $x->parent_menu_id ? $x->parentMenu->xmenu . ' - ' . $x->parentMenu->title : 'No Parent' }}</span>
-                            </td>
+                            <td>{{ $x->xcode }}</td>
+                            <td>{{ $x->description }}</td>
                             <td class="text-center">{{ $x->seqn }}</td>
-                            <td><i class="{{ $x->icon }}"></i></td>
                             <td>
                                 <div class="d-flex justify-content-end align-items-center gap-2">
-                                    <button data-url="{{ route('SA05.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                    <button data-url="{{ route('SA07.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
                                         <i class="ph ph-trash"></i>
                                     </button>
                                 </div>

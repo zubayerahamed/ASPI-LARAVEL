@@ -100,56 +100,56 @@ class ShareMenuData
             ];
             $menu[] = [
                 'text' => 'Menus',
-                'route' => 'AD01',
-                'icon' => 'ph ph-align-left',
-                'classes' => 'screen-item d-flex align-items-center',
-                'data' => [
-                    'screen' => 'AD01',
-                ],
-            ];
-            $menu[] = [
-                'text' => 'Navigation Management',
-                'route' => 'AD02',
-                'icon' => 'ph ph-anchor-simple',
-                'classes' => 'screen-item d-flex align-items-center',
-                'data' => [
-                    'screen' => 'AD02',
-                ],
-            ];
-            $menu[] = [
-                'text' => 'Codes & Parameters',
                 'route' => 'SA05',
-                'icon' => 'ph ph-tree-structure',
+                'icon' => 'ph ph-align-left',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
                     'screen' => 'SA05',
                 ],
             ];
             $menu[] = [
+                'text' => 'Navigation Management',
+                'route' => 'SA06',
+                'icon' => 'ph ph-anchor-simple',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'SA06',
+                ],
+            ];
+            $menu[] = [
+                'text' => 'Codes & Parameters',
+                'route' => 'SA07',
+                'icon' => 'ph ph-tree-structure',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'SA07',
+                ],
+            ];
+            $menu[] = [
                 'text' => 'Category',
-                'route' => 'AD03',
+                'route' => 'MD02',
                 'icon' => 'ph ph-sort-ascending',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
-                    'screen' => 'AD03',
+                    'screen' => 'MD02',
                 ],
             ];
             $menu[] = [
                 'text' => 'Attribute',
-                'route' => 'AD04',
+                'route' => 'MD03',
                 'icon' => 'ph ph-arrows-split',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
-                    'screen' => 'AD04',
+                    'screen' => 'MD03',
                 ],
             ];
             $menu[] = [
                 'text' => 'Tags',
-                'route' => 'AD06',
+                'route' => 'MD05',
                 'icon' => 'ph ph-tag-chevron',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
-                    'screen' => 'AD06',
+                    'screen' => 'MD05',
                 ],
             ];
 
@@ -171,11 +171,11 @@ class ShareMenuData
             ];
             $menu[] = [
                 'text' => 'Access Profiles',
-                'route' => 'AD07',
+                'route' => 'AD02',
                 'icon' => 'ph ph-fingerprint',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
-                    'screen' => 'AD07',
+                    'screen' => 'AD02',
                 ],
             ];
 
@@ -189,11 +189,11 @@ class ShareMenuData
 
             $menu[] = [
                 'text' => 'Access Profiles',
-                'route' => 'AD07',
+                'route' => 'AD02',
                 'icon' => 'ph ph-fingerprint',
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
-                    'screen' => 'AD07',
+                    'screen' => 'AD02',
                 ],
             ];
 

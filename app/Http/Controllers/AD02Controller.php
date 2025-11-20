@@ -3,136 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ReloadSection;
-use App\Models\Menu;
-use App\Models\MenuScreen;
-use App\Models\Screen;
+use App\Models\Profile;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class AD02Controller extends ZayaanController
 {
-
-    public function recursiveToChilds($menu, $count = 1)
-    {
-        foreach ($menu['children'] as &$child) { // Use reference to modify original array
-            Log::debug(str_repeat('--', $count) . ' Child Menu: ' . $child['xmenu'] . ' - ' . $child['title']);
-
-            // Initialize menu_screens array if not exists
-            if (!isset($child['menu_screens'])) {
-                $child['menu_screens'] = [];
-            }
-
-            // Find the menu screens associated with this menu
-            $menuScreens = MenuScreen::with(['menu', 'screen'])->where('menu_id', $child['id'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get();
-
-            foreach ($menuScreens as $ms) {
-                Log::debug(str_repeat('   ', $count) . '-> Menu Screen: ' . $ms->screen->xscreen . ' - ' . $ms->screen->title . ' (Alternate Title: ' . ($ms->alternate_title ?? 'N/A') . ')');
-                $child['menu_screens'][] = [
-                    'id' => $ms->id,
-                    'menu_id' => $ms->menu_id,
-                    'screen_id' => $ms->screen_id,
-                    'alternate_title' => $ms->alternate_title ?? $ms->screen->title,
-                    'seqn' => $ms->seqn,
-                    'screen_xscreen' => $ms->screen->xscreen,
-                    'menu_xmenu' => $ms->menu->xmenu,
-                    'screen_type' => $ms->screen->type,
-                ];
-                // REMOVE THIS: dd($child);
-            }
-
-            if (!empty($child['children'])) {
-                $child = $this->recursiveToChilds($child, $count + 1);
-            }
-        }
-
-        return $menu;
-    }
-
-    public function getMenuGroup()
-    {
-        $menus = Menu::generateMenuTree();
-        $menuGroupWithScreen = [];
-
-        foreach ($menus as &$menu) { // Use reference to modify original array
-            Log::debug("Menu: " . $menu['xmenu'] . " - " . $menu['title']);
-
-            // Initialize menu_screens array if not exists
-            if (!isset($menu['menu_screens'])) {
-                $menu['menu_screens'] = [];
-            }
-
-            // Find the menu screens associated with this menu
-            $menuScreens = MenuScreen::with(['menu', 'screen'])->where('menu_id', $menu['id'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get();
-
-            foreach ($menuScreens as $ms) {
-                Log::debug("-> Menu Screen: " . $ms->screen->xscreen . " - " . $ms->screen->title . " (Alternate Title: " . ($ms->alternate_title ?? 'N/A') . ")");
-                $menu['menu_screens'][] = [
-                    'id' => $ms->id,
-                    'menu_id' => $ms->menu_id,
-                    'screen_id' => $ms->screen_id,
-                    'alternate_title' => $ms->alternate_title ?? $ms->screen->title,
-                    'seqn' => $ms->seqn,
-                    'screen_xscreen' => $ms->screen->xscreen,
-                    'menu_xmenu' => $ms->menu->xmenu,
-                    'screen_type' => $ms->screen->type,
-                ];
-            }
-
-            $menu = $this->recursiveToChilds($menu);
-            $menuGroupWithScreen[] = $menu;
-        }
-
-        return $menuGroupWithScreen;
-    }
 
     public function index(Request $request)
     {
         $id = $request->query('id', 'RESET'); // Returns null if not present
         $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
 
-
-
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
                 return response()->json([
                     'page' => view('pages.AD02.AD02', [
-                        'menus' => Menu::generateMenuTree(),
-                        'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
-                        'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
-                        'detailList' => $this->getMenuGroup()
+                        'profile' => (new Profile())->fill(['seqn' => 0, 'is_active' => 1]),
                     ])->render(),
-                    'content_header_title' => 'Navigation Management',
-                    'subtitle' => 'Navigation',
+                    'content_header_title' => 'Access Profile',
+                    'subtitle' => 'Access Profile',
                 ]);
             }
 
             if ("RESET" == $id) {
                 return response()->json([
                     'page' => view('pages.AD02.AD02-main-form', [
-                        'menus' => Menu::generateMenuTree(),
-                        'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
-                        'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
+                        'profile' => (new Profile())->fill(['seqn' => 0, 'is_active' => 1]),
                     ])->render(),
                 ]);
             }
 
             try {
-                $menuScreen = MenuScreen::findOrFail($id);
+                $profile = Profile::findOrFail($id);
 
                 return response()->json([
                     'page' => view('pages.AD02.AD02-main-form', [
-                        'menus' => Menu::generateMenuTree(),
-                        'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
-                        'menuScreen' => $menuScreen,
+                        'profile' => $profile,
                     ])->render(),
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
                     'page' => view('pages.AD02.AD02-main-form', [
-                        'menus' => Menu::generateMenuTree(),
-                        'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
-                        'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
+                        'profile' => (new Profile())->fill(['seqn' => 0, 'is_active' => 1]),
                     ])->render(),
                 ]);
             }
@@ -141,141 +54,51 @@ class AD02Controller extends ZayaanController
         // When url is directly hit from url bar
         return view('index', [
             'page' => 'pages.AD02.AD02',
-            'content_header_title' => 'Navigation Management',
-            'subtitle' => 'Navigation',
-            'menus' => Menu::generateMenuTree(),
-            'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
-            'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
-            'detailList' => $this->getMenuGroup()
+            'content_header_title' => 'Access Profile',
+            'subtitle' => 'Access Profile',
+            'profile' => (new Profile())->fill(['seqn' => 0, 'is_active' => 1]),
         ]);
     }
 
-    public function headerTable()
-    {
-        return response()->json([
-            'page' => view('pages.AD02.AD02-header-table', [
-                'detailList' => $this->getMenuGroup()
-            ])->render(),
-        ]);
-    }
 
     public function create(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
-            'menu_id' => 'required|exists:menus,id',
-            'screen_id' => 'required|exists:screens,id',
-            'alternate_title' => 'nullable|string|max:50',
+            'name' => 'required',
+            'seqn' => 'required|integer',
         ], [
-            'menu_id.required' => 'The menu field is required.',
-            'menu_id.exists' => 'The selected menu is invalid.',
-            'screen_id.required' => 'The screen field is required.',
-            'screen_id.exists' => 'The selected screen is invalid.',
-            'alternate_title.max' => 'The alternate title may not be greater than 50 characters.',
+            'name.required' => 'Profile name is required',
+            'seqn.required' => 'Sequence is required',
+            'seqn.integer' => 'Sequence must be an integer',
         ]);
 
         $validator->validate();
 
-        $request['seqn'] = $request->input('seqn') ?? 0;
-        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
+        $request['is_active'] = $request->has('is_active');
+        $request['business_id'] = getBusinessId();
 
-        // CHeck uniqueness
-        $exists = MenuScreen::where('menu_id', $request->input('menu_id'))
-            ->where('screen_id', $request->input('screen_id'))
-            ->where('business_id', getBusinessId())
-            ->first();
-
-        if ($exists) {
-            $this->setErrorStatusAndMessage("The combination of Menu and Screen must be unique. This combination already exists.");
-            return $this->getResponse();
-        }
-
-        $menuScreen = MenuScreen::create($request->only([
-            'menu_id',
-            'screen_id',
-            'business_id',
-            'alternate_title',
+        $profile = Profile::create($request->only([
+            'name',
             'seqn',
+            'is_active',
+            'business_id'
         ]));
 
-        if ($menuScreen) {
+        if ($profile) {
             $this->setReloadSections([
                 new ReloadSection('main-form-container', route('AD02', ['id' => 'RESET'])),
-                new ReloadSection('header-table-container', route('AD02.header-table')),
+                // new ReloadSection('header-table-container', route('AD02.header-table')),
             ]);
-            $this->setSuccessStatusAndMessage("Menu Screen created successfully");
+            $this->setSuccessStatusAndMessage("Profile created successfully");
             return $this->getResponse();
         }
 
-        $this->setErrorStatusAndMessage("Menu Screen creation failed");
+        $this->setErrorStatusAndMessage("Profile creation failed");
         return $this->getResponse();
     }
 
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'menu_id' => 'required|exists:menus,id',
-            'screen_id' => 'required|exists:screens,id',
-            'alternate_title' => 'nullable|string|max:50',
-        ], [
-            'menu_id.required' => 'The menu field is required.',
-            'menu_id.exists' => 'The selected menu is invalid.',
-            'screen_id.required' => 'The screen field is required.',
-            'screen_id.exists' => 'The selected screen is invalid.',
-            'alternate_title.max' => 'The alternate title may not be greater than 50 characters.',
-        ]);
 
-        $validator->validate();
 
-        $request['seqn'] = $request->input('seqn') ?? 0;
 
-        // CHeck uniqueness
-        $exists = MenuScreen::where('menu_id', $request->input('menu_id'))
-            ->where('screen_id', $request->input('screen_id'))
-            ->where('business_id', getBusinessId())
-            ->where('id', '!=', $id)
-            ->first();
-
-        if ($exists) {
-            $this->setErrorStatusAndMessage("The combination of Menu and Screen must be unique. This combination already exists.");
-            return $this->getResponse();
-        }
-
-        try {
-            $menuScreen = MenuScreen::findOrFail($id);
-            $menuScreen->update($request->only([
-                'menu_id',
-                'screen_id',
-                'alternate_title',
-                'seqn',
-            ]));
-
-            $this->setReloadSections([
-                new ReloadSection('main-form-container', route('AD02', ['id' => $menuScreen->id])),
-                new ReloadSection('header-table-container', route('AD02.header-table')),
-            ]);
-            $this->setSuccessStatusAndMessage("Menu Screen updated successfully");
-            return $this->getResponse();
-        } catch (\Throwable $th) {
-            $this->setErrorStatusAndMessage("Menu Screen update failed");
-            return $this->getResponse();
-        }
-    }
-
-    public function delete(Request $request, $id)
-    {
-        try {
-            $menuScreen = MenuScreen::findOrFail($id);
-            $menuScreen->delete();
-
-            $this->setReloadSections([
-                new ReloadSection('main-form-container', route('AD02', ['id' => 'RESET'])),
-                new ReloadSection('header-table-container', route('AD02.header-table')),
-            ]);
-            $this->setSuccessStatusAndMessage("Menu Screen deleted successfully");
-            return $this->getResponse();
-        } catch (\Throwable $th) {
-            $this->setErrorStatusAndMessage("Menu Screen deletion failed");
-            return $this->getResponse();
-        }
-    }
 }
