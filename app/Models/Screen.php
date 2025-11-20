@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Screen extends Model
 {
-    use SoftDeletes;
-
     protected $fillable = [
         'xscreen',
         'title',

@@ -24,7 +24,6 @@ return new class extends Migration
             $table->integer('seqn')->default(0);
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

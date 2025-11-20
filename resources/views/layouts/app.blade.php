@@ -11,6 +11,7 @@
 {{-- Add common CSS customizations --}}
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/css/kit-ui.css') }}" />
+    @vite(['resources/css/app.css'])
 @endpush
 
 {{-- Extend and customize the page content header --}}

@@ -34,7 +34,6 @@ return new class extends Migration
             $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

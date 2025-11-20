@@ -24,7 +24,6 @@ return new class extends Migration
             $table->unique(['xmenu', 'business_id']);  // menu will be unique per business
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
