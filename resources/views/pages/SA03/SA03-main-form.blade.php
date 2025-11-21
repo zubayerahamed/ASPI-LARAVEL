@@ -18,7 +18,6 @@
                     <div class="form-group">
                         <label class="form-label" for="country">Businesses</label>
                         <select class="form-control select2bs4" id="business_ids" name="business_ids[]" multiple required>
-                            <option value="">-- Select Business --</option>
                             @foreach ($businesses as $business)
                                 <option value="{{ $business->id }}" {{ $user->businesses && $user->businesses->contains('id', $business->id) ? 'selected' : '' }}>{{ $business->name }}</option>
                             @endforeach
@@ -26,10 +25,14 @@
                     </div>
                 </div>
                 @if ($user->id != null)
+                    <div class="col-md-12"></div>
+
                     <div class="col-md-3">
-                        <div class="form-group mb-3">
-                            <label class="form-label d-block" for="is_active">Is Active?</label>
-                            <input type="checkbox" id="is_active" name="is_active" {{ $user->status == 'active' ? 'checked' : '' }}>
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $user->status == 'active' ? 'checked' : '' }}>
+                                <label for="is_active" class="custom-control-label form-label">Is Active?</label>
+                            </div>
                         </div>
                     </div>
                 @endif

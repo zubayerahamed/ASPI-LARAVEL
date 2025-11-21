@@ -52,10 +52,10 @@ class BusinessSelectionController extends ZayaanController
 
         // if user is system admin, then go to dashboard
         if ($user->is_system_admin) {
-            return redirect()->route('home');
+            return redirect()->route('DASH');
         }
 
         // If user is not system admin, then go to profile selection page, if user has single profile, then set profile to session and go to dashboard
-        return redirect()->route('home');
+        return redirect()->route('DASH');
     }
 }

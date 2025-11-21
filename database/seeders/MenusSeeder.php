@@ -16,7 +16,7 @@ class MenusSeeder extends Seeder
 
         $adminId = DB::table('menus')->insertGetId([
             'xmenu' => 'M100',
-            'title' => 'Administration',
+            'title' => 'Business Administration',
             'icon' => 'ph ph-align-left',
             'seqn' => 1,
             'parent_menu_id' => null,
@@ -65,7 +65,7 @@ class MenusSeeder extends Seeder
             // ======= Administration =======
             [
                 'xmenu' => 'M101',
-                'title' => 'Administratation',
+                'title' => 'Administration',
                 'icon' => 'ph ph-align-left',
                 'seqn' => 1,
                 'parent_menu_id' => $adminId,

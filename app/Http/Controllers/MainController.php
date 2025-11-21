@@ -23,13 +23,13 @@ class MainController extends ZayaanController
         // dd(getSelectedBusiness());
 
         // If already has selected business, redirect to dashboard
-        if (getSelectedBusiness()) {
-            return view('index', [
-                'page' => 'pages.DASH.DASH',
-                'content_header_title' => 'Dashboard',
-                'subtitle' => 'Dashboard',
-            ]);
-        }
+        // if (getSelectedBusiness()) {
+        //     return view('index', [
+        //         'page' => 'pages.DASH.DASH',
+        //         'content_header_title' => 'Dashboard',
+        //         'subtitle' => 'Dashboard',
+        //     ]);
+        // }
 
         // Get Auth User's businesses
         $loggedInUser = User::find(getLoggedInUserDetails()['id']); // Refresh user data

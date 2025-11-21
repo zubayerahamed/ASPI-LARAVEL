@@ -16,6 +16,17 @@ class Profile extends Model
         'business_id',
     ];
 
+    protected $cast = [
+        'is_active' => 'boolean',
+    ];
+
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+
     public function business()
     {
         return $this->belongsTo(Business::class);
@@ -50,5 +61,13 @@ class Profile extends Model
         }
 
         return $slug;
+    }
+
+    /**
+     * The users that belong to the profile.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_profiles');
     }
 }

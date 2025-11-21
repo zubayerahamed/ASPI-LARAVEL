@@ -14,6 +14,7 @@ use App\Http\Controllers\MD03Controller;
 use App\Http\Controllers\MD04Controller;
 use App\Http\Controllers\MD05Controller;
 use App\Http\Controllers\AD02Controller;
+use App\Http\Controllers\AD03Controller;
 use App\Http\Controllers\AD18Controller;
 use App\Http\Controllers\SA07Controller;
 use Illuminate\Support\Facades\Route;
@@ -100,6 +101,11 @@ Route::post('/AD02', [AD02Controller::class, 'create'])->name('AD02.create');
 Route::put('/AD02/{id}', [AD02Controller::class, 'update'])->name('AD02.update');
 Route::delete('/AD02/{id}', [AD02Controller::class, 'delete'])->name('AD02.delete');
 
+Route::get('/AD03', [AD03Controller::class, 'index'])->name('AD03');
+Route::get('/AD03/header-table', [AD03Controller::class, 'headerTable'])->name('AD03.header-table');
+Route::post('/AD03', [AD03Controller::class, 'create'])->name('AD03.create');
+Route::put('/AD03/{id}', [AD03Controller::class, 'update'])->name('AD03.update');
+Route::delete('/AD03/{id}', [AD03Controller::class, 'delete'])->name('AD03.delete');
 
 
 Route::post('/AD18', [AD18Controller::class, 'create'])->name('AD18.create');

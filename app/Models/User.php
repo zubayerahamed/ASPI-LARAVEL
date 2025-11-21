@@ -83,4 +83,13 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Business::class, 'business_user')->withPivot('is_active');
     }
+
+    /**
+     * The profiles that belong to the user.
+     */
+    public function profiles()
+    {
+        return $this->belongsToMany(Profile::class, 'user_profiles')->withPivot('business_id');
+    }
+
 }

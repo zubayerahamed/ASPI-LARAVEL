@@ -179,6 +179,16 @@ class ShareMenuData
                 ],
             ];
 
+             $menu[] = [
+                'text' => 'Manage Users',
+                'route' => 'AD03',
+                'icon' => 'ph ph-fingerprint',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'AD03',
+                ],
+            ];
+
             return $menu;
         }
 
@@ -194,6 +204,16 @@ class ShareMenuData
                 'classes' => 'screen-item d-flex align-items-center',
                 'data' => [
                     'screen' => 'AD02',
+                ],
+            ];
+
+            $menu[] = [
+                'text' => 'Manage Users',
+                'route' => 'AD03',
+                'icon' => 'ph ph-fingerprint',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'AD03',
                 ],
             ];
 
