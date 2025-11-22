@@ -18,11 +18,11 @@ class DatabaseSeeder extends Seeder
     {
         // Call individual seeders
         $this->call([
-            // BusinessCategorySeeder::class,
-            // XcodesSeeder::class,
-            // ScreensSeeder::class,
-            // MenusSeeder::class,
-            // MenuScreensSeeder::class,
+            BusinessCategorySeeder::class,
+            XcodesSeeder::class,
+            ScreensSeeder::class,
+            MenusSeeder::class,
+            MenuScreensSeeder::class,
         ]);
     }
 }

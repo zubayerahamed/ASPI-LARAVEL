@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('business_user', function (Blueprint $table) {
-            $table->foreignId('business_id')->references('id')->on('businesses')->onDelete('cascade');
+        Schema::create('user_businesseses', function (Blueprint $table) {
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('business_id')->references('id')->on('businesses')->onDelete('cascade');
             $table->boolean('is_active')->default(true);
+            $table->primary(['user_id', 'business_id']);
         });
     }
 

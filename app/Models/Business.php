@@ -50,7 +50,7 @@ class Business extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'business_user')->withPivot('is_active');
+        return $this->belongsToMany(User::class, 'user_businesseses')->withPivot('is_active');
     }
 
     public function branches()

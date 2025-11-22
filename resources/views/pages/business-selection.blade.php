@@ -9,9 +9,9 @@
         @endif
         @foreach ($businesses as $business)
             <div class="col-md-3">
-                <a  href="{{ route('business.selection', ['id' => $business->id]) }}" 
-                    class="d-block business-card text-center mb-4 border bg-white cursor-pointer" style="border-radius: 10px; overflow: hidden; box-shadow: 0px 0px 5px #ddd">
-                    <div class="bg-success p-2">
+                <a  href="{{ route('business-selection.select', ['id' => $business->id]) }}" 
+                    class="d-block  text-center mb-4 border bg-white cursor-pointer" style="border-radius: 5px; overflow: hidden;">
+                    <div class="bg-primary p-2">
                         <h4 class="mt-2 mb-0 text-bold">{{ $business->name }}</h4>
                         <p class="text-sm">Joined {{ date('d-M-Y', strtotime($business->created_at)) }}</p>
                     </div>

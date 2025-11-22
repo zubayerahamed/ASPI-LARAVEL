@@ -16,6 +16,7 @@ use App\Http\Controllers\MD05Controller;
 use App\Http\Controllers\AD02Controller;
 use App\Http\Controllers\AD03Controller;
 use App\Http\Controllers\AD18Controller;
+use App\Http\Controllers\ProfileSelectionController;
 use App\Http\Controllers\SA07Controller;
 use Illuminate\Support\Facades\Route;
 
@@ -111,7 +112,10 @@ Route::delete('/AD03/{id}', [AD03Controller::class, 'delete'])->name('AD03.delet
 Route::post('/AD18', [AD18Controller::class, 'create'])->name('AD18.create');
 Route::delete('/AD18', [AD18Controller::class, 'destroy'])->name('AD18.destroy');
 
-Route::get('/business-selection/{id}', [BusinessSelectionController::class, 'selectBusiness'])->name('business.selection');
+Route::get('/business-selection', [BusinessSelectionController::class, 'index'])->name('business-selection');
+Route::get('/business-selection/{id}', [BusinessSelectionController::class, 'selectBusiness'])->name('business-selection.select');
+Route::get('/profile-selection', [ProfileSelectionController::class, 'index'])->name('profile-selection');
+Route::get('/profile-selection/{id}', [ProfileSelectionController::class, 'selectProfile'])->name('profile-selection.select');
 
 Route::post('/search/table/{fragmentcode}/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'index'])->name('search.index');
 Route::post('/search/LAD02/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LAD02'])->name('search.LAD02');

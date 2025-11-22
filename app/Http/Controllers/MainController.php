@@ -33,22 +33,22 @@ class MainController extends ZayaanController
 
         // Get Auth User's businesses
         $loggedInUser = User::find(getLoggedInUserDetails()['id']); // Refresh user data
-        $businesses = $loggedInUser->businesses()->with(['businessCategory'])->orderBy('name', 'asc')->get();
 
         // Check if user has selected business
-        if (getSelectedBusiness()) {
-            // Filter and remove the selected business from the list
-            $selectedBusinessId = getSelectedBusiness()['id'];
-            $businesses = $businesses->filter(function ($business) use ($selectedBusinessId) {
-                return $business->id !== $selectedBusinessId;
-            });
+        if (getSelectedBusiness() == null) {
+            return redirect()->route('business-selection');
+        }
+
+        if(!($loggedInUser->is_system_admin || $loggedInUser->is_business_admin)){
+            if(getSelectedProfile() == null) {
+                return redirect()->route('profile-selection');
+            }
         }
 
         return view('index', [
-            'page' => 'pages.business-selection',
-            'content_header_title' => getSelectedBusiness() == null ? 'Select Business' : 'Switch Business',
-            'subtitle' => 'Business Selection',
-            'businesses' => $businesses
+            'page' => 'pages.navigation-selection',
+            'content_header_title' => 'Select Navigation',
+            'subtitle' => 'Navigation Selection',
         ]);
     }
 }

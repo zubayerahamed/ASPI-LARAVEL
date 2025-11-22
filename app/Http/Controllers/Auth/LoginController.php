@@ -130,6 +130,7 @@ class LoginController extends Controller
                 'is_driver' => $user->is_driver,
                 'is_customer' => $user->is_customer,
                 'selected_business' => null,
+                'selected_profile' => null,
             ]);
 
             return redirect()->intended($this->redirectPath());

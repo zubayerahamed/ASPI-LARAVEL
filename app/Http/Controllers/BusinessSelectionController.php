@@ -9,6 +9,30 @@ use Illuminate\Http\Request;
 
 class BusinessSelectionController extends ZayaanController
 {
+
+    public function index()
+    {
+        // Get Auth User's businesses
+        $loggedInUser = User::find(getLoggedInUserDetails()['id']); // Refresh user data
+        $businesses = $loggedInUser->businesses()->with(['businessCategory'])->orderBy('name', 'asc')->get();
+
+        // Check if user has selected business
+        if (getSelectedBusiness()) {
+            // Filter and remove the selected business from the list
+            $businesses = $businesses->filter(function ($business){
+                return $business->id !== getBusinessId();
+            });
+        }
+
+        return view('index', [
+            'page' => 'pages.business-selection',
+            'content_header_title' => getSelectedBusiness() == null ? 'Select Business' : 'Switch Business',
+            'subtitle' => 'Business Selection',
+            'businesses' => $businesses
+        ]);
+    }
+
+
     // Logic to handle business selection based on the provided ID
     // This could involve setting a session variable, redirecting, etc.
     public function selectBusiness(Request $request, $id)
@@ -51,11 +75,11 @@ class BusinessSelectionController extends ZayaanController
         ZayaanSessionManager::update('user_info', $loggedInUser);
 
         // if user is system admin, then go to dashboard
-        if ($user->is_system_admin) {
-            return redirect()->route('DASH');
+        if ($user->is_system_admin || $user->is_business_admin) {
+            return redirect()->route('home')->with('success', 'Business selected successfully.');
         }
 
         // If user is not system admin, then go to profile selection page, if user has single profile, then set profile to session and go to dashboard
-        return redirect()->route('DASH');
+        return redirect()->route('profile-selection')->with('success', 'Business selected successfully.');
     }
 }

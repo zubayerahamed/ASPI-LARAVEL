@@ -81,7 +81,7 @@ class User extends Authenticatable
      */
     public function businesses()
     {
-        return $this->belongsToMany(Business::class, 'business_user')->withPivot('is_active');
+        return $this->belongsToMany(Business::class, 'user_businesseses')->withPivot('is_active');
     }
 
     /**
