@@ -4,8 +4,13 @@
     @foreach ($x['menu_screens'] as $screen)
         <div class="form-group" style="margin-left: {{ $margin + 50 }}px;">
             <div class="custom-control custom-checkbox">
-                <input class="custom-control-input" type="checkbox" id="is_inhouse" name="is_inhouse" {{ $screen['is_active'] ? 'checked' : '' }}>
-                <label for="is_inhouse" class="custom-control-label form-label">
+                <input  class="custom-control-input profiledt-checkbox cursor-pointer"
+                        type="checkbox" 
+                        id="profiledt-{{ $screen['profile_id'] }}-{{ $screen['id'] }}" 
+                        data-profileid="{{ $screen['profile_id'] }}"
+                        data-menuscreenid="{{ $screen['id'] }}"
+                        {{ $screen['is_active'] ? 'checked' : '' }}>
+                <label for="profiledt-{{ $screen['profile_id'] }}-{{ $screen['id'] }}" class="custom-control-label form-label">
                     {{ $screen['screen_xscreen'] }} - {{ $screen['alternate_title'] }}
                     @if ($screen['screen_type'] == 'Screen')
                         <span class="ml-2 badge bg-primary">{!! $screen['screen_type'] !!}</span>

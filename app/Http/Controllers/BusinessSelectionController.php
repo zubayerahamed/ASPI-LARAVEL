@@ -10,18 +10,32 @@ use Illuminate\Http\Request;
 class BusinessSelectionController extends ZayaanController
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
+
         // Get Auth User's businesses
-        $loggedInUser = User::find(getLoggedInUserDetails()['id']); // Refresh user data
-        $businesses = $loggedInUser->businesses()->with(['businessCategory'])->orderBy('name', 'asc')->get();
+        $loggedInUser = User::with('businesses')->find(getLoggedInUserDetails()['id']); // Refresh user data
+        $businesses = $loggedInUser->businesses()->orderBy('name', 'asc')->get();
 
         // Check if user has selected business
         if (getSelectedBusiness()) {
             // Filter and remove the selected business from the list
-            $businesses = $businesses->filter(function ($business){
+            $businesses = $businesses->filter(function ($business) {
                 return $business->id !== getBusinessId();
             });
+        }
+
+        if ($request->ajax()) {
+            if ($frommenu == 'Y') {
+                return response()->json([
+                    'page' => view('pages.business-selection', [
+                        'businesses' => $businesses
+                    ])->render(),
+                    'content_header_title' => getSelectedBusiness() == null ? 'Select Business' : 'Switch Business',
+                    'subtitle' => getSelectedBusiness() == null ? 'Select Business' : 'Switch Business',
+                ]);
+            }
         }
 
         return view('index', [

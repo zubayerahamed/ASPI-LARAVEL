@@ -52,9 +52,7 @@ class AD03Controller extends ZayaanController
                                     ->where('is_driver', 0)
                                     ->where('is_customer', 0);
                             },
-                            'users.businesses' => function ($q) use ($currentBusinessId) {
-                                $q->where('business_id', $currentBusinessId)->wherePivot('is_active', true);
-                            },
+                            'users.businesses',
                             'users.profiles' => function ($q) use ($currentBusinessId) {
                                 $q->wherePivot('business_id', $currentBusinessId);
                             },

@@ -99,6 +99,7 @@ Route::delete('/MD05/{id}', [MD05Controller::class, 'delete'])->name('MD05.delet
 Route::get('/AD02', [AD02Controller::class, 'index'])->name('AD02');
 Route::get('/AD02/detail-table', [AD02Controller::class, 'detailTable'])->name('AD02.detail-table');
 Route::post('/AD02', [AD02Controller::class, 'create'])->name('AD02.create');
+Route::post('/AD02/detail-table', [AD02Controller::class, 'detailCreate'])->name('AD02.detail-table.create');
 Route::put('/AD02/{id}', [AD02Controller::class, 'update'])->name('AD02.update');
 Route::delete('/AD02/{id}', [AD02Controller::class, 'delete'])->name('AD02.delete');
 

@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -90,6 +91,15 @@ class User extends Authenticatable
     public function profiles()
     {
         return $this->belongsToMany(Profile::class, 'user_profiles')->withPivot('business_id');
+    }
+
+    public static function adminlte_image()
+    {
+        $user = User::find(Auth::id());
+        if ($user && $user->is_system_admin) {
+            return asset('images/system_admin_avatar.png');
+        }
+        return asset('images/default_avatar.png');
     }
 
 }

@@ -6,7 +6,7 @@
         </div>
 
         <div class="table-responsive data-table-responsive">
-            <table class="table table-hover table-bordered p-0 m-0 datatable-fragment">
+            <table class="table table-hover table-bordered p-0 m-0 MD05-datatable-fragment">
                 <thead>
                     <tr>
                         <th>Tag</th>
@@ -49,9 +49,9 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            kit.ui.config.initDatatable('datatable-fragment');
+            kit.ui.config.initDatatable('MD05-datatable-fragment');
 
-            $('.datatable-fragment').on('click', 'a.detail-dataindex', function(e){
+            $('.MD05-datatable-fragment').on('click', 'a.detail-dataindex', function(e){
                 e.preventDefault();
 
                 sectionReloadAjaxReq({
@@ -60,7 +60,7 @@
                 });
             });
 
-            $('.datatable-fragment').on('click', 'button.btn-table-delete', function(e){
+            $('.MD05-datatable-fragment').on('click', 'button.btn-table-delete', function(e){
                 e.preventDefault();
                 sweetAlertConfirm(() => {
                     deleteRequest($(this).data('url'));

@@ -31,11 +31,11 @@ class AD02Controller extends ZayaanController
                 Log::debug(str_repeat('   ', $count) . '-> Menu Screen: ' . $ms->screen->xscreen . ' - ' . $ms->screen->title . ' (Alternate Title: ' . ($ms->alternate_title ?? 'N/A') . ')');
 
                 // Check Menu Screen is available in profiledt
-                $profiledt = Profiledt::where('profile_id', getProfileId())
+                $profiledt = Profiledt::where('profile_id', $profileId)
                     ->where('business_id', getBusinessId())
                     ->where('menu_screen_id', $ms->id)
                     ->first();
-               
+
                 $child['menu_screens'][] = [
                     'id' => $ms->id,
                     'menu_id' => $ms->menu_id,
@@ -52,7 +52,7 @@ class AD02Controller extends ZayaanController
             }
 
             if (!empty($child['children'])) {
-                $child = $this->recursiveToChilds($child, $count + 1);
+                $child = $this->recursiveToChilds($child, $businessId, $profileId, $count + 1);
             }
         }
 
@@ -66,7 +66,7 @@ class AD02Controller extends ZayaanController
 
         $businessId = getBusinessId();
         $allowCustomeMenu = getSelectedBusiness()['is_allow_custom_menu'] ?? false;
-        if(!$allowCustomeMenu){
+        if (!$allowCustomeMenu) {
             $businessId = null;
         }
 
@@ -85,7 +85,7 @@ class AD02Controller extends ZayaanController
                 Log::debug("-> Menu Screen: " . $ms->screen->xscreen . " - " . $ms->screen->title . " (Alternate Title: " . ($ms->alternate_title ?? 'N/A') . ")");
 
                 // Check Menu Screen is available in profiledt
-                $profiledt = Profiledt::where('profile_id', getProfileId())
+                $profiledt = Profiledt::where('profile_id', $profileId)
                     ->where('business_id', getBusinessId())
                     ->where('menu_screen_id', $ms->id)
                     ->first();
@@ -104,7 +104,7 @@ class AD02Controller extends ZayaanController
                 ];
             }
 
-            $menu = $this->recursiveToChilds($menu, $businessId);
+            $menu = $this->recursiveToChilds($menu, $businessId, $profileId);
             $menuGroupWithScreen[] = $menu;
         }
 
@@ -139,6 +139,9 @@ class AD02Controller extends ZayaanController
 
             try {
                 $profile = Profile::findOrFail($id);
+
+                // dd($profile->toArray());
+                // dd($this->getMenuGroup($profile->id));
 
                 return response()->json([
                     'page' => view('pages.AD02.AD02-main-form', [
@@ -183,11 +186,12 @@ class AD02Controller extends ZayaanController
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'seqn' => 'required|integer',
+            'seqn' => 'required|integer|min:0',
         ], [
             'name.required' => 'Profile name is required',
             'seqn.required' => 'Sequence is required',
             'seqn.integer' => 'Sequence must be an integer',
+            'seqn.min' => 'Sequence must be at least 0',
         ]);
 
         $validator->validate();
@@ -204,8 +208,8 @@ class AD02Controller extends ZayaanController
 
         if ($profile) {
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('AD02', ['id' => 'RESET'])),
-                // new ReloadSection('header-table-container', route('AD02.header-table')),
+                new ReloadSection('main-form-container', route('AD02', ['id' => $profile->id])),
+                new ReloadSection('detail-table-container', route('AD02.detail-table', ['profile_id' => $profile->id])),
             ]);
             $this->setSuccessStatusAndMessage("Profile created successfully");
             return $this->getResponse();
@@ -215,7 +219,109 @@ class AD02Controller extends ZayaanController
         return $this->getResponse();
     }
 
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'seqn' => 'required|integer|min:0',
+        ], [
+            'seqn.required' => 'Sequence is required',
+            'seqn.integer' => 'Sequence must be an integer',
+            'seqn.min' => 'Sequence must be at least 0',
+        ]);
 
+        $validator->validate();
 
+        $request['is_active'] = $request->has('is_active');
 
+        $profile = Profile::find($id);
+        if (!$profile) {
+            $this->setErrorStatusAndMessage("Profile not found");
+            return $this->getResponse();
+        }
+
+        $profile->update($request->only([
+            'description',
+            'seqn',
+            'is_active',
+        ]));
+
+        if ($profile) {
+            $this->setReloadSections([
+                new ReloadSection('main-form-container', route('AD02', ['id' => $profile->id])),
+                new ReloadSection('detail-table-container', route('AD02.detail-table', ['profile_id' => $profile->id])),
+            ]);
+            $this->setSuccessStatusAndMessage("Profile updated successfully");
+            return $this->getResponse();
+        }
+
+        $this->setErrorStatusAndMessage("Profile update failed");
+        return $this->getResponse();
+    }
+
+    public function delete($id)
+    {
+        $profile = Profile::find($id);
+        if (!$profile) {
+            $this->setErrorStatusAndMessage("Profile not found");
+            return $this->getResponse();
+        }
+
+        // Also delete associated profiledt records
+        Profiledt::where('profile_id', $profile->id)->delete();
+
+        if ($profile->delete()) {
+            $this->setReloadSections([
+                new ReloadSection('main-form-container', route('AD02', ['id' => 'RESET'])),
+                new ReloadSection('detail-table-container', route('AD02.detail-table', ['profile_id' => 'RESET'])),
+            ]);
+
+            $this->setSuccessStatusAndMessage("Profile deleted successfully");
+            return $this->getResponse();
+        }
+
+        $this->setErrorStatusAndMessage("Profile deletion failed");
+        return $this->getResponse();
+    }
+
+    public function detailCreate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'profile_id' => 'required|exists:profiles,id',
+            'menu_screen_id' => 'required|exists:menu_screens,id',
+            'is_active' => 'boolean',
+        ], [
+            'profile_id.required' => 'Profile is required',
+            'profile_id.exists' => 'Selected Profile does not exist',
+            'menu_screen_id.required' => 'Menu Screen is required',
+            'menu_screen_id.exists' => 'Selected Menu Screen does not exist',
+            'is_active.boolean' => 'Is Active must be true or false',
+        ]);
+
+        $validator->validate();
+
+        $profileId = $request['profile_id'];
+        $menuScreenId = $request['menu_screen_id'];
+        $isActive = $request['is_active'] ?? false;
+        $businessId = getBusinessId();
+
+        if ($isActive) {
+            Profiledt::create([
+                'profile_id' => $profileId,
+                'menu_screen_id' => $menuScreenId,
+                'business_id' => $businessId,
+            ]);
+        } else {
+            $existingProfiledt = Profiledt::where('profile_id', $profileId)
+                ->where('menu_screen_id', $menuScreenId)
+                ->where('business_id', $businessId)
+                ->first();
+
+            if ($existingProfiledt) {
+                $existingProfiledt->delete();
+            }
+        }
+
+        $this->setSuccessStatusAndMessage($isActive ? "Menu Screen added successfully" : "Menu Screen removed successfully");
+        return $this->getResponse();
+    }
 }

@@ -5,7 +5,7 @@
             <h3 class="card-title">Menu page allocations</h3>
         </div>
 
-        <div class="card-body datatable-fragment">
+        <div class="card-body SA06-datatable-fragment">
             @foreach ($detailList as $x)
                 <p style="font-size: 20px; font-weight: bold">{{ $x['xmenu'] . ' - ' . $x['title'] }}</p>
                 <!-- Print assigned screens -->
@@ -34,7 +34,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('.datatable-fragment').on('click', 'a.detail-dataindex', function(e) {
+            $('.SA06-datatable-fragment').on('click', 'a.detail-dataindex', function(e) {
                 e.preventDefault();
 
                 sectionReloadAjaxReq({
@@ -43,7 +43,7 @@
                 });
             });
 
-            $('.datatable-fragment').on('click', 'a.btn-table-delete', function(e) {
+            $('.SA06-datatable-fragment').on('click', 'a.btn-table-delete', function(e) {
                 e.preventDefault();
                 sweetAlertConfirm(() => {
                     deleteRequest($(this).data('url'));

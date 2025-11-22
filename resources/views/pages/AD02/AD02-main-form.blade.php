@@ -21,7 +21,7 @@
                                         {{ $profile->id != null ? 'disabled' : '' }}
                                         {{ $profile->id == null ? 'required' : '' }}>
                                 <div class="input-group-append btn-search"
-                                    data-reloadurl="{{ route('search.index', ['fragmentcode' => 'LAD02', 'suffix' => 0]) }}"
+                                    data-reloadurl="{{ route('search.index', ['fragmentcode' => 'LAD02', 'suffix' => 0]) . '?hint=' }}"
                                     data-reloadid="search-suggest-results-container"
                                     data-fieldid="name"
                                     data-mainscreen=true
@@ -41,7 +41,7 @@
                 <div class="col-md-3">
                     <div class="form-group mb-3">
                         <label class="form-label" for="description">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="1">{{ $profile->description }}</textarea>
+                        <input type="text" id="description" name="description" class="form-control" value="{{ $profile->description }}">
                     </div>
                 </div>
                 <div class="col-md-3">
