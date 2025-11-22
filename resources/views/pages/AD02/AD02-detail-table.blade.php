@@ -1,49 +1,47 @@
-@if (!$detailList->isEmpty())
+@if ($detailList != null && count($detailList) > 0)
     <div class="card card-default">
 
         <div class="card-header">
-            <h3 class="card-title">Business Categories List</h3>
+            <h3 class="card-title">Profile Details</h3>
         </div>
 
-        <div class="table-responsive data-table-responsive">
-            <table class="table table-hover table-bordered p-0 m-0 datatable-fragment">
-                <thead>
-                    <tr>
-                        <th>Category Name</th>
-                        <th class="text-center">Category Code</th>
-                        <th class="text-center">Sequence</th>
-                        <th class="text-center">Is Active?</th>
-                        <th class="text-right" data-no-sort="Y">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($detailList as $x)
-                        <tr>
-                            <td>
-                                <a data-reloadurl="{{ route('AD02', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->name }}</a>
-                            </td>
-                            <td class="text-center">{{ $x->xcode }}</td>
-                            <td class="text-center">{{ $x->seqn }}</td>
-                            <td class="text-center">{{ $x->is_active ? 'Y' : 'N' }}</td>
-                            <td>
-                                <div class="d-flex justify-content-end align-items-center gap-2">
-                                    <button data-url="{{ route('AD02.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
-                                        <i class="ph ph-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
+        <div class="card-body datatable-fragment">
+           @foreach ($detailList as $x)
+                <p style="font-size: 20px; font-weight: bold">{{ $x['xmenu'] . ' - ' . $x['title'] }}</p>
+                <!-- Print assigned screens -->
+                @foreach ($x['menu_screens'] as $screen)
+                    <div class="form-group" style="margin-left: 50px;">
+                        <div class="custom-control custom-checkbox">
+                            <input  class="custom-control-input profiledt-checkbox" 
+                                    type="checkbox" 
+                                    data-profileid="{{ $screen['profile_id'] }}"
+                                    data-menuscreenid="{{ $screen['id'] }}"
+                                    {{ $screen['is_active'] ? 'checked' : '' }}>
+                            <label for="is_inhouse" class="custom-control-label form-label">
+                                {{ $screen['screen_xscreen'] }} - {{ $screen['alternate_title'] }}
+                                @if ($screen['screen_type'] == 'Screen')
+                                    <span class="ml-2 badge bg-primary">{!! $screen['screen_type'] !!}</span>
+                                @else
+                                    <span class="ml-2 badge bg-success">{!! $screen['screen_type'] !!}</span>
+                                @endif
+                                <span class="ml-2 badge bg-warning">{!! 'SN. ' . $screen['seqn'] !!}</span>
+                            </label>
+                        </div>
+                    </div>
+                @endforeach
 
-                </tbody>
-            </table>
+                <!-- Print Child Menus recursively -->
+                @if (isset($x['children']) && count($x['children']) > 0)
+                    @include('pages.AD02.AD02-detail-table-children', ['children' => $x['children'], 'margin' => 50])
+                @endif
+            @endforeach
         </div>
 
     </div>
 
     <script type="text/javascript">
         $(document).ready(function() {
-            kit.ui.config.initDatatable('datatable-fragment');
+            // kit.ui.config.initDatatable('datatable-fragment');
 
             $('.datatable-fragment').on('click', 'a.detail-dataindex', function(e) {
                 e.preventDefault();

@@ -41,7 +41,7 @@
                 name: 'id',
                 rendername: 'id',
                 render: function(data, type, row, meta) {
-                    return '<a style="text-decoration: underline; cursor: pointer;" class="dataindex" reloadid="main-form-container" href="/SA11?xmenu=" data-value="' + data + '" data-prompt="' + row['name'] + '">' + row['name'] + '</a>';
+                    return '<a data-prompt="' + row['name'] + '" data-value="' + data + '" style="cursor: pointer;" class="dataindex" href="#">' + row['name'] + '</a>';
                 }
             }, {
                 suffix: [0],
@@ -98,7 +98,7 @@
             "order": [orderarr],
             "columnDefs": columnDefs,
             "ajax": {
-                "url" : "{{ route('search.LAD07', ['suffix' => $suffix, 'dependentparam' => $dependentParam ?? '' ]) }}",
+                "url" : "{{ route('search.LAD02', ['suffix' => $suffix, 'dependentparam' => $dependentParam ?? '' ]) }}",
                 "type": 'POST', 
                 "headers": {
                     'X-CSRF-TOKEN': getCSRFToken()
@@ -123,20 +123,20 @@
 
                 sectionReloadAjaxReq({
                     id: mainreloadid,
-                    url: mainreloadurl + value
+                    url: (mainreloadurl + value).replace(/&amp;/g, "&")
                 });
 
                 if (detailreloadid) {
                     sectionReloadAjaxReq({
                         id: detailreloadid,
-                        url: detailreloadurl + value
+                        url: (detailreloadurl + value).replace(/&amp;/g, "&")
                     });
                 }
 
                 if (additionalreloadid) {
                     sectionReloadAjaxReq({
                         id: additionalreloadid,
-                        url: additionalreloadurl + value
+                        url: (additionalreloadurl + value).replace(/&amp;/g, "&")
                     });
                 }
             } else {

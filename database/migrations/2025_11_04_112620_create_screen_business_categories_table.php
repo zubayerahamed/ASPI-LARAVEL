@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('screen_business_categories', function (Blueprint $table) {
-            $table->id();
             $table->foreignId("screen_id")->references("id")->on("screens")->onDelete("cascade");
             $table->foreignId("business_category_id")->references("id")->on("business_categories")->onDelete("cascade");
             $table->unique(['screen_id', 'business_category_id']);  // unique per screen and business category
-            $table->timestamps();
         });
     }
 

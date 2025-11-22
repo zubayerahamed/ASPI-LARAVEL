@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="detail-table-container">
-            {{-- @include('pages.AD02.AD02-detail-table') --}}
+            @include('pages.AD02.AD02-detail-table')
         </div>
     </div>
 </div>

@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('profiledts', function (Blueprint $table) {
             $table->id();
 
-            $table->boolean('is_active')->default(false);
-
             $table->foreignId("profile_id")->references("id")->on("profiles")->onDelete("cascade");
             $table->foreignId("menu_screen_id")->references("id")->on("menu_screens")->onDelete("cascade");
+            $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
+
+            $table->unique(['profile_id', 'menu_screen_id', 'business_id']);
 
             $table->timestamps();
         });

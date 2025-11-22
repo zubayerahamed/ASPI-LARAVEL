@@ -11,7 +11,7 @@ class ProfileService
     /**
      * Get paginated Profiles data
      */
-    public function LAD07(
+    public function LAD02(
         int $length,
         int $start,
         string $orderColumn,
@@ -23,6 +23,8 @@ class ProfileService
         $searchValue = str_replace("'", "''", $searchValue);
 
         $query = Profile::query();
+
+        $query->where('business_id', getBusinessId());
 
         // Apply search filter
         if (!empty($searchValue)) {
@@ -52,9 +54,9 @@ class ProfileService
     }
 
     /**
-     * Get total count for LAD07 with filters
+     * Get total count for LAD02 with filters
      */
-    public function LAD07Count(
+    public function LAD02Count(
         string $orderColumn,
         DatatableSortOrderType $orderType,
         string $searchValue,

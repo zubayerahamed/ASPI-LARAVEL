@@ -28,8 +28,8 @@ return new class extends Migration
             $table->boolean('is_inhouse')->default(false);
             $table->boolean('is_pickup')->default(false);
             $table->boolean('is_delivery')->default(false);
-            $table->boolean('is_active')->default(false);
             $table->boolean('is_orders_open')->default(false);
+            $table->boolean('is_active')->default(false);
 
             $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
 

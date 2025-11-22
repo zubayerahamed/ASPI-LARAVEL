@@ -91,8 +91,6 @@ class SA06Controller extends ZayaanController
         $id = $request->query('id', 'RESET'); // Returns null if not present
         $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
 
-
-
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
                 return response()->json([
