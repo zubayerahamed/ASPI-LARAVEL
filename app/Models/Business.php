@@ -25,6 +25,7 @@ class Business extends Model
         'is_allow_custom_category',
         'is_allow_custom_attribute',
         'is_allow_custom_xcodes',
+        'is_allow_custom_tags',
 
         'business_category_id',
     ];

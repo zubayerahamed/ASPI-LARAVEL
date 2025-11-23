@@ -4,156 +4,62 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ReloadSection;
 use App\Models\Menu;
-use App\Models\MenuScreen;
-use App\Models\Profile;
-use App\Models\Profiledt;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class AD02Controller extends ZayaanController
 {
-
-    public function recursiveToChilds($menu, $businessId, $profileId = null, $count = 1)
-    {
-        foreach ($menu['children'] as &$child) { // Use reference to modify original array
-            Log::debug(str_repeat('--', $count) . ' Child Menu: ' . $child['xmenu'] . ' - ' . $child['title']);
-
-            // Initialize menu_screens array if not exists
-            if (!isset($child['menu_screens'])) {
-                $child['menu_screens'] = [];
-            }
-
-            // Find the menu screens associated with this menu
-            $menuScreens = MenuScreen::with(['menu', 'screen'])->where('menu_id', $child['id'])->where('business_id', $businessId)->orderBy('seqn', 'asc')->get();
-
-            foreach ($menuScreens as $ms) {
-                Log::debug(str_repeat('   ', $count) . '-> Menu Screen: ' . $ms->screen->xscreen . ' - ' . $ms->screen->title . ' (Alternate Title: ' . ($ms->alternate_title ?? 'N/A') . ')');
-
-                // Check Menu Screen is available in profiledt
-                $profiledt = Profiledt::where('profile_id', $profileId)
-                    ->where('business_id', getBusinessId())
-                    ->where('menu_screen_id', $ms->id)
-                    ->first();
-
-                $child['menu_screens'][] = [
-                    'id' => $ms->id,
-                    'menu_id' => $ms->menu_id,
-                    'screen_id' => $ms->screen_id,
-                    'alternate_title' => $ms->alternate_title ?? $ms->screen->title,
-                    'seqn' => $ms->seqn,
-                    'screen_xscreen' => $ms->screen->xscreen,
-                    'menu_xmenu' => $ms->menu->xmenu,
-                    'screen_type' => $ms->screen->type,
-                    'is_active' => $profiledt ? true : false,
-                    'profile_id' => $profileId,
-                ];
-                // REMOVE THIS: dd($child);
-            }
-
-            if (!empty($child['children'])) {
-                $child = $this->recursiveToChilds($child, $businessId, $profileId, $count + 1);
-            }
-        }
-
-        return $menu;
-    }
-
-    public function getMenuGroup($profileId = null)
-    {
-        $menus = Menu::generateMenuTree();
-        $menuGroupWithScreen = [];
-
-        $businessId = getBusinessId();
-        $allowCustomeMenu = getSelectedBusiness()['is_allow_custom_menu'] ?? false;
-        if (!$allowCustomeMenu) {
-            $businessId = null;
-        }
-
-        foreach ($menus as &$menu) { // Use reference to modify original array
-            Log::debug("Menu: " . $menu['xmenu'] . " - " . $menu['title']);
-
-            // Initialize menu_screens array if not exists
-            if (!isset($menu['menu_screens'])) {
-                $menu['menu_screens'] = [];
-            }
-
-            // Find the menu screens associated with this menu
-            $menuScreens = MenuScreen::with(['menu', 'screen'])->where('menu_id', $menu['id'])->where('business_id', $businessId)->orderBy('seqn', 'asc')->get();
-
-            foreach ($menuScreens as $ms) {
-                Log::debug("-> Menu Screen: " . $ms->screen->xscreen . " - " . $ms->screen->title . " (Alternate Title: " . ($ms->alternate_title ?? 'N/A') . ")");
-
-                // Check Menu Screen is available in profiledt
-                $profiledt = Profiledt::where('profile_id', $profileId)
-                    ->where('business_id', getBusinessId())
-                    ->where('menu_screen_id', $ms->id)
-                    ->first();
-
-                $menu['menu_screens'][] = [
-                    'id' => $ms->id,
-                    'menu_id' => $ms->menu_id,
-                    'screen_id' => $ms->screen_id,
-                    'alternate_title' => $ms->alternate_title ?? $ms->screen->title,
-                    'seqn' => $ms->seqn,
-                    'screen_xscreen' => $ms->screen->xscreen,
-                    'menu_xmenu' => $ms->menu->xmenu,
-                    'screen_type' => $ms->screen->type,
-                    'is_active' => $profiledt ? true : false,
-                    'profile_id' => $profileId,
-                ];
-            }
-
-            $menu = $this->recursiveToChilds($menu, $businessId, $profileId);
-            $menuGroupWithScreen[] = $menu;
-        }
-
-        return $menuGroupWithScreen;
-    }
-
     public function index(Request $request)
     {
         $id = $request->query('id', 'RESET'); // Returns null if not present
         $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
 
+        $businessId = getBusinessId();
+        $allowCustomMenu = getSelectedBusiness()['is_allow_custom_menu'] ?? false;
+        if (!$allowCustomMenu) {
+            $businessId = null;
+        }
+
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
                 return response()->json([
                     'page' => view('pages.AD02.AD02', [
-                        'profile' => (new Profile())->fill(['seqn' => 0, 'is_active' => 1]),
-                        'detailList' => [],
+                        'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+                        'menuTree' => Menu::generateMenuTree($businessId),
+                        'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
+                        'detailList' => Menu:: relatedBusiness()->with('parentMenu')->orderBy('seqn', 'asc')->get()
                     ])->render(),
-                    'content_header_title' => 'Access Profile',
-                    'subtitle' => 'Access Profile',
+                    'content_header_title' => 'Menu Management',
+                    'subtitle' => 'Menu',
                 ]);
             }
 
             if ("RESET" == $id) {
                 return response()->json([
                     'page' => view('pages.AD02.AD02-main-form', [
-                        'profile' => (new Profile())->fill(['seqn' => 0, 'is_active' => 1]),
-                        'detailList' => [],
+                        'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+                        'menuTree' => Menu::generateMenuTree($businessId),
+                        'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
                     ])->render(),
                 ]);
             }
 
             try {
-                $profile = Profile::findOrFail($id);
-
-                // dd($profile->toArray());
-                // dd($this->getMenuGroup($profile->id));
+                $menu = Menu::findOrFail($id);
 
                 return response()->json([
                     'page' => view('pages.AD02.AD02-main-form', [
-                        'profile' => $profile,
-                        'detailList' => $this->getMenuGroup($profile->id),
+                        'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+                        'menuTree' => Menu::generateMenuTree($menu->business_id, $menu->id),
+                        'menu' => $menu,
                     ])->render(),
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
                     'page' => view('pages.AD02.AD02-main-form', [
-                        'profile' => (new Profile())->fill(['seqn' => 0, 'is_active' => 1]),
-                        'detailList' => [],
+                        'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+                        'menuTree' => Menu::generateMenuTree($businessId),
+                        'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
                     ])->render(),
                 ]);
             }
@@ -162,166 +68,138 @@ class AD02Controller extends ZayaanController
         // When url is directly hit from url bar
         return view('index', [
             'page' => 'pages.AD02.AD02',
-            'content_header_title' => 'Access Profile',
-            'subtitle' => 'Access Profile',
-            'profile' => (new Profile())->fill(['seqn' => 0, 'is_active' => 1]),
-            'detailList' => [],
+            'content_header_title' => 'Menu Management',
+            'subtitle' => 'Menu',
+            'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+            'menuTree' => Menu::generateMenuTree($businessId),
+            'menu' => (new Menu())->fill(['seqn' => 0, 'icon' => 'ph ph-align-left']),
+            'detailList' => Menu::relatedBusiness()->with('parentMenu')->orderBy('seqn', 'asc')->get()
         ]);
     }
 
-    public function detailTable(Request $request)
+    public function headerTable()
     {
-        $profileId = $request->query('profile_id', 'RESET');
+        $allowCustomMenu = getSelectedBusiness()['is_allow_custom_menu'] ?? false;
 
         return response()->json([
-            'page' => view('pages.AD02.AD02-detail-table', [
-                'detailList' => $profileId == 'RESET' ? [] : $this->getMenuGroup($profileId)
+            'page' => view('pages.AD02.AD02-header-table', [
+                'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+                'detailList' => Menu::relatedBusiness()->with('parentMenu')->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }
 
-
     public function create(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'seqn' => 'required|integer|min:0',
+            'xmenu' => 'required|string|max:10|unique:menus,xmenu,NULL,id,business_id,' . getBusinessId(),  // Menu must be unique per business
+            'title' => 'required|string|max:50',
+            'icon' => 'nullable|string|max:50',
+            'seqn' => 'nullable|integer',
+            'parent_menu_id' => 'nullable|exists:menus,id',
         ], [
-            'name.required' => 'Profile name is required',
-            'seqn.required' => 'Sequence is required',
-            'seqn.integer' => 'Sequence must be an integer',
-            'seqn.min' => 'Sequence must be at least 0',
+            'xmenu.required' => 'The menu code is required.',
+            'xmenu.max' => 'The menu code may not be greater than 10 characters.',
+            'title.required' => 'The title is required.',
+            'title.max' => 'The title may not be greater than 50 characters.',
+            'icon.max' => 'The icon may not be greater than 50 characters.',
+            'seqn.integer' => 'The sequence must be an integer.',
+            'parent_menu_id.exists' => 'The selected parent menu is invalid.',
         ]);
 
         $validator->validate();
 
-        $request['is_active'] = $request->has('is_active');
-        $request['business_id'] = getBusinessId();
+        $request['seqn'] = $request->input('seqn') ?? 0;
+        $request['icon'] = $request->input('icon') ?? 'ph ph-align-left';
+        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
 
-        $profile = Profile::create($request->only([
-            'name',
+        $menu = Menu::create($request->only([
+            'xmenu',
+            'title',
+            'icon',
             'seqn',
-            'is_active',
+            'parent_menu_id',
             'business_id'
         ]));
 
-        if ($profile) {
+        if ($menu) {
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('AD02', ['id' => $profile->id])),
-                new ReloadSection('detail-table-container', route('AD02.detail-table', ['profile_id' => $profile->id])),
+                new ReloadSection('main-form-container', route('AD02', ['id' => 'RESET'])),
+                new ReloadSection('header-table-container', route('AD02.header-table')),
             ]);
-            $this->setSuccessStatusAndMessage("Profile created successfully");
+            $this->setSuccessStatusAndMessage("Menu created successfully");
             return $this->getResponse();
         }
 
-        $this->setErrorStatusAndMessage("Profile creation failed");
+        $this->setErrorStatusAndMessage("Menu creation failed");
         return $this->getResponse();
     }
 
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'seqn' => 'required|integer|min:0',
+            'xmenu' => 'required|string|max:10|unique:menus,xmenu,' . $id . ',id,business_id,' . getBusinessId(),  // Menu must be unique per business
+            'title' => 'required|string|max:50',
+            'icon' => 'nullable|string|max:50',
+            'seqn' => 'nullable|integer',
+            'parent_menu_id' => 'nullable|exists:menus,id',
         ], [
-            'seqn.required' => 'Sequence is required',
-            'seqn.integer' => 'Sequence must be an integer',
-            'seqn.min' => 'Sequence must be at least 0',
+            'xmenu.required' => 'The menu code is required.',
+            'xmenu.max' => 'The menu code may not be greater than 10 characters.',
+            'title.required' => 'The title is required.',
+            'title.max' => 'The title may not be greater than 50 characters.',
+            'icon.max' => 'The icon may not be greater than 50 characters.',
+            'seqn.integer' => 'The sequence must be an integer.',
+            'parent_menu_id.exists' => 'The selected parent menu is invalid.',
         ]);
 
         $validator->validate();
 
-        $request['is_active'] = $request->has('is_active');
-
-        $profile = Profile::find($id);
-        if (!$profile) {
-            $this->setErrorStatusAndMessage("Profile not found");
+        $menu = Menu::find($id);
+        if(!$menu){
+            $this->setErrorStatusAndMessage("Menu not found");
             return $this->getResponse();
         }
 
-        $profile->update($request->only([
-            'description',
+        $request['seqn'] = $request->input('seqn') ?? 0;
+        $request['icon'] = $request->input('icon') ?? 'ph ph-align-left';
+        $menu->update($request->only([
+            'xmenu',
+            'title',
+            'icon',
             'seqn',
-            'is_active',
+            'parent_menu_id',
         ]));
 
-        if ($profile) {
+        if ($menu) {
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('AD02', ['id' => $profile->id])),
-                new ReloadSection('detail-table-container', route('AD02.detail-table', ['profile_id' => $profile->id])),
+                new ReloadSection('main-form-container', route('AD02', ['id' => $menu->id])),
+                new ReloadSection('header-table-container', route('AD02.header-table')),
             ]);
-            $this->setSuccessStatusAndMessage("Profile updated successfully");
+            $this->setSuccessStatusAndMessage("Menu updated successfully");
             return $this->getResponse();
         }
 
-        $this->setErrorStatusAndMessage("Profile update failed");
+        $this->setErrorStatusAndMessage("Menu update failed");
         return $this->getResponse();
     }
 
     public function delete($id)
     {
-        $profile = Profile::find($id);
-        if (!$profile) {
-            $this->setErrorStatusAndMessage("Profile not found");
+        $menu = Menu::find($id);
+
+        if (!$menu) {
+            $this->setErrorStatusAndMessage("Menu not found");
             return $this->getResponse();
         }
 
-        // Also delete associated profiledt records
-        Profiledt::where('profile_id', $profile->id)->delete();
+        $menu->delete();
 
-        if ($profile->delete()) {
-            $this->setReloadSections([
-                new ReloadSection('main-form-container', route('AD02', ['id' => 'RESET'])),
-                new ReloadSection('detail-table-container', route('AD02.detail-table', ['profile_id' => 'RESET'])),
-            ]);
-
-            $this->setSuccessStatusAndMessage("Profile deleted successfully");
-            return $this->getResponse();
-        }
-
-        $this->setErrorStatusAndMessage("Profile deletion failed");
-        return $this->getResponse();
-    }
-
-    public function detailCreate(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'profile_id' => 'required|exists:profiles,id',
-            'menu_screen_id' => 'required|exists:menu_screens,id',
-            'is_active' => 'boolean',
-        ], [
-            'profile_id.required' => 'Profile is required',
-            'profile_id.exists' => 'Selected Profile does not exist',
-            'menu_screen_id.required' => 'Menu Screen is required',
-            'menu_screen_id.exists' => 'Selected Menu Screen does not exist',
-            'is_active.boolean' => 'Is Active must be true or false',
+        $this->setReloadSections([
+            new ReloadSection('main-form-container', route('AD02', ['id' => 'RESET'])),
+            new ReloadSection('header-table-container', route('AD02.header-table')),
         ]);
-
-        $validator->validate();
-
-        $profileId = $request['profile_id'];
-        $menuScreenId = $request['menu_screen_id'];
-        $isActive = $request['is_active'] ?? false;
-        $businessId = getBusinessId();
-
-        if ($isActive) {
-            Profiledt::create([
-                'profile_id' => $profileId,
-                'menu_screen_id' => $menuScreenId,
-                'business_id' => $businessId,
-            ]);
-        } else {
-            $existingProfiledt = Profiledt::where('profile_id', $profileId)
-                ->where('menu_screen_id', $menuScreenId)
-                ->where('business_id', $businessId)
-                ->first();
-
-            if ($existingProfiledt) {
-                $existingProfiledt->delete();
-            }
-        }
-
-        $this->setSuccessStatusAndMessage($isActive ? "Menu Screen added successfully" : "Menu Screen removed successfully");
+        $this->setSuccessStatusAndMessage("Menu deleted successfully");
         return $this->getResponse();
     }
 }

@@ -7,20 +7,27 @@ use App\Models\Xcodes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class SA07Controller extends ZayaanController
+class AD04Controller extends ZayaanController
 {
     public function index(Request $request)
     {
         $id = $request->query('id', 'RESET'); // Returns null if not present
         $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
 
+        $businessId = getBusinessId();
+        $allowCustomXcodes = getSelectedBusiness()['is_allow_custom_xcodes'] ?? false;
+        if (!$allowCustomXcodes) {
+            $businessId = null;
+        }
+
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
                 return response()->json([
-                    'page' => view('pages.SA07.SA07', [
-                        'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
+                    'page' => view('pages.AD04.AD04', [
+                        'allowCustomXcodes' => getSelectedBusiness() == null ? true : $allowCustomXcodes,
+                        'codeTypes' => Xcodes::relatedBusiness()->where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
                         'xcodes' => (new Xcodes())->fill(['seqn' => 0, 'is_active' => true]),
-                        'detailList' => Xcodes::orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
+                        'detailList' => Xcodes::relatedBusiness()->orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Codes & Parameters',
                     'subtitle' => 'Codes & Parameters',
@@ -29,8 +36,9 @@ class SA07Controller extends ZayaanController
 
             if ("RESET" == $id) {
                 return response()->json([
-                    'page' => view('pages.SA07.SA07-main-form', [
-                        'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
+                    'page' => view('pages.AD04.AD04-main-form', [
+                        'allowCustomXcodes' => getSelectedBusiness() == null ? true : $allowCustomXcodes,
+                        'codeTypes' => Xcodes::relatedBusiness()->where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
                         'xcodes' => (new Xcodes())->fill(['seqn' => 0, 'is_active' => true]),
                     ])->render(),
                 ]);
@@ -40,15 +48,17 @@ class SA07Controller extends ZayaanController
                 $xcodes = Xcodes::findOrFail($id);
 
                 return response()->json([
-                    'page' => view('pages.SA07.SA07-main-form', [
-                        'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
+                    'page' => view('pages.AD04.AD04-main-form', [
+                        'allowCustomXcodes' => getSelectedBusiness() == null ? true : $allowCustomXcodes,
+                        'codeTypes' => Xcodes::relatedBusiness()->where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
                         'xcodes' => $xcodes,
                     ])->render(),
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
-                    'page' => view('pages.SA07.SA07-main-form', [
-                        'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
+                    'page' => view('pages.AD04.AD04-main-form', [
+                        'allowCustomXcodes' => getSelectedBusiness() == null ? true : $allowCustomXcodes,
+                        'codeTypes' => Xcodes::relatedBusiness()->where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
                         'xcodes' => (new Xcodes())->fill(['seqn' => 0, 'is_active' => true]),
                     ])->render(),
                 ]);
@@ -57,20 +67,25 @@ class SA07Controller extends ZayaanController
 
         // When url is directly hit from url bar
         return view('index', [
-            'page' => 'pages.SA07.SA07',
+            'page' => 'pages.AD04.AD04',
             'content_header_title' => 'Business Category',
             'subtitle' => 'Business Category',
-            'codeTypes' => Xcodes::where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
+            'allowCustomXcodes' => getSelectedBusiness() == null ? true : $allowCustomXcodes,
+            'codeTypes' => Xcodes::relatedBusiness()->where('type', 'Code Type')->orderBy('seqn', 'asc')->get(),
             'xcodes' => (new Xcodes())->fill(['seqn' => 0, 'is_active' => true]),
-            'detailList' => Xcodes::orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
+            'detailList' => Xcodes::relatedBusiness()->orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
         ]);
     }
 
     public function headerTable()
     {
+
+        $allowCustomXcodes = getSelectedBusiness()['is_allow_custom_xcodes'] ?? false;
+
         return response()->json([
-            'page' => view('pages.SA07.SA07-header-table', [
-                'detailList' => Xcodes::orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
+            'page' => view('pages.AD04.AD04-header-table', [
+                'allowCustomXcodes' => getSelectedBusiness() == null ? true : $allowCustomXcodes,
+                'detailList' => Xcodes::relatedBusiness()->orderBy('type', 'asc')->orderBy('xcode', 'asc')->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }
@@ -118,8 +133,8 @@ class SA07Controller extends ZayaanController
 
         if ($xcodes) {
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('SA07', ['id' => 'RESET'])),
-                new ReloadSection('header-table-container', route('SA07.header-table')),
+                new ReloadSection('main-form-container', route('AD04', ['id' => 'RESET'])),
+                new ReloadSection('header-table-container', route('AD04.header-table')),
             ]);
             $this->setSuccessStatusAndMessage("Codes created successfully");
             return $this->getResponse();
@@ -178,8 +193,8 @@ class SA07Controller extends ZayaanController
         ]));
 
         $this->setReloadSections([
-            new ReloadSection('main-form-container', route('SA07', ['id' => $xcodes->id])),
-            new ReloadSection('header-table-container', route('SA07.header-table')),
+            new ReloadSection('main-form-container', route('AD04', ['id' => $xcodes->id])),
+            new ReloadSection('header-table-container', route('AD04.header-table')),
         ]);
         $this->setSuccessStatusAndMessage("Codes updated successfully");
         return $this->getResponse();
@@ -196,8 +211,8 @@ class SA07Controller extends ZayaanController
         $xcodes->delete();
 
         $this->setReloadSections([
-            new ReloadSection('main-form-container', route('SA07', ['id' => 'RESET'])),
-            new ReloadSection('header-table-container', route('SA07.header-table')),
+            new ReloadSection('main-form-container', route('AD04', ['id' => 'RESET'])),
+            new ReloadSection('header-table-container', route('AD04.header-table')),
         ]);
         $this->setSuccessStatusAndMessage("Codes deleted successfully");
         return $this->getResponse();

@@ -61,4 +61,14 @@ class Attribute extends Model
 
         return $slug;
     }
+
+    public function scopeRelatedBusiness($query){
+        $businessId = getBusinessId();
+        $allowCustomAttribute = getSelectedBusiness()['is_allow_custom_attribute'] ?? false;
+        if (!$allowCustomAttribute) {
+            $businessId = null;
+        }
+
+        return $query->where('business_id', $businessId);
+    }
 }

@@ -1,68 +1,45 @@
-@if (!$detailList->isEmpty())
+@if (isset($detailList) && count($detailList) > 0)
     <div class="card card-default">
 
         <div class="card-header">
-            <h3 class="card-title">List of Users</h3>
+            <h3 class="card-title">Menu page allocations</h3>
         </div>
 
-        <div class="table-responsive data-table-responsive">
-            <table class="table table-hover table-bordered p-0 m-0 AD03-datatable-fragment">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Profiles</th>
-                        <th>Other Businesses</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-right" data-no-sort="Y">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($detailList as $x)
-                        <tr>
-                            <td>
-                                <a data-reloadurl="{{ route('AD03', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->name }}</a>
-                            </td>
-                            <td>{{ $x->email }}</td>
-                            <td>
-                                @foreach ($x->profiles as $profile)
-                                    <span class="badge bg-primary">{{ $profile->name }}</span>
-                                @endforeach
-                            </td>
-                            <td>
-                                @foreach ($x->businesses as $business)
-                                    @if (getBusinessId() !== $business->id)
-                                        <span class="badge bg-secondary">{{ $business->name }}</span>
-                                    @endif
-                                @endforeach
-                            </td>
-                            <td class="text-center">
-                                @if ($x->status == 'active')
-                                    <span class="badge bg-success">Active</span>
-                                @else
-                                    <span class="badge bg-danger">Inactive</span>
-                                @endif
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-end align-items-center gap-2">
-                                    <button data-url="{{ route('AD03.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
-                                        <i class="ph ph-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
+        <div class="card-body AD03-datatable-fragment">
+            @foreach ($detailList as $x)
+                <p style="font-size: 20px; font-weight: bold">{{ $x['xmenu'] . ' - ' . $x['title'] }}</p>
+                <!-- Print assigned screens -->
+                @foreach ($x['menu_screens'] as $screen)
+                    <p style="margin-left: 50px;">
+                        @if ($allowCustomMenu)
+                            <a class="detail-dataindex" href="#" data-reloadid="main-form-container" data-reloadurl="{{ route('AD03', ['id' => $screen['id']]) }}">{{ $screen['screen_xscreen'] }}</a> - {{ $screen['alternate_title'] }}
+                        @else
+                            {{ $screen['screen_xscreen'] }} - {{ $screen['alternate_title'] }}
+                        @endif
+                        @if ($screen['screen_type'] == 'Screen')
+                            <span class="ml-2 badge bg-primary">{!! $screen['screen_type'] !!}</span>
+                        @else
+                            <span class="ml-2 badge bg-success">{!! $screen['screen_type'] !!}</span>
+                        @endif
+                        <span class="ml-2 badge bg-warning">{!! 'SN. ' . $screen['seqn'] !!}</span>
+                        @if ($allowCustomMenu)
+                            <a href="" class="ml-2 badge bg-danger btn-table-delete" data-url="{{ route('AD03.delete', ['id' => $screen['id']]) }}"><i class="ph ph-trash"></i></a>
+                        @endif
+                    </p>
+                @endforeach
 
-                </tbody>
-            </table>
+                <!-- Print Child Menus recursively -->
+                @if (isset($x['children']) && count($x['children']) > 0)
+                    @include('pages.AD03.AD03-header-table-children', ['children' => $x['children'], 'margin' => 50])
+                @endif
+            @endforeach
         </div>
+
 
     </div>
 
     <script type="text/javascript">
         $(document).ready(function() {
-            kit.ui.config.initDatatable('AD03-datatable-fragment');
-
             $('.AD03-datatable-fragment').on('click', 'a.detail-dataindex', function(e) {
                 e.preventDefault();
 
@@ -72,8 +49,7 @@
                 });
             });
 
-            
-            $('.AD03-datatable-fragment').on('click', 'button.btn-table-delete', function(e) {
+            $('.AD03-datatable-fragment').on('click', 'a.btn-table-delete', function(e) {
                 e.preventDefault();
                 sweetAlertConfirm(() => {
                     deleteRequest($(this).data('url'));

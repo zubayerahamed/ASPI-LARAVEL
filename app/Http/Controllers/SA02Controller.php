@@ -121,6 +121,8 @@ class SA02Controller extends ZayaanController
         $request['is_allow_custom_category'] = $request->has('is_allow_custom_category');
         $request['is_allow_custom_attribute'] = $request->has('is_allow_custom_attribute');
         $request['is_allow_custom_xcodes'] = $request->has('is_allow_custom_xcodes');
+        $request['is_allow_custom_tags'] = $request->has('is_allow_custom_tags');
+
 
         // Atleast one service type must be selected
         if (!($request['is_inhouse'] || $request['is_pickup'] || $request['is_delivery'])) {
@@ -142,6 +144,7 @@ class SA02Controller extends ZayaanController
             'is_allow_custom_category',
             'is_allow_custom_attribute', 
             'is_allow_custom_xcodes',
+            'is_allow_custom_tags',
             'business_category_id',
         ]));
 
@@ -189,6 +192,7 @@ class SA02Controller extends ZayaanController
         $request['is_allow_custom_category'] = $request->has('is_allow_custom_category');
         $request['is_allow_custom_attribute'] = $request->has('is_allow_custom_attribute');
         $request['is_allow_custom_xcodes'] = $request->has('is_allow_custom_xcodes');
+        $request['is_allow_custom_tags'] = $request->has('is_allow_custom_tags');
 
         // Atleast one service type must be selected
         if (!($request['is_inhouse'] || $request['is_pickup'] || $request['is_delivery'])) {
@@ -216,6 +220,7 @@ class SA02Controller extends ZayaanController
             'is_allow_custom_category',
             'is_allow_custom_attribute',
             'is_allow_custom_xcodes',
+            'is_allow_custom_tags',
         ]));
 
         if ($business->save()) {

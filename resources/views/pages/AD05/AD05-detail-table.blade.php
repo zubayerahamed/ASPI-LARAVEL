@@ -5,7 +5,7 @@
             <h3 class="card-title">Profile Details</h3>
         </div>
 
-        <div class="card-body AD02-datatable-fragment">
+        <div class="card-body AD05-datatable-fragment">
            @foreach ($detailList as $x)
                 <p style="font-size: 20px; font-weight: bold">{{ $x['xmenu'] . ' - ' . $x['title'] }}</p>
                 <!-- Print assigned screens -->
@@ -33,7 +33,7 @@
 
                 <!-- Print Child Menus recursively -->
                 @if (isset($x['children']) && count($x['children']) > 0)
-                    @include('pages.AD02.AD02-detail-table-children', ['children' => $x['children'], 'margin' => 50])
+                    @include('pages.AD05.AD05-detail-table-children', ['children' => $x['children'], 'margin' => 50])
                 @endif
             @endforeach
         </div>
@@ -44,7 +44,7 @@
         $(document).ready(function() {
             kit.ui.init();
 
-            $('.AD02-datatable-fragment').on('click', '.profiledt-checkbox', function(e) {
+            $('.AD05-datatable-fragment').on('click', '.profiledt-checkbox', function(e) {
                 //e.preventDefault();
 
                 $thisCheckbox = $(this);
@@ -60,7 +60,7 @@
                         is_active: isActive
                     };
 
-                actionPostRequest("{{ route('AD02.detail-table.create') }}", data);
+                actionPostRequest("{{ route('AD05.detail-table.create') }}", data);
             });
 
         })

@@ -27,6 +27,7 @@ class MD02Controller extends ZayaanController
             if ($frommenu == 'Y') {
                 return response()->json([
                     'page' => view('pages.MD02.MD02', [
+                        'allowCustomCategory' => getSelectedBusiness() == null ? true : $allowCustomCategory,
                         'categoryTree' => Category::generateCategoryTree($businessId),
                         'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true, 'icon' => 'ph ph-sort-ascending']),
                         'detailList' => Category::relatedBusiness()->with(['parentCategory', 'thumbnail'])->orderBy('seqn', 'asc')->get()
@@ -39,6 +40,7 @@ class MD02Controller extends ZayaanController
             if ("RESET" == $id) {
                 return response()->json([
                     'page' => view('pages.MD02.MD02-main-form', [
+                        'allowCustomCategory' => getSelectedBusiness() == null ? true : $allowCustomCategory,
                         'categoryTree' => Category::generateCategoryTree($businessId),
                         'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true, 'icon' => 'ph ph-sort-ascending']),
                     ])->render(),
@@ -50,6 +52,7 @@ class MD02Controller extends ZayaanController
 
                 return response()->json([
                     'page' => view('pages.MD02.MD02-main-form', [
+                        'allowCustomCategory' => getSelectedBusiness() == null ? true : $allowCustomCategory,
                         'categoryTree' => Category::generateCategoryTree($category->business_id, $category->id),
                         'category' => $category,
                     ])->render(),
@@ -57,6 +60,7 @@ class MD02Controller extends ZayaanController
             } catch (\Throwable $th) {
                 return response()->json([
                     'page' => view('pages.MD02.MD02-main-form', [
+                        'allowCustomCategory' => getSelectedBusiness() == null ? true : $allowCustomCategory,
                         'categoryTree' => Category::generateCategoryTree($businessId),
                         'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true, 'icon' => 'ph ph-sort-ascending']),
                     ])->render(),
@@ -69,6 +73,7 @@ class MD02Controller extends ZayaanController
             'page' => 'pages.MD02.MD02',
             'content_header_title' => 'Category Management',
             'subtitle' => 'Category',
+            'allowCustomCategory' => getSelectedBusiness() == null ? true : $allowCustomCategory,
             'categoryTree' => Category::generateCategoryTree($businessId),
             'category' => (new Category())->fill(['seqn' => 0, 'is_active' => true, 'icon' => 'ph ph-sort-ascending']),
             'detailList' => Category::relatedBusiness()->with(['parentCategory', 'thumbnail'])->orderBy('seqn', 'asc')->get()
@@ -77,14 +82,11 @@ class MD02Controller extends ZayaanController
 
     public function headerTable(Request $request)
     {
-        $businessId = getBusinessId();
         $allowCustomCategory = getSelectedBusiness()['is_allow_custom_category'] ?? false;
-        if (!$allowCustomCategory) {
-            $businessId = null;
-        }
 
         return response()->json([
             'page' => view('pages.MD02.MD02-header-table', [
+                'allowCustomCategory' => getSelectedBusiness() == null ? true : $allowCustomCategory,
                 'detailList' => Category::relatedBusiness()->with(['parentCategory', 'thumbnail'])->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);

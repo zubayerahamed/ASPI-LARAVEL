@@ -25,6 +25,6 @@
 
     <!-- Print Child Menus recursively -->
     @if (isset($x['children']) && count($x['children']) > 0)
-        @include('pages.AD02.AD02-detail-table-children', ['children' => $x['children'], 'margin' => $margin + 50])
+        @include('pages.AD05.AD05-detail-table-children', ['children' => $x['children'], 'margin' => $margin + 50])
     @endif
 @endforeach

@@ -3,92 +3,144 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ReloadSection;
-use App\Models\Business;
-use App\Models\Profile;
-use App\Models\User;
+use App\Models\Menu;
+use App\Models\MenuScreen;
+use App\Models\Screen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class AD03Controller extends ZayaanController
 {
+
+    public function recursiveToChilds($menu, $count = 1)
+    {
+        foreach ($menu['children'] as &$child) { // Use reference to modify original array
+            Log::debug(str_repeat('--', $count) . ' Child Menu: ' . $child['xmenu'] . ' - ' . $child['title']);
+
+            // Initialize menu_screens array if not exists
+            if (!isset($child['menu_screens'])) {
+                $child['menu_screens'] = [];
+            }
+
+            // Find the menu screens associated with this menu
+            $menuScreens = MenuScreen::relatedBusiness()->with(['menu', 'screen'])->where('menu_id', $child['id'])->orderBy('seqn', 'asc')->get();
+
+            foreach ($menuScreens as $ms) {
+                Log::debug(str_repeat('   ', $count) . '-> Menu Screen: ' . $ms->screen->xscreen . ' - ' . $ms->screen->title . ' (Alternate Title: ' . ($ms->alternate_title ?? 'N/A') . ')');
+                $child['menu_screens'][] = [
+                    'id' => $ms->id,
+                    'menu_id' => $ms->menu_id,
+                    'screen_id' => $ms->screen_id,
+                    'alternate_title' => $ms->alternate_title ?? $ms->screen->title,
+                    'seqn' => $ms->seqn,
+                    'screen_xscreen' => $ms->screen->xscreen,
+                    'menu_xmenu' => $ms->menu->xmenu,
+                    'screen_type' => $ms->screen->type,
+                ];
+                // REMOVE THIS: dd($child);
+            }
+
+            if (!empty($child['children'])) {
+                $child = $this->recursiveToChilds($child, $count + 1);
+            }
+        }
+
+        return $menu;
+    }
+
+    public function getMenuGroup($businessId)
+    {
+        $menus = Menu::generateMenuTree($businessId);
+        $menuGroupWithScreen = [];
+
+        foreach ($menus as &$menu) { // Use reference to modify original array
+            Log::debug("Menu: " . $menu['xmenu'] . " - " . $menu['title']);
+
+            // Initialize menu_screens array if not exists
+            if (!isset($menu['menu_screens'])) {
+                $menu['menu_screens'] = [];
+            }
+
+            // Find the menu screens associated with this menu
+            $menuScreens = MenuScreen::relatedBusiness()->with(['menu', 'screen'])->where('menu_id', $menu['id'])->orderBy('seqn', 'asc')->get();
+
+            foreach ($menuScreens as $ms) {
+                Log::debug("-> Menu Screen: " . $ms->screen->xscreen . " - " . $ms->screen->title . " (Alternate Title: " . ($ms->alternate_title ?? 'N/A') . ")");
+                $menu['menu_screens'][] = [
+                    'id' => $ms->id,
+                    'menu_id' => $ms->menu_id,
+                    'screen_id' => $ms->screen_id,
+                    'alternate_title' => $ms->alternate_title ?? $ms->screen->title,
+                    'seqn' => $ms->seqn,
+                    'screen_xscreen' => $ms->screen->xscreen,
+                    'menu_xmenu' => $ms->menu->xmenu,
+                    'screen_type' => $ms->screen->type,
+                ];
+            }
+
+            $menu = $this->recursiveToChilds($menu);
+            $menuGroupWithScreen[] = $menu;
+        }
+
+        return $menuGroupWithScreen;
+    }
 
     public function index(Request $request)
     {
         $id = $request->query('id', 'RESET'); // Returns null if not present
         $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
-        $currentBusinessId = getBusinessId();
 
-        // Get Business Admins list
-        $businessAdmin = Business::find(getBusinessId())
-            ->users()
-            ->wherePivot('is_active', true)
-            ->where('is_system_admin', 0)
-            ->where('is_business_admin', 1)
-            ->where('is_driver', 0)
-            ->where('is_customer', 0)
-            ->first();
-        $assignedBusinesses = $businessAdmin->businesses()->wherePivot('is_active', true)->get();
-        // Filter current business from the list
-        $otherBusinesseses = $assignedBusinesses->filter(function ($business) {
-            return $business->id !== getBusinessId();
-        })->values();
-        // dd($otherBusinesseses->toArray());
-
+        $businessId = getBusinessId();
+        $allowCustomMenu = getSelectedBusiness()['is_allow_custom_menu'] ?? false;
+        if (!$allowCustomMenu) {
+            $businessId = null;
+        }
 
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
                 return response()->json([
                     'page' => view('pages.AD03.AD03', [
-                        'otherBusinesseses' => $otherBusinesseses,
-                        'profiles' => Profile::active()->where('business_id', getBusinessId())->get(),
-                        'user' => (new User())->fill(['status' => 'active']),
-                        'detailList' => Business::with([
-                            'users' => function ($q) use ($currentBusinessId) {
-                                $q->wherePivot('is_active', true)
-                                    ->where('is_system_admin', 0)
-                                    ->where('is_business_admin', 0)
-                                    ->where('is_driver', 0)
-                                    ->where('is_customer', 0);
-                            },
-                            'users.businesses',
-                            'users.profiles' => function ($q) use ($currentBusinessId) {
-                                $q->wherePivot('business_id', $currentBusinessId);
-                            },
-                        ])->find(getBusinessId())->users
+                        'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+                        'menus' => Menu::generateMenuTree($businessId),
+                        'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
+                        'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
+                        'detailList' => $this->getMenuGroup($businessId)
                     ])->render(),
-                    'content_header_title' => 'Manage Users',
-                    'subtitle' => 'Manage Users',
+                    'content_header_title' => 'Navigation Management',
+                    'subtitle' => 'Navigation',
                 ]);
             }
 
             if ("RESET" == $id) {
                 return response()->json([
                     'page' => view('pages.AD03.AD03-main-form', [
-                        'otherBusinesseses' => $otherBusinesseses,
-                        'profiles' => Profile::active()->where('business_id', getBusinessId())->get(),
-                        'user' => (new User())->fill(['status' => 'active']),
+                        'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+                        'menus' => Menu::generateMenuTree($businessId),
+                        'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
+                        'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
                     ])->render(),
                 ]);
             }
 
             try {
-                $user = User::findOrFail($id);
+                $menuScreen = MenuScreen::findOrFail($id);
 
                 return response()->json([
                     'page' => view('pages.AD03.AD03-main-form', [
-                        'otherBusinesseses' => $otherBusinesseses,
-                        'profiles' => Profile::active()->where('business_id', getBusinessId())->get(),
-                        'user' => $user,
+                        'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+                        'menus' => Menu::generateMenuTree($businessId),
+                        'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
+                        'menuScreen' => $menuScreen,
                     ])->render(),
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
                     'page' => view('pages.AD03.AD03-main-form', [
-                        'otherBusinesseses' => $otherBusinesseses,
-                        'profiles' => Profile::active()->where('business_id', getBusinessId())->get(),
-                        'user' => (new User())->fill(['status' => 'active']),
+                        'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+                        'menus' => Menu::generateMenuTree($businessId),
+                        'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
+                        'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
                     ])->render(),
                 ]);
             }
@@ -97,50 +149,28 @@ class AD03Controller extends ZayaanController
         // When url is directly hit from url bar
         return view('index', [
             'page' => 'pages.AD03.AD03',
-            'content_header_title' => 'Manage Users',
-            'subtitle' => 'Manage Users',
-            'otherBusinesseses' => $otherBusinesseses,
-            'profiles' => Profile::active()->where('business_id', getBusinessId())->get(),
-            'user' => (new User())->fill(['status' => 'active']),
-            'detailList' => Business::with([
-                'users' => function ($q) use ($currentBusinessId) {
-                    $q->wherePivot('is_active', true)
-                        ->where('is_system_admin', 0)
-                        ->where('is_business_admin', 0)
-                        ->where('is_driver', 0)
-                        ->where('is_customer', 0);
-                },
-                'users.businesses' => function ($q) use ($currentBusinessId) {
-                    $q->where('business_id', $currentBusinessId)->wherePivot('is_active', true);
-                },
-                'users.profiles' => function ($q) use ($currentBusinessId) {
-                    $q->wherePivot('business_id', $currentBusinessId);
-                },
-            ])->find(getBusinessId())->users
+            'content_header_title' => 'Navigation Management',
+            'subtitle' => 'Navigation',
+            'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+            'menus' => Menu::generateMenuTree($businessId),
+            'screens' => Screen::whereIn('type', ['SCREEN', 'REPORT'])->orderBy('seqn', 'asc')->get(),
+            'menuScreen' => (new MenuScreen())->fill(['seqn' => 0]),
+            'detailList' => $this->getMenuGroup($businessId)
         ]);
     }
 
     public function headerTable()
     {
-        $currentBusinessId = getBusinessId();
+        $businessId = getBusinessId();
+        $allowCustomMenu = getSelectedBusiness()['is_allow_custom_menu'] ?? false;
+        if (!$allowCustomMenu) {
+            $businessId = null;
+        }
 
         return response()->json([
             'page' => view('pages.AD03.AD03-header-table', [
-                'detailList' => Business::with([
-                    'users' => function ($q) use ($currentBusinessId) {
-                        $q->wherePivot('is_active', true)
-                            ->where('is_system_admin', 0)
-                            ->where('is_business_admin', 0)
-                            ->where('is_driver', 0)
-                            ->where('is_customer', 0);
-                    },
-                    'users.businesses' => function ($q) use ($currentBusinessId) {
-                        $q->where('business_id', $currentBusinessId)->wherePivot('is_active', true);
-                    },
-                    'users.profiles' => function ($q) use ($currentBusinessId) {
-                        $q->wherePivot('business_id', $currentBusinessId);
-                    },
-                ])->find(getBusinessId())->users
+                'allowCustomMenu' => getSelectedBusiness() == null ? true : $allowCustomMenu,
+                'detailList' => $this->getMenuGroup($businessId),
             ])->render(),
         ]);
     }
@@ -148,186 +178,119 @@ class AD03Controller extends ZayaanController
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8'],
-            'password_confirmation' => ['required', 'string', 'same:password'],
-            'profile_ids' => ['required', 'array', 'min:1'],
-            'profile_ids.*' => ['exists:profiles,id'],
-            'business_ids' => ['nullable', 'array'],
-            'business_ids.*' => ['exists:businesses,id'],
+            'menu_id' => 'required|exists:menus,id',
+            'screen_id' => 'required|exists:screens,id',
+            'alternate_title' => 'nullable|string|max:50',
         ], [
-            // Custom error messages can be added here
-            'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
-            'name.max' => 'The name may not be greater than 50 characters.',
-            'email.required' => 'The email field is required.',
-            'email.string' => 'The email must be a string.',
-            'email.email' => 'Please enter a valid email address.',
-            'email.max' => 'The email may not be greater than 255 characters.',
-            'email.unique' => 'This email address is already registered.',
-            'password.required' => 'The password field is required.',
-            'password.string' => 'The password must be a string.',
-            'password.min' => 'The password must be at least 8 characters.',
-            'password_confirmation.required' => 'The password confirmation field is required.',
-            'password_confirmation.string' => 'The password confirmation must be a string.',
-            'password_confirmation.same' => 'The password confirmation does not match.',
-            'profile_ids.required' => 'At least one profile must be selected.',
-            'profile_ids.array' => 'Profile IDs must be an array.',
-            'profile_ids.min' => 'At least one profile must be selected.',
-            'profile_ids.*.exists' => 'One or more selected profiles do not exist.',
-            'business_ids.array' => 'Business IDs must be an array.',
-            'business_ids.*.exists' => 'One or more selected businesses do not exist.',
+            'menu_id.required' => 'The menu field is required.',
+            'menu_id.exists' => 'The selected menu is invalid.',
+            'screen_id.required' => 'The screen field is required.',
+            'screen_id.exists' => 'The selected screen is invalid.',
+            'alternate_title.max' => 'The alternate title may not be greater than 50 characters.',
         ]);
 
         $validator->validate();
 
-        $request['activation_token'] = Str::random(60);
-        $request['status'] = $request->has('is_active') ? 'active' : 'inactive';
-        $request['register_type'] = 'REGULAR';
-        $request['latitude'] = null;
-        $request['longitude'] = null;
-        $request['is_system_admin'] = false;
-        $request['is_business_admin'] = false;
-        $request['is_driver'] = false;
-        $request['is_customer'] = false;
-        $request['password'] = bcrypt($request->input('password'));
+        $request['seqn'] = $request->input('seqn') ?? 0;
+        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
 
-        $user = User::create($request->only([
-            'name',
-            'email',
-            'password',
-            'activation_token',
-            'status',
-            'register_type',
-            'latitude',
-            'longitude',
-            'is_system_admin',
-            'is_business_admin',
-            'is_driver',
-            'is_customer',
+        // CHeck uniqueness
+        $exists = MenuScreen::where('menu_id', $request->input('menu_id'))
+            ->where('screen_id', $request->input('screen_id'))
+            ->where('business_id', getBusinessId())
+            ->first();
+
+        if ($exists) {
+            $this->setErrorStatusAndMessage("The combination of Menu and Screen must be unique. This combination already exists.");
+            return $this->getResponse();
+        }
+
+        $menuScreen = MenuScreen::create($request->only([
+            'menu_id',
+            'screen_id',
+            'business_id',
+            'alternate_title',
+            'seqn',
         ]));
 
-        if ($user) {
-            // Attach businesses to the user
-            $businessIds = $request->input('business_ids', []);
-            $user->businesses()->attach($businessIds, ['is_active' => true]);
-            $user->businesses()->attach(getBusinessId(), ['is_active' => true]);
-
-            // Attach profiles to the user
-            $profileIds = $request->input('profile_ids', []);
-            $user->profiles()->attach($profileIds, ['business_id' => getBusinessId()]);
-
+        if ($menuScreen) {
             $this->setReloadSections([
                 new ReloadSection('main-form-container', route('AD03', ['id' => 'RESET'])),
                 new ReloadSection('header-table-container', route('AD03.header-table')),
             ]);
-            $this->setSuccessStatusAndMessage("User created successfully");
+            $this->setSuccessStatusAndMessage("Menu Screen created successfully");
             return $this->getResponse();
         }
 
-        $this->setErrorStatusAndMessage("User creation failed. Please try again.");
+        $this->setErrorStatusAndMessage("Menu Screen creation failed");
         return $this->getResponse();
     }
 
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $id],
-            'password' => ['nullable', 'string', 'min:8'],
-            'password_confirmation' => ['nullable', 'string', 'same:password'],
-            'profile_ids' => ['required', 'array', 'min:1'],
-            'profile_ids.*' => ['exists:profiles,id'],
-            'business_ids' => ['nullable', 'array'],
-            'business_ids.*' => ['exists:businesses,id'],
+            'menu_id' => 'required|exists:menus,id',
+            'screen_id' => 'required|exists:screens,id',
+            'alternate_title' => 'nullable|string|max:50',
         ], [
-            // Custom error messages can be added here
-            'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
-            'name.max' => 'The name may not be greater than 50 characters.',
-            'email.required' => 'The email field is required.',
-            'email.string' => 'The email must be a string.',
-            'email.email' => 'Please enter a valid email address.',
-            'email.max' => 'The email may not be greater than 255 characters.',
-            'email.unique' => 'This email address is already registered.',
-            'profile_ids.required' => 'At least one profile must be selected.',
-            'profile_ids.array' => 'Profile IDs must be an array.',
-            'profile_ids.min' => 'At least one profile must be selected.',
-            'profile_ids.*.exists' => 'One or more selected profiles do not exist.',
-            'password.string' => 'The password must be a string.',
-            'password.min' => 'The password must be at least 8 characters.',
-            'password_confirmation.string' => 'The password confirmation must be a string.',
-            'password_confirmation.same' => 'The password confirmation does not match.',
-            'business_ids.array' => 'Business IDs must be an array.',
-            'business_ids.*.exists' => 'One or more selected businesses do not exist.',
+            'menu_id.required' => 'The menu field is required.',
+            'menu_id.exists' => 'The selected menu is invalid.',
+            'screen_id.required' => 'The screen field is required.',
+            'screen_id.exists' => 'The selected screen is invalid.',
+            'alternate_title.max' => 'The alternate title may not be greater than 50 characters.',
         ]);
 
         $validator->validate();
 
-        try {
-            $user = User::findOrFail($id);
+        $request['seqn'] = $request->input('seqn') ?? 0;
 
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
-            $user->status = $request->has('is_active') ? 'active' : 'inactive';
-            if ($request->filled('password')) {
-                $user->password = bcrypt($request->input('password'));
-            }
+        // CHeck uniqueness
+        $exists = MenuScreen::where('menu_id', $request->input('menu_id'))
+            ->where('screen_id', $request->input('screen_id'))
+            ->where('business_id', getBusinessId())
+            ->where('id', '!=', $id)
+            ->first();
 
-            if ($user->save()) {
-                // Sync businesses
-                $businessIds = $request->input('business_ids', []);
-                $businessIds[] = getBusinessId(); // Ensure current business is included
-                $user->businesses()->sync($businessIds);
-
-                // Sync profiles, only for current business
-                $profileIds = $request->input('profile_ids', []);
-                $syncData = [];
-                foreach ($profileIds as $profileId) {
-                    $syncData[$profileId] = ['business_id' => getBusinessId()];
-                }
-                $user->profiles()->wherePivot('business_id', getBusinessId())->sync($syncData);
-
-                $this->setReloadSections([
-                    new ReloadSection('main-form-container', route('AD03', ['id' => $user->id])),
-                    new ReloadSection('header-table-container', route('AD03.header-table')),
-                ]);
-
-                $this->setSuccessStatusAndMessage("User updated successfully");
-                return $this->getResponse();
-            }
-        } catch (\Throwable $th) {
-            Log::error("AD03Controller@update: " . $th->getMessage());
-            $this->setErrorStatusAndMessage("User not found");
+        if ($exists) {
+            $this->setErrorStatusAndMessage("The combination of Menu and Screen must be unique. This combination already exists.");
             return $this->getResponse();
         }
 
-        $this->setErrorStatusAndMessage("User update failed. Please try again.");
-        return $this->getResponse();
+        try {
+            $menuScreen = MenuScreen::findOrFail($id);
+            $menuScreen->update($request->only([
+                'menu_id',
+                'screen_id',
+                'alternate_title',
+                'seqn',
+            ]));
+
+            $this->setReloadSections([
+                new ReloadSection('main-form-container', route('AD03', ['id' => $menuScreen->id])),
+                new ReloadSection('header-table-container', route('AD03.header-table')),
+            ]);
+            $this->setSuccessStatusAndMessage("Menu Screen updated successfully");
+            return $this->getResponse();
+        } catch (\Throwable $th) {
+            $this->setErrorStatusAndMessage("Menu Screen update failed");
+            return $this->getResponse();
+        }
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
         try {
-            $user = User::findOrFail($id);
-
-            // Detach all associated businesses and profiles
-            $user->businesses()->detach();
-            $user->profiles()->detach();
-
-            $user->delete();
+            $menuScreen = MenuScreen::findOrFail($id);
+            $menuScreen->delete();
 
             $this->setReloadSections([
                 new ReloadSection('main-form-container', route('AD03', ['id' => 'RESET'])),
                 new ReloadSection('header-table-container', route('AD03.header-table')),
             ]);
-
-            $this->setSuccessStatusAndMessage("User deleted successfully");
+            $this->setSuccessStatusAndMessage("Menu Screen deleted successfully");
             return $this->getResponse();
         } catch (\Throwable $th) {
-            Log::error("AD03Controller@delete: " . $th->getMessage());
-            $this->setErrorStatusAndMessage("User not found");
+            $this->setErrorStatusAndMessage("Menu Screen deletion failed");
             return $this->getResponse();
         }
     }

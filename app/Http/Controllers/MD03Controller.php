@@ -15,6 +15,11 @@ class MD03Controller extends ZayaanController
         $id = $request->query('id', 'RESET'); // Returns null if not present
         $frommenu = $request->query('frommenu', 'N');
 
+        $businessId = getBusinessId();
+        $allowCustomAttribute = getSelectedBusiness()['is_allow_custom_attribute'] ?? false;
+        if (!$allowCustomAttribute) {
+            $businessId = null;
+        }
 
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
@@ -31,8 +36,9 @@ class MD03Controller extends ZayaanController
 
                 return response()->json([
                     'page' => view('pages.MD03.MD03', [
+                        'allowCustomAttribute' => getSelectedBusiness() == null ? true : $allowCustomAttribute,
                         'attribute' => $att,
-                        'detailList' => Attribute::with(['terms'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
+                        'detailList' => Attribute:: relatedBusiness()->with(['terms'])->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Attribute Management',
                     'subtitle' => 'Attribute',
@@ -42,6 +48,7 @@ class MD03Controller extends ZayaanController
             if ("RESET" == $id) {
                 return response()->json([
                     'page' => view('pages.MD03.MD03-main-form', [
+                        'allowCustomAttribute' => getSelectedBusiness() == null ? true : $allowCustomAttribute,
                         'attribute' => (new Attribute())->fill(['seqn' => 0, 'is_active' => true]),
                     ])->render(),
                 ]);
@@ -52,12 +59,14 @@ class MD03Controller extends ZayaanController
 
                 return response()->json([
                     'page' => view('pages.MD03.MD03-main-form', [
+                        'allowCustomAttribute' => getSelectedBusiness() == null ? true : $allowCustomAttribute,
                         'attribute' => $attribute,
                     ])->render(),
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
                     'page' => view('pages.MD03.MD03-main-form', [
+                        'allowCustomAttribute' => getSelectedBusiness() == null ? true : $allowCustomAttribute,
                         'attribute' => (new Attribute())->fill(['seqn' => 0, 'is_active' => true]),
                     ])->render(),
                 ]);
@@ -69,16 +78,20 @@ class MD03Controller extends ZayaanController
             'page' => 'pages.MD03.MD03',
             'content_header_title' => 'Attribute Management',
             'subtitle' => 'Attribute',
+            'allowCustomAttribute' => getSelectedBusiness() == null ? true : $allowCustomAttribute,
             'attribute' => (new Attribute())->fill(['seqn' => 0, 'is_active' => true]),
-            'detailList' => Attribute::with(['terms'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
+            'detailList' => Attribute::relatedBusiness()->with(['terms'])->orderBy('seqn', 'asc')->get()
         ]);
     }
 
     public function headerTable()
     {
+        $allowCustomAttribute = getSelectedBusiness()['is_allow_custom_attribute'] ?? false;
+
         return response()->json([
             'page' => view('pages.MD03.MD03-header-table', [
-                'detailList' => Attribute::with(['terms'])->where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
+                'allowCustomAttribute' => getSelectedBusiness() == null ? true : $allowCustomAttribute,
+                'detailList' => Attribute::relatedBusiness()->with(['terms'])->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }

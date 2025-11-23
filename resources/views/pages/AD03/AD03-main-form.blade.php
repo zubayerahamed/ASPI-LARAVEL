@@ -1,73 +1,48 @@
 <div class="card card-default">
     <div class="card-body">
-        <form id="mainform" action="{{ $user->id == null ? route('AD03.create') : route('AD03.update', ['id' => $user->id]) }}" method="POST">
+        <form id="mainform" action="{{ $menuScreen->id == null ? route('AD03.create') : route('AD03.update', ['id' => $menuScreen->id]) }}" method="POST">
             @csrf
-            @if ($user->id != null)
+            @if ($menuScreen->id != null)
                 @method('PUT')
-                <input type="hidden" name="id" value="{{ $user->id }}">
+                <input type="hidden" name="id" value="{{ $menuScreen->id }}">
             @endif
 
             <div class="row">
-                <!-- name -->
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="form-label" for="email">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}" required>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="form-label" for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
-                    </div>
-                </div>
-                
-                <!-- Password -->
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="form-label" for="password">Password {{ $user->id == null ? '' : '(Leave blank to keep current password)' }}</label>
-                        <input type="password" class="form-control" id="password" name="password" {{ $user->id == null ? 'required' : '' }}>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="form-label" for="password_confirmation">Confirm Password {{ $user->id == null ? '' : '(Leave blank to keep current password)' }}</label>
-                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" {{ $user->id == null ? 'required' : '' }}>
-                    </div>  
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="form-label" for="country">Profiles</label>
-                        <select class="form-control select2bs4" id="profile_ids" name="profile_ids[]" multiple required>
-                            @foreach ($profiles as $profile)
-                                <option value="{{ $profile->id }}" {{ $user->profiles && $user->profiles->contains('id', $profile->id) ? 'selected' : '' }}>{{ $profile->name }}</option>
-                            @endforeach
+                        <label class="form-label" for="menu_id">Menu</label>
+                        <select class="form-control select2bs4" id="menu_id" name="menu_id" required>
+                            <option value="">-- Select Menu --</option>
+                            @include('pages.AD03.AD03-menu-recursive', [
+                                'menuTree' => $menus,
+                                'count' => 0,
+                            ])
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="form-label" for="country">Other Businesseses</label>
-                        <select class="form-control select2bs4" id="business_ids" name="business_ids[]" multiple>
-                            @foreach ($otherBusinesseses as $business)
-                                <option value="{{ $business->id }}" {{ $user->businesses && $user->businesses->contains('id', $business->id) ? 'selected' : '' }}>{{ $business->name }}</option>
+                        <label class="form-label" for="screen_id">Screen/Report</label>
+                        <select class="form-control select2bs4" id="screen_id" name="screen_id" required>
+                            <option value="">-- Select Screen --</option>
+                            @foreach ($screens as $screen)
+                                <option value="{{ $screen->id }}" {{ $menuScreen->screen_id == $screen->id ? 'selected' : '' }}>{{ $screen->xscreen }} - {{ $screen->title }} - {{ $screen->type }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
-
-                <div class="col-md-12"></div>
-
                 <div class="col-md-3">
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $user->status == 'active' ? 'checked' : '' }}>
-                            <label for="is_active" class="custom-control-label form-label">Is Active?</label>
-                        </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="alternate_title">Alternate Title</label>
+                        <input type="text" class="form-control" id="alternate_title" name="alternate_title" value="{{ $menuScreen->alternate_title }}">
                     </div>
                 </div>
-
-
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="seqn">Sequence number</label>
+                        <input type="number" class="form-control" id="seqn" name="seqn" value="{{ $menuScreen->seqn }}" min="0">
+                    </div>
+                </div>
             </div>
 
             <div class="d-flex justify-content-between align-items-center">
@@ -83,12 +58,12 @@
                     </button>
                 </div>
                 <div class="flex-grow-1 justify-content-end d-flex gap-2">
-                    @if ($user->id == null)
+                    @if ($menuScreen->id == null)
                         <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">
                             <i class="ph ph-floppy-disk"></i> <span>Save</span>
                         </button>
                     @else
-                        <button data-url="{{ route('AD03.delete', ['id' => $user->id]) }}" type="button" class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
+                        <button data-url="{{ route('AD03.delete', ['id' => $menuScreen->id]) }}" type="button" class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
                             <i class="ph ph-trash"></i> <span>Delete</span>
                         </button>
                         <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">

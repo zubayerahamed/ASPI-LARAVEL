@@ -1,6 +1,6 @@
 <div class="card card-default">
     <div class="card-body">
-        <form id="mainform" action="{{ $xcodes->id == null ? route('SA07.create') : route('SA07.update', ['id' => $xcodes->id]) }}" method="POST">
+        <form id="mainform" action="{{ $xcodes->id == null ? route('AD04.create') : route('AD04.update', ['id' => $xcodes->id]) }}" method="POST">
             @csrf
             @if ($xcodes->id != null)
                 @method('PUT')
@@ -68,9 +68,9 @@
                 <div class="flex-grow-1 text-left">
                     <button
                             data-reloadid="main-form-container"
-                            data-reloadurl="{{ route('SA07', ['id' => 'RESET']) }}"
+                            data-reloadurl="{{ route('AD04', ['id' => 'RESET']) }}"
                             data-detailreloadid="header-table-container"
-                            data-detailreloadurl="{{ route('SA07.header-table') }}"
+                            data-detailreloadurl="{{ route('AD04.header-table') }}"
                             type="reset"
                             class="btn btn-sm btn-default btn-reset d-flex align-items-center gap-2">
                         <i class="ph ph-broom"></i> <span>Clear</span>
@@ -82,7 +82,7 @@
                             <i class="ph ph-floppy-disk"></i> <span>Save</span>
                         </button>
                     @else
-                        <button data-url="{{ route('SA07.delete', ['id' => $xcodes->id]) }}" type="button" class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
+                        <button data-url="{{ route('AD04.delete', ['id' => $xcodes->id]) }}" type="button" class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
                             <i class="ph ph-trash"></i> <span>Delete</span>
                         </button>
                         <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">

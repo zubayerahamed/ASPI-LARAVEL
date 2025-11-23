@@ -119,4 +119,14 @@ class Menu extends Model
     {
         return $this->belongsToMany(Screen::class, 'menu_screens', 'menu_id', 'screen_id');
     }
+
+    public function scopeRelatedBusiness($query){
+        $businessId = getBusinessId();
+        $allowCustomCategory = getSelectedBusiness()['is_allow_custom_menu'] ?? false;
+        if (!$allowCustomCategory) {
+            $businessId = null;
+        }
+
+        return $query->where('business_id', $businessId);
+    }
 }

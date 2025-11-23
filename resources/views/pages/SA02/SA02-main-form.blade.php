@@ -161,6 +161,15 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_allow_custom_tags" name="is_allow_custom_tags" {{ $business->is_allow_custom_tags ? 'checked' : '' }}>
+                            <label for="is_allow_custom_tags" class="custom-control-label form-label">Allow Custom Tags</label>
+                        </div>
+                    </div>
+                </div>
 
             </div>
 

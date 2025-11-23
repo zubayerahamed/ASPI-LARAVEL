@@ -16,6 +16,11 @@ class MD05Controller extends ZayaanController
         $id = $request->query('id', 'RESET'); // Returns null if not present
         $frommenu = $request->query('frommenu', 'N');
 
+        $businessId = getBusinessId();
+        $allowCustomTags = getSelectedBusiness()['is_allow_custom_tags'] ?? false;
+        if (!$allowCustomTags) {
+            $businessId = null;
+        }
 
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
@@ -32,8 +37,9 @@ class MD05Controller extends ZayaanController
 
                 return response()->json([
                     'page' => view('pages.MD05.MD05', [
+                        'allowCustomTags' => getSelectedBusiness() == null ? true : $allowCustomTags,
                         'tag' => $att,
-                        'detailList' => Tag::where('business_id', getBusinessId())->get()
+                        'detailList' => Tag::relatedBusiness()->get()
                     ])->render(),
                     'content_header_title' => 'Tags Management',
                     'subtitle' => 'Tags',
@@ -43,6 +49,7 @@ class MD05Controller extends ZayaanController
             if ("RESET" == $id) {
                 return response()->json([
                     'page' => view('pages.MD05.MD05-main-form', [
+                        'allowCustomTags' => getSelectedBusiness() == null ? true : $allowCustomTags,
                         'tag' => (new Tag())->fill(['is_active' => true]),
                     ])->render(),
                 ]);
@@ -53,12 +60,14 @@ class MD05Controller extends ZayaanController
 
                 return response()->json([
                     'page' => view('pages.MD05.MD05-main-form', [
+                        'allowCustomTags' => getSelectedBusiness() == null ? true : $allowCustomTags,
                         'tag' => $tag,
                     ])->render(),
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
                     'page' => view('pages.MD05.MD05-main-form', [
+                        'allowCustomTags' => getSelectedBusiness() == null ? true : $allowCustomTags,
                         'tag' => (new Tag())->fill(['is_active' => true]),
                     ])->render(),
                 ]);
@@ -70,16 +79,20 @@ class MD05Controller extends ZayaanController
             'page' => 'pages.AD04.AD04',
             'content_header_title' => 'Tags Management',
             'subtitle' => 'Tags',
+            'allowCustomTags' => getSelectedBusiness() == null ? true : $allowCustomTags,
             'tag' => (new Tag())->fill(['is_active' => true]),
-            'detailList' => Tag::where('business_id', getBusinessId())->get()
+            'detailList' => Tag::relatedBusiness()->get()
         ]);
     }
 
     public function headerTable()
     {
+        $allowCustomTags = getSelectedBusiness()['is_allow_custom_tags'] ?? false;
+
         return response()->json([
             'page' => view('pages.MD05.MD05-header-table', [
-                'detailList' => Tag::where('business_id', getBusinessId())->get()
+                'allowCustomTags' => getSelectedBusiness() == null ? true : $allowCustomTags,
+                'detailList' => Tag::relatedBusiness()->get()
             ])->render(),
         ]);
     }

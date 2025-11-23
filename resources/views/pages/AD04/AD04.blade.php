@@ -1,8 +1,8 @@
-@if ($allowCustomMenu)
+@if ($allowCustomXcodes)
     <div class="row">
         <div class="col-md-12">
             <div class="main-form-container">
-                @include('pages.AD03.AD03-main-form')
+                @include('pages.AD04.AD04-main-form')
             </div>
         </div>
     </div>
@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="header-table-container">
-            @include('pages.AD03.AD03-header-table')
+            @include('pages.AD04.AD04-header-table')
         </div>
     </div>
 </div>

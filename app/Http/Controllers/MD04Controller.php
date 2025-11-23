@@ -202,7 +202,7 @@ class MD04Controller extends ZayaanController
         $request['seqn'] = $request->input('seqn') ?? 0;
         $request['is_default'] = $request->has('is_default');
 
-        $request->merge(['business_id' => null]); // For now, set business_id to null
+        $request->merge(['business_id' => getBusinessId()]); // For now, set business_id to null
 
         if ($request->has('thumbnail')) {
             // Assuming Cadoc is the model for handling file uploads

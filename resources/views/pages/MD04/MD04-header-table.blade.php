@@ -2,7 +2,7 @@
     <div class="card card-default">
 
         <div class="card-header">
-            <h3 class="card-title">List of options for Attribute: <a href="{{ route('AD04', ['id' => $attribute->id]) }}" class="screen-item" data-screen="AD04?id={{ $attribute->id }}">{{ $attribute->name }}</a></h3>
+            <h3 class="card-title">List of options for Attribute: <a href="{{ route('MD03', ['id' => $attribute->id]) }}" class="screen-item" data-screen="MD03?id={{ $attribute->id }}">{{ $attribute->name }}</a></h3>
         </div>
 
         <div class="table-responsive data-table-responsive">

@@ -119,29 +119,29 @@ class ShareMenuData
                 $menu[] = ['header' => 'Administration'];
                 $menu[] = [
                     'text' => 'Menus',
-                    'route' => 'SA05',
+                    'route' => 'AD02',
                     'icon' => 'ph ph-align-left',
                     'classes' => 'screen-item d-flex align-items-center',
                     'data' => [
-                        'screen' => 'SA05',
+                        'screen' => 'AD02',
                     ],
                 ];
                 $menu[] = [
                     'text' => 'Navigation Management',
-                    'route' => 'SA06',
+                    'route' => 'AD03',
                     'icon' => 'ph ph-anchor-simple',
                     'classes' => 'screen-item d-flex align-items-center',
                     'data' => [
-                        'screen' => 'SA06',
+                        'screen' => 'AD03',
                     ],
                 ];
                 $menu[] = [
                     'text' => 'Codes & Parameters',
-                    'route' => 'SA07',
+                    'route' => 'AD04',
                     'icon' => 'ph ph-tree-structure',
                     'classes' => 'screen-item d-flex align-items-center',
                     'data' => [
-                        'screen' => 'SA07',
+                        'screen' => 'AD04',
                     ],
                 ];
                 $menu[] = ['header' => 'Master Data'];
@@ -209,21 +209,21 @@ class ShareMenuData
         //     ];
         //     $menu[] = [
         //         'text' => 'Access Profiles',
-        //         'route' => 'AD02',
+        //         'route' => 'AD05',
         //         'icon' => 'ph ph-fingerprint',
         //         'classes' => 'screen-item d-flex align-items-center',
         //         'data' => [
-        //             'screen' => 'AD02',
+        //             'screen' => 'AD05',
         //         ],
         //     ];
 
         //     $menu[] = [
         //         'text' => 'Manage Users',
-        //         'route' => 'AD03',
+        //         'route' => 'AD06',
         //         'icon' => 'ph ph-fingerprint',
         //         'classes' => 'screen-item d-flex align-items-center',
         //         'data' => [
-        //             'screen' => 'AD03',
+        //             'screen' => 'AD06',
         //         ],
         //     ];
 
@@ -237,21 +237,21 @@ class ShareMenuData
 
         //     $menu[] = [
         //         'text' => 'Access Profiles',
-        //         'route' => 'AD02',
+        //         'route' => 'AD05',
         //         'icon' => 'ph ph-fingerprint',
         //         'classes' => 'screen-item d-flex align-items-center',
         //         'data' => [
-        //             'screen' => 'AD02',
+        //             'screen' => 'AD05',
         //         ],
         //     ];
 
         //     $menu[] = [
         //         'text' => 'Manage Users',
-        //         'route' => 'AD03',
+        //         'route' => 'AD06',
         //         'icon' => 'ph ph-fingerprint',
         //         'classes' => 'screen-item d-flex align-items-center',
         //         'data' => [
-        //             'screen' => 'AD03',
+        //             'screen' => 'AD06',
         //         ],
         //     ];
 

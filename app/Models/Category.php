@@ -149,12 +149,13 @@ class Category extends Model
         return $descendantIds;
     }
 
-    public function scopeRelatedBusiness(){
+    public function scopeRelatedBusiness($query){
         $businessId = getBusinessId();
         $allowCustomCategory = getSelectedBusiness()['is_allow_custom_category'] ?? false;
         if (!$allowCustomCategory) {
             $businessId = null;
         }
-        return $this->where('business_id', $businessId);
+
+        return $query->where('business_id', $businessId);
     }
 }

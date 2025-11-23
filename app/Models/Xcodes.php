@@ -31,4 +31,14 @@ class Xcodes extends Model
     {
         return $this->belongsTo(Business::class, 'business_id');
     }
+
+    public function scopeRelatedBusiness($query){
+        $businessId = getBusinessId();
+        $allowCustomCategory = getSelectedBusiness()['is_allow_custom_xcodes'] ?? false;
+        if (!$allowCustomCategory) {
+            $businessId = null;
+        }
+
+        return $query->where('business_id', $businessId);
+    }
 }

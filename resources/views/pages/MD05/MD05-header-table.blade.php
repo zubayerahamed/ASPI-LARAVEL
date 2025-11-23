@@ -12,14 +12,20 @@
                         <th>Tag</th>
                         <th>Description</th>
                         <th class="text-center">Is Active?</th>
-                        <th class="text-right" data-no-sort="Y">Actions</th>
+                        @if($allowCustomTags)
+                            <th class="text-right" data-no-sort="Y">Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($detailList as $x)
                         <tr>
                             <td>
-                                <a data-reloadurl="{{ route('MD05', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->name }}</a>
+                                @if($allowCustomTags)
+                                    <a data-reloadurl="{{ route('MD05', ['id' => $x->id]) }}" class="detail-dataindex" data-reloadid="main-form-container" href="#">{{ $x->name }}</a>
+                                @else
+                                    {{ $x->name }}
+                                @endif
                             </td>
                             <td>
                                 {{ $x->description }}
@@ -31,13 +37,15 @@
                                     <span class="badge bg-secondary">Inactive</span>
                                 @endif
                             </td>
-                            <td>
-                                <div class="d-flex justify-content-end align-items-center gap-2">
-                                    <button data-url="{{ route('MD05.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
-                                        <i class="ph ph-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
+                            @if($allowCustomTags)
+                                <td>
+                                    <div class="d-flex justify-content-end align-items-center gap-2">
+                                        <button data-url="{{ route('MD05.delete', ['id' => $x->id]) }}" type="button" class="btn btn-sm btn-danger btn-table-delete d-flex align-items-center">
+                                            <i class="ph ph-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
 

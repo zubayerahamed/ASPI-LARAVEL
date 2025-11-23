@@ -50,4 +50,14 @@ class Tag extends Model
 
         return $slug;
     }
+
+    public function scopeRelatedBusiness($query){
+        $businessId = getBusinessId();
+        $allowCustomTags = getSelectedBusiness()['is_allow_custom_tags'] ?? false;
+        if (!$allowCustomTags) {
+            $businessId = null;
+        }
+
+        return $query->where('business_id', $businessId);
+    }
 }
