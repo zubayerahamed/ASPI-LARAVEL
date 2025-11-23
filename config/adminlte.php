@@ -66,9 +66,9 @@ return [
     'logo' => 'ASPI',
     'logo_img' => 'assets/images/aspi_logo_white.png',
     'logo_img_class' => 'brand-image',
-    'logo_img_xl' => null,
+    'logo_img_xl' => null, // 'assets/images/aspi_white.png',
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'ASPI',
 
     /*
     |--------------------------------------------------------------------------
