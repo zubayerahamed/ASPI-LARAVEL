@@ -6,6 +6,7 @@ use App\Helpers\ReloadSection;
 use App\Models\Business;
 use App\Models\Profile;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -29,6 +30,12 @@ class AD06Controller extends ZayaanController
             ->where('is_driver', 0)
             ->where('is_customer', 0)
             ->first();
+
+        if (!$businessAdmin) {
+            // Throw exception if no business admin found
+            throw new Exception("No business admin found for the current business.");
+        }
+
         $assignedBusinesses = $businessAdmin->businesses()->wherePivot('is_active', true)->get();
         // Filter current business from the list
         $otherBusinesseses = $assignedBusinesses->filter(function ($business) {

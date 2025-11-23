@@ -176,6 +176,17 @@ class ShareMenuData
                 return $menu;  // No selected business, return default menu
             } else {  // Business is selected
                 $menu[] = [
+                    'text' => getSelectedBusiness()['name'],
+                    'route' => 'home',
+                    'topnav' => true,
+                    'classes' => 'business-brand',
+                    'data' => [
+                        'screen' => 'home',
+                    ],
+                ];
+
+
+                $menu[] = [
                     'text' => 'Switch Business',
                     'route' => 'business-selection',
                     'icon' => 'ph ph-swap',
@@ -188,6 +199,46 @@ class ShareMenuData
                 // Constract Menu for selected business
                 return $this->generateMenuForSelectedBusiness($menu, $loggedInUser);
             }
+        }
+
+
+        if ($loggedInUser['is_business_admin'] ?? false) {
+            $menu[] = [
+                'text' => getSelectedBusiness()['name'],
+                'route' => 'home',
+                'topnav' => true,
+                'classes' => 'business-brand',
+                'data' => [
+                    'screen' => 'home',
+                ],
+            ];
+
+            if (getSelectedBusiness() === null) {
+                $menu[] = [
+                    'text' => 'Select Business',
+                    'route' => 'business-selection',
+                    'icon' => 'ph ph-swap',
+                    'classes' => 'screen-item d-flex align-items-center',
+                    'data' => [
+                        'screen' => 'business-selection',
+                    ],
+                ];
+
+                return $menu;  // No selected business, return default menu
+            } 
+
+            $menu[] = [
+                'text' => 'Switch Business',
+                'route' => 'business-selection',
+                'icon' => 'ph ph-swap',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'business-selection',
+                ],
+            ];
+
+            // Constract Menu for selected business
+            return $this->generateMenuForSelectedBusiness($menu, $loggedInUser);
         }
 
         // Add role-specific menus
@@ -261,7 +312,8 @@ class ShareMenuData
         return $menu;
     }
 
-    public function isAnyScreenExistsOnChildMenus ($menusData){
+    public function isAnyScreenExistsOnChildMenus($menusData)
+    {
         foreach ($menusData as $m) {
             // Check Screens
             if (isset($m['menu_screens']) && count($m['menu_screens']) > 0) {
@@ -301,7 +353,7 @@ class ShareMenuData
                 foreach ($m['menu_screens'] as $ms) {
 
                     // Check Route exists for the screen
-                    if(Route::has($ms['screen_xscreen']) == false){
+                    if (Route::has($ms['screen_xscreen']) == false) {
                         Log::warning("Route not found for screen: " . $ms['screen_xscreen'] . " - " . $ms['alternate_title']);
                         continue;
                     }
@@ -332,7 +384,8 @@ class ShareMenuData
         return $menu;
     }
 
-    public function setChildMenus($menu, $m, $marginCounter = 1){
+    public function setChildMenus($menu, $m, $marginCounter = 1)
+    {
 
         $menuData = $m['children'];
 
@@ -347,7 +400,7 @@ class ShareMenuData
             if (isset($m['menu_screens']) && count($m['menu_screens']) > 0) {
                 foreach ($m['menu_screens'] as $ms) {
                     // Check Route exists for the screen
-                    if(Route::has($ms['screen_xscreen']) == false){
+                    if (Route::has($ms['screen_xscreen']) == false) {
                         Log::warning("Route not found for screen: " . $ms['screen_xscreen'] . " - " . $ms['alternate_title']);
                         continue;
                     }
@@ -382,7 +435,6 @@ class ShareMenuData
                     ...$submenu
                 ], // Initialize submenu
             ];
-
         }
 
         return $menu;

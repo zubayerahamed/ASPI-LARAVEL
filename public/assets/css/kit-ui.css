@@ -97,6 +97,21 @@
 /**
 === sidebar nav modification
 */
+.navbar-expand .navbar-nav .nav-link {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+.business-brand{
+	font-size: 25px !important;
+	font-weight: bold !important;
+	line-height: 23px !important;
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+
+
 .main-sidebar{
 	font-size: 15px !important;
 }

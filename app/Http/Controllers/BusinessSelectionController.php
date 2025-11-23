@@ -51,6 +51,19 @@ class BusinessSelectionController extends ZayaanController
     // This could involve setting a session variable, redirecting, etc.
     public function selectBusiness(Request $request, $id)
     {
+
+        // if $id is 0, the go to system platform, remove business from session
+        if ($id == 0) {
+            // Remove business from session
+            $loggedInUser = getLoggedInUserDetails();
+            $loggedInUser['selected_business'] = null;
+            ZayaanSessionManager::update('user_info', $loggedInUser);
+
+            // Redirect to system platform
+            return redirect()->route('home')->with('success', 'Switched to System Platform.');
+        }
+
+
         // Check business existence
         $business = Business::with(['businessCategory'])->find($id);
         if (!$business) {

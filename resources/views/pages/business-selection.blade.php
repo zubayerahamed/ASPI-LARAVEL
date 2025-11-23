@@ -1,12 +1,28 @@
 <div class="row">
-    <div class="d-flex justify-content-center flex-wrap" style="width: 100%;">
+
+    @if (getLoggedInUserDetails()['is_system_admin'] && getSelectedBusiness() != null)
+        <div class="col-md-3 m-auto">
+            <a  href="{{ route('business-selection.select', ['id' => '0']) }}" 
+                class="d-block  text-center mb-4 border bg-white cursor-pointer" 
+                style="border-radius: 5px; overflow: hidden;">
+                <div class="bg-warning p-2">
+                    <h4 class="mt-2 mb-2 text-bold">System Platform</h4>
+                </div>
+            </a>
+        </div>
+    @else
         @if ($businesses->isEmpty())
             <div class="col-12">
                 <h1 class="text-center">
-                    Business Not Created Yet.
+                    {{ getSelectedBusiness() == null ? 'Business Not Created Yet.' : 'No other business available to switch.' }}
                 </h1>
             </div>
         @endif
+    @endif
+
+
+    <div class="d-flex justify-content-center flex-wrap" style="width: 100%;">
+
         @foreach ($businesses as $business)
             <div class="col-md-3">
                 <a  href="{{ route('business-selection.select', ['id' => $business->id]) }}" 
