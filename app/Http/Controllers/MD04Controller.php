@@ -21,12 +21,12 @@ class MD04Controller extends ZayaanController
         // Get attribute_id from request parameter
         $attribute_id = $request->query('attribute_id', null); // Returns null if not present
         if ($attribute_id == null) {
-            return redirect()->route('AD04');
+            return redirect()->route('MD03');
         }
 
         $attribute = Attribute::find($attribute_id);
         if (!$attribute) {
-            return redirect()->route('AD04');
+            return redirect()->route('MD03');
         }
 
         if ($request->ajax()) {
@@ -85,12 +85,12 @@ class MD04Controller extends ZayaanController
     {
         $attribute_id = $request->query('attribute_id', null); // Returns null if not present
         if ($attribute_id == null) {
-            return redirect()->route('AD04.header-table');
+            return redirect()->route('MD03.header-table');
         }
 
         $attribute = Attribute::find($attribute_id);
         if (!$attribute) {
-            return redirect()->route('AD04.header-table');
+            return redirect()->route('MD03.header-table');
         }
 
         return response()->json([

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShareMenuData
@@ -260,6 +261,24 @@ class ShareMenuData
         return $menu;
     }
 
+    public function isAnyScreenExistsOnChildMenus ($menusData){
+        foreach ($menusData as $m) {
+            // Check Screens
+            if (isset($m['menu_screens']) && count($m['menu_screens']) > 0) {
+                return true;
+            }
+
+            // Check Child Menus
+            if (isset($m['children']) && count($m['children']) > 0) {
+                if ($this->isAnyScreenExistsOnChildMenus($m['children'])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public function generateMenuForSelectedBusiness($menu, $loggedInUser)
     {
         // Constract Menu for selected business
@@ -268,8 +287,10 @@ class ShareMenuData
 
         // dd($menusData);
 
+        $marginCounter = 0;
+
         foreach ($menusData as $m) {
-            if ((!isset($m['menu_screens']) || count($m['menu_screens']) == 0) && (!isset($m['children']) || count($m['children']) == 0)) {
+            if (!$this->isAnyScreenExistsOnChildMenus($m['children'])) {
                 continue;
             }
 
@@ -278,11 +299,23 @@ class ShareMenuData
             // Set Screens
             if (isset($m['menu_screens']) && count($m['menu_screens']) > 0) {
                 foreach ($m['menu_screens'] as $ms) {
+
+                    // Check Route exists for the screen
+                    if(Route::has($ms['screen_xscreen']) == false){
+                        Log::warning("Route not found for screen: " . $ms['screen_xscreen'] . " - " . $ms['alternate_title']);
+                        continue;
+                    }
+
+                    // Skipable screens
+                    if (in_array($ms['screen_xscreen'], $this->skipableScreens())) {
+                        continue;
+                    }
+
                     $menu[] = [
                         'text' => $ms['alternate_title'],
-                        'route' => 'DASH', // You can modify this to point to the appropriate route
+                        'route' => $ms['screen_xscreen'], // You can modify this to point to the appropriate route
                         'icon' => $ms['screen_icon'] ?? '',
-                        'classes' => 'screen-item d-flex align-items-center',
+                        'classes' => 'screen-item d-flex align-items-center ml-' . $marginCounter,
                         'data' => [
                             'screen' => $ms['screen_xscreen'],
                         ],
@@ -292,23 +325,74 @@ class ShareMenuData
 
             // Set Child Menus
             if (isset($m['children']) && count($m['children']) > 0) {
-                // dd($m['children']);
-                foreach ($m['children'] as $cm) {
-                    $menu[] = [
-                        'text' => $cm['title'],
-                        'icon' => $cm['icon'] ?? '',
-                        'submenu' => [
-                            [
-                                'text' => 'level_one',
-                                'url' => '#',
-                            ],
-                        ], // Initialize submenu
-                    ];
-                }
+                $menu = $this->setChildMenus($menu, $m, $marginCounter);
             }
         }
 
         return $menu;
+    }
+
+    public function setChildMenus($menu, $m, $marginCounter = 1){
+
+        $menuData = $m['children'];
+
+        foreach ($menuData as $m) {
+            if ((!isset($m['menu_screens']) || count($m['menu_screens']) == 0) && (!isset($m['children']) || count($m['children']) == 0)) {
+                continue;
+            }
+
+            $submenu = [];
+
+            // Set Screens
+            if (isset($m['menu_screens']) && count($m['menu_screens']) > 0) {
+                foreach ($m['menu_screens'] as $ms) {
+                    // Check Route exists for the screen
+                    if(Route::has($ms['screen_xscreen']) == false){
+                        Log::warning("Route not found for screen: " . $ms['screen_xscreen'] . " - " . $ms['alternate_title']);
+                        continue;
+                    }
+
+                    // Skipable screens
+                    if (in_array($ms['screen_xscreen'], $this->skipableScreens())) {
+                        continue;
+                    }
+
+                    $submenu[] = [
+                        'text' => $ms['alternate_title'],
+                        'route' => $ms['screen_xscreen'], // You can modify this to point to the appropriate route
+                        'icon' => $ms['screen_icon'] ?? '',
+                        'classes' => 'screen-item d-flex align-items-center ml-' . $marginCounter + 2,
+                        'data' => [
+                            'screen' => $ms['screen_xscreen'],
+                        ],
+                    ];
+                }
+            }
+
+            // Set Child Menus
+            if (isset($m['children']) && count($m['children']) > 0) {
+                $submenu = $this->setChildMenus($submenu, $m, $marginCounter + 2);
+            }
+
+            $menu[] = [
+                'text' => $m['title'],
+                'icon' => $m['icon'] ?? '',
+                'classes' => 'd-flex align-items-center ml-' . $marginCounter,
+                'submenu' => [
+                    ...$submenu
+                ], // Initialize submenu
+            ];
+
+        }
+
+        return $menu;
+    }
+
+    public function skipableScreens()
+    {
+        return [
+            'MD04',
+        ];
     }
 
     public function getMenuGroup($profileId = null)
@@ -341,6 +425,11 @@ class ShareMenuData
                     ->where('business_id', getBusinessId())
                     ->where('menu_screen_id', $ms->id)
                     ->first();
+
+                // Continue if user is not system admin or business admin and menu screen is not in profile details
+                if (!($loggedInUser['is_system_admin'] ?? false) && !($loggedInUser['is_business_admin'] ?? false) && !$profiledt) {
+                    continue;
+                }
 
                 $menu['menu_screens'][] = [
                     'id' => $ms->id,

@@ -1,4 +1,6 @@
 
+
+
 .dark-mode .select2-container--bootstrap4 .select2-selection {
     background-color: #343a40;
 	border-color: #6c757d;
@@ -92,6 +94,27 @@
 
 
 
+/**
+=== sidebar nav modification
+*/
+.main-sidebar{
+	font-size: 15px !important;
+}
+.nav-sidebar .nav-header {
+    font-size: .8rem !important;
+    padding: .5rem .65rem !important;
+}
+.os-content {
+  padding: 0px 5px !important;
+}
+
+.nav-sidebar .nav-link>.right, .nav-sidebar .nav-link>p>.right{
+	top: 0.8rem !important;
+}
+
+.nav-link{
+	width: auto !important;
+}
 
 
 /**=== Phosphor icon picker css
