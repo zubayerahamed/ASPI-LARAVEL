@@ -11,7 +11,7 @@ class ProfileService
     /**
      * Get paginated Profiles data
      */
-    public function LAD02(
+    public function LAD05(
         int $length,
         int $start,
         string $orderColumn,
@@ -54,9 +54,9 @@ class ProfileService
     }
 
     /**
-     * Get total count for LAD02 with filters
+     * Get total count for LAD05 with filters
      */
-    public function LAD02Count(
+    public function LAD05Count(
         string $orderColumn,
         DatatableSortOrderType $orderType,
         string $searchValue,

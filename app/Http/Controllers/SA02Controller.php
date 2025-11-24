@@ -122,6 +122,9 @@ class SA02Controller extends ZayaanController
         $request['is_allow_custom_attribute'] = $request->has('is_allow_custom_attribute');
         $request['is_allow_custom_xcodes'] = $request->has('is_allow_custom_xcodes');
         $request['is_allow_custom_tags'] = $request->has('is_allow_custom_tags');
+        $request['is_allow_custom_product_labels'] = $request->has('is_allow_custom_product_labels');
+        $request['is_allow_custom_product_options'] = $request->has('is_allow_custom_product_options');
+        $request['is_allow_custom_product_specifications'] = $request->has('is_allow_custom_product_specifications');
 
 
         // Atleast one service type must be selected
@@ -145,6 +148,9 @@ class SA02Controller extends ZayaanController
             'is_allow_custom_attribute', 
             'is_allow_custom_xcodes',
             'is_allow_custom_tags',
+            'is_allow_custom_product_labels',
+            'is_allow_custom_product_options',
+            'is_allow_custom_product_specifications',
             'business_category_id',
         ]));
 
@@ -193,7 +199,11 @@ class SA02Controller extends ZayaanController
         $request['is_allow_custom_attribute'] = $request->has('is_allow_custom_attribute');
         $request['is_allow_custom_xcodes'] = $request->has('is_allow_custom_xcodes');
         $request['is_allow_custom_tags'] = $request->has('is_allow_custom_tags');
+        $request['is_allow_custom_product_labels'] = $request->has('is_allow_custom_product_labels');
+        $request['is_allow_custom_product_options'] = $request->has('is_allow_custom_product_options');
+        $request['is_allow_custom_product_specifications'] = $request->has('is_allow_custom_product_specifications');
 
+        
         // Atleast one service type must be selected
         if (!($request['is_inhouse'] || $request['is_pickup'] || $request['is_delivery'])) {
             $this->setErrorStatusAndMessage("Atleast one service type must be selected (Inhouse, Pickup, Delivery)");
@@ -221,6 +231,9 @@ class SA02Controller extends ZayaanController
             'is_allow_custom_attribute',
             'is_allow_custom_xcodes',
             'is_allow_custom_tags',
+            'is_allow_custom_product_labels',
+            'is_allow_custom_product_options',
+            'is_allow_custom_product_specifications',
         ]));
 
         if ($business->save()) {

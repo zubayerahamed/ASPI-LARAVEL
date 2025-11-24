@@ -98,7 +98,7 @@
             "order": [orderarr],
             "columnDefs": columnDefs,
             "ajax": {
-                "url" : "{{ route('search.LAD02', ['suffix' => $suffix, 'dependentparam' => $dependentParam ?? '' ]) }}",
+                "url" : "{{ route('search.LAD05', ['suffix' => $suffix, 'dependentparam' => $dependentParam ?? '' ]) }}",
                 "type": 'POST', 
                 "headers": {
                     'X-CSRF-TOKEN': getCSRFToken()

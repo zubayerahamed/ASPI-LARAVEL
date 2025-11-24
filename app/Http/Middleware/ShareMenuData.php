@@ -203,16 +203,7 @@ class ShareMenuData
 
 
         if ($loggedInUser['is_business_admin'] ?? false) {
-            $menu[] = [
-                'text' => getSelectedBusiness()['name'],
-                'route' => 'home',
-                'topnav' => true,
-                'classes' => 'business-brand',
-                'data' => [
-                    'screen' => 'home',
-                ],
-            ];
-
+            // If no business is selected
             if (getSelectedBusiness() === null) {
                 $menu[] = [
                     'text' => 'Select Business',
@@ -225,7 +216,17 @@ class ShareMenuData
                 ];
 
                 return $menu;  // No selected business, return default menu
-            } 
+            }
+
+            $menu[] = [
+                'text' => getSelectedBusiness()['name'],
+                'route' => 'home',
+                'topnav' => true,
+                'classes' => 'business-brand',
+                'data' => [
+                    'screen' => 'home',
+                ],
+            ];
 
             $menu[] = [
                 'text' => 'Switch Business',
@@ -241,75 +242,57 @@ class ShareMenuData
             return $this->generateMenuForSelectedBusiness($menu, $loggedInUser);
         }
 
-        // Add role-specific menus
-        // if ($loggedInUser['is_system_admin'] ?? false) {
-        //     if (getSelectedBusiness() === null) {
-        //         return $menu;  
-        //     }
+        // For other users
+        if (getSelectedBusiness() === null) {
+            $menu[] = [
+                'text' => 'Select Business',
+                'route' => 'business-selection',
+                'icon' => 'ph ph-swap',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'business-selection',
+                ],
+            ];
 
-        //     $menu = Config::get('adminlte.menu');
+            return $menu;  // No selected business, return default menu
+        }
 
-        //     $menu[] = [
-        //         'text' => 'Dashboard',
-        //         'route' => 'DASH',
-        //         'icon' => 'ph ph-speedometer',
-        //         'classes' => 'screen-item d-flex align-items-center',
-        //         'data' => [
-        //             'screen' => 'DASH',
-        //         ],
-        //     ];
-        //     $menu[] = [
-        //         'text' => 'Access Profiles',
-        //         'route' => 'AD05',
-        //         'icon' => 'ph ph-fingerprint',
-        //         'classes' => 'screen-item d-flex align-items-center',
-        //         'data' => [
-        //             'screen' => 'AD05',
-        //         ],
-        //     ];
+        $menu[] = [
+            'text' => 'Switch Business',
+            'route' => 'business-selection',
+            'icon' => 'ph ph-swap',
+            'classes' => 'screen-item d-flex align-items-center',
+            'data' => [
+                'screen' => 'business-selection',
+            ],
+        ];
 
-        //     $menu[] = [
-        //         'text' => 'Manage Users',
-        //         'route' => 'AD06',
-        //         'icon' => 'ph ph-fingerprint',
-        //         'classes' => 'screen-item d-flex align-items-center',
-        //         'data' => [
-        //             'screen' => 'AD06',
-        //         ],
-        //     ];
+        if (getSelectedProfile() === null) {
+            $menu[] = [
+                'text' => 'Select Profile',
+                'route' => 'profile-selection',
+                'icon' => 'ph ph-swap',
+                'classes' => 'screen-item d-flex align-items-center',
+                'data' => [
+                    'screen' => 'profile-selection',
+                ],
+            ];
 
-        //     return $menu;
-        // }
+            return $menu; // No profile selected, return default menu
+        }
 
-        // if ($loggedInUser['is_business_admin'] ?? false) {
-        //     if (getSelectedBusiness() === null) {
-        //         return $menu;  // No selected business, return default menu
-        //     }
+        $menu[] = [
+            'text' => 'Switch Profile',
+            'route' => 'profile-selection',
+            'icon' => 'ph ph-swap',
+            'classes' => 'screen-item d-flex align-items-center',
+            'data' => [
+                'screen' => 'profile-selection',
+            ],
+        ];
 
-        //     $menu[] = [
-        //         'text' => 'Access Profiles',
-        //         'route' => 'AD05',
-        //         'icon' => 'ph ph-fingerprint',
-        //         'classes' => 'screen-item d-flex align-items-center',
-        //         'data' => [
-        //             'screen' => 'AD05',
-        //         ],
-        //     ];
-
-        //     $menu[] = [
-        //         'text' => 'Manage Users',
-        //         'route' => 'AD06',
-        //         'icon' => 'ph ph-fingerprint',
-        //         'classes' => 'screen-item d-flex align-items-center',
-        //         'data' => [
-        //             'screen' => 'AD06',
-        //         ],
-        //     ];
-
-        //     return $menu;
-        // }
-
-        return $menu;
+        // Constract Menu for selected business
+        return $this->generateMenuForSelectedBusiness($menu, $loggedInUser);
     }
 
     public function isAnyScreenExistsOnChildMenus($menusData)
@@ -335,7 +318,7 @@ class ShareMenuData
     {
         // Constract Menu for selected business
 
-        $menusData = $this->getMenuGroup();
+        $menusData = $this->getMenuGroup(getProfileId());
 
         // dd($menusData);
 
@@ -449,6 +432,9 @@ class ShareMenuData
 
     public function getMenuGroup($profileId = null)
     {
+
+        // dd($profileId);
+
         $menus = Menu::generateMenuTree();
         $menuGroupWithScreen = [];
 
@@ -477,9 +463,11 @@ class ShareMenuData
                     ->where('business_id', getBusinessId())
                     ->where('menu_screen_id', $ms->id)
                     ->first();
+                
+                Log::debug("---- Profiledt Check: " . ($profiledt ? 'Found' : 'Not Found'));
 
                 // Continue if user is not system admin or business admin and menu screen is not in profile details
-                if (!($loggedInUser['is_system_admin'] ?? false) && !($loggedInUser['is_business_admin'] ?? false) && !$profiledt) {
+                if (!getLoggedInUserDetails()['is_system_admin'] && !getLoggedInUserDetails()['is_business_admin'] && !$profiledt) {
                     continue;
                 }
 
@@ -526,6 +514,13 @@ class ShareMenuData
                     ->where('business_id', getBusinessId())
                     ->where('menu_screen_id', $ms->id)
                     ->first();
+                
+                Log::debug("---- Profiledt Check: " . ($profiledt ? 'Found' : 'Not Found'));
+
+                // Continue if user is not system admin or business admin and menu screen is not in profile details
+                if (!getLoggedInUserDetails()['is_system_admin'] && !getLoggedInUserDetails()['is_business_admin'] && !$profiledt) {
+                    continue;
+                }
 
                 $child['menu_screens'][] = [
                     'id' => $ms->id,

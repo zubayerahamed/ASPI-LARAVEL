@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 
 class ProfileSelectionController extends ZayaanController
 {
-    public function index()
+    public function index(Request $request)
     {
+        $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
+        
         $currentBusinessId = getBusinessId();
 
         // Get Auth User's businesses
@@ -31,6 +33,18 @@ class ProfileSelectionController extends ZayaanController
             $profiles = $profiles->filter(function ($profile){
                 return $profile->id !== getProfileId();
             });
+        }
+
+        if ($request->ajax()) {
+            if ($frommenu == 'Y') {
+                return response()->json([
+                    'page' => view('pages.profile-selection', [
+                        'profiles' => $profiles
+                    ])->render(),
+                    'content_header_title' => getSelectedProfile() == null ? 'Select Profile' : 'Switch Profile',
+                    'subtitle' => getSelectedProfile() == null ? 'Select Profile' : 'Switch Profile',
+                ]);
+            }
         }
 
         return view('index', [

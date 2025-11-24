@@ -43,7 +43,7 @@ class SearchSuggestController extends ZayaanController
         ])->render();
     }
 
-    public function LAD02(Request $request, int $suffix)
+    public function LAD05(Request $request, int $suffix)
     {
         $helper = DatatableRequestHelper::fromRequest($request);
 
@@ -52,7 +52,7 @@ class SearchSuggestController extends ZayaanController
         $dependentParam = $request->query('dependentparam');
         
         // Get paginated data
-        $list = $this->profileService->LAD02(
+        $list = $this->profileService->LAD05(
             length: $helper->length,
             start: $helper->start,
             orderColumn: $helper->columns->get($helper->orderColumnNo)->name,
@@ -63,7 +63,7 @@ class SearchSuggestController extends ZayaanController
         );
 
         // Get total rows count
-        $totalRows = $this->profileService->LAD02Count(
+        $totalRows = $this->profileService->LAD05Count(
             orderColumn: $helper->columns->get($helper->orderColumnNo)->name,
             orderType: $helper->orderType,
             searchValue: $helper->searchValue,

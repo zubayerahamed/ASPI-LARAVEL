@@ -31,6 +31,10 @@ return new class extends Migration
             $table->boolean('is_allow_custom_attribute')->default(false);
             $table->boolean('is_allow_custom_xcodes')->default(false);
             $table->boolean('is_allow_custom_tags')->default(false);
+            $table->boolean('is_allow_custom_product_labels')->default(false);
+            $table->boolean('is_allow_custom_product_options')->default(false);
+            $table->boolean('is_allow_custom_product_specifications')->default(false);
+
 
             $table->foreignId('business_category_id')->references('id')->on('business_categories')->onDelete('cascade');
 

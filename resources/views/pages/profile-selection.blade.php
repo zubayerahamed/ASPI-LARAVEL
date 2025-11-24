@@ -3,7 +3,7 @@
         @if ($profiles->isEmpty())
             <div class="col-12">
                 <h1 class="text-center">
-                    Profiles Not Assigned Yet.
+                    {{ getSelectedProfile() == null ? 'Profiles Not Assigned Yet.' : 'No other profile available to switch.' }}
                 </h1>
             </div>
         @endif

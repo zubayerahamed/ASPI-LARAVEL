@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <div class="row mt-4">
+            <div class="row mt-5">
                 <div class="col-md-12">
                     <h5 class="m-0 text-bold">Select Services</h5>
                     <span class="text-muted">Atleast one service must be selected</span>
@@ -119,10 +119,10 @@
 
             </div>
 
-            <div class="row mt-4">
+            <div class="row mt-5">
                 <div class="col-md-12">
-                    <h5 class="m-0 text-bold">Business Specific Settings</h5>
-                    <span class="text-muted">Business specific settings for the selected business</span>
+                    <h5 class="m-0 text-bold">Administration Settings</h5>
+                    <span class="text-muted">Administration specific settings for the selected business</span>
                     <hr>
                 </div>
 
@@ -133,6 +133,23 @@
                             <label for="is_allow_custom_menu" class="custom-control-label form-label">Allow Custom Menu</label>
                         </div>
                     </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_allow_custom_xcodes" name="is_allow_custom_xcodes" {{ $business->is_allow_custom_xcodes ? 'checked' : '' }}>
+                            <label for="is_allow_custom_xcodes" class="custom-control-label form-label">Allow Custom Codes & Parameters</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h5 class="m-0 text-bold">Master Data Settings</h5>
+                    <span class="text-muted">Master data specific settings for the selected business</span>
+                    <hr>
                 </div>
 
                 <div class="col-md-3">
@@ -153,14 +170,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input class="custom-control-input" type="checkbox" id="is_allow_custom_xcodes" name="is_allow_custom_xcodes" {{ $business->is_allow_custom_xcodes ? 'checked' : '' }}>
-                            <label for="is_allow_custom_xcodes" class="custom-control-label form-label">Allow Custom Codes & Parameters</label>
-                        </div>
-                    </div>
-                </div>
+               
                 
                 <div class="col-md-3">
                     <div class="form-group">
@@ -170,6 +180,35 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_allow_custom_product_labels" name="is_allow_custom_product_labels" {{ $business->is_allow_custom_product_labels ? 'checked' : '' }}>
+                            <label for="is_allow_custom_product_labels" class="custom-control-label form-label">Allow Custom Product Labels</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_allow_custom_product_options" name="is_allow_custom_product_options" {{ $business->is_allow_custom_product_options ? 'checked' : '' }}>
+                            <label for="is_allow_custom_product_options" class="custom-control-label form-label">Allow Custom Product Options</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_allow_custom_product_specifications" name="is_allow_custom_product_specifications" {{ $business->is_allow_custom_product_specifications ? 'checked' : '' }}>
+                            <label for="is_allow_custom_product_specifications" class="custom-control-label form-label">Allow Custom Product Specifications</label>
+                        </div>
+                    </div>
+                </div>
+
+
 
             </div>
 
