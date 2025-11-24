@@ -97,6 +97,10 @@ class BusinessSelectionController extends ZayaanController
             'is_allow_custom_category' => $business->is_allow_custom_category,
             'is_allow_custom_attribute' => $business->is_allow_custom_attribute,
             'is_allow_custom_xcodes' => $business->is_allow_custom_xcodes,
+            'is_allow_custom_tags' => $business->is_allow_custom_tags,
+            'is_allow_custom_product_labels' => $business->is_allow_custom_product_labels,
+            'is_allow_custom_product_options' => $business->is_allow_custom_product_options,
+            'is_allow_custom_product_specifications' => $business->is_allow_custom_product_specifications,
             'business_category_code' => $business->businessCategory->xcode,
         ];
         ZayaanSessionManager::update('user_info', $loggedInUser);

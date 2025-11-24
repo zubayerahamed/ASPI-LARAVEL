@@ -172,6 +172,15 @@ class ShareMenuData
                         'screen' => 'MD05',
                     ],
                 ];
+                $menu[] = [
+                    'text' => 'Product Labels',
+                    'route' => 'MD06',
+                    'icon' => 'ph ph-sticker',
+                    'classes' => 'screen-item d-flex align-items-center',
+                    'data' => [
+                        'screen' => 'MD06',
+                    ],
+                ];
 
                 return $menu;  // No selected business, return default menu
             } else {  // Business is selected

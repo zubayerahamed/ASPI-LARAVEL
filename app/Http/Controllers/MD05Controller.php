@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 class MD05Controller extends ZayaanController
 {
-    
-     public function index(Request $request)
+
+    public function index(Request $request)
     {
         $id = $request->query('id', 'RESET'); // Returns null if not present
         $frommenu = $request->query('frommenu', 'N');
@@ -27,7 +27,7 @@ class MD05Controller extends ZayaanController
 
                 $att = (new Tag())->fill(['is_active' => true]);
 
-                if("RESET" != $id && is_numeric($id) && $id > 0) {
+                if ("RESET" != $id && is_numeric($id) && $id > 0) {
                     try {
                         $att = Tag::findOrFail($id);
                     } catch (\Throwable $th) {
@@ -189,5 +189,4 @@ class MD05Controller extends ZayaanController
         $this->setErrorStatusAndMessage("Tag deletion failed");
         return $this->getResponse();
     }
-
 }

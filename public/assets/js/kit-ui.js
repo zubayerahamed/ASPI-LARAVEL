@@ -104,13 +104,27 @@ kit.ui.config.initTypeahead = function () {
 
 kit.ui.config.initColorpicker = function () {
     //Colorpicker
-    $('.colorpicker').colorpicker()
+    $('.colorpicker1').each(function () {
+        $(this).colorpicker();
+    });
 
     //color picker with addon
-    $('.colorpicker2').colorpicker()
-    $('.colorpicker2').on('colorpickerChange', function (event) {
-        $('.colorpicker2 .fa-square').css('color', event.color.toString());
+    $('.colorpicker2').each(function () {
+        var $element = $(this);
+        $element.colorpicker();
+
+        // Update the color square on color change
+        $element.on('colorpickerChange', function (event) {
+            $element.find('.fa-square').css('color', event.color.toString());
+        });
+
+        // Set initial color square color
+        var initialColor = $element.find('input').val();
+        if (initialColor) {
+            $element.find('.fa-square').css('color', initialColor);
+        }
     });
+
 }
 
 kit.ui.config.initToastr = function () {

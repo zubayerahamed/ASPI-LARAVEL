@@ -18,6 +18,8 @@ use App\Http\Controllers\AD06Controller;
 use App\Http\Controllers\AD18Controller;
 use App\Http\Controllers\ProfileSelectionController;
 use App\Http\Controllers\AD04Controller;
+use App\Http\Controllers\AD07Controller;
+use App\Http\Controllers\MD06Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
@@ -87,14 +89,17 @@ Route::post('/MD04', [MD04Controller::class, 'create'])->name('MD04.create');
 Route::put('/MD04/{id}', [MD04Controller::class, 'update'])->name('MD04.update');
 Route::delete('/MD04/{id}', [MD04Controller::class, 'delete'])->name('MD04.delete');
 
-
-
 Route::get('/MD05', [MD05Controller::class, 'index'])->name('MD05');
 Route::get('/MD05/header-table', [MD05Controller::class, 'headerTable'])->name('MD05.header-table');
 Route::post('/MD05', [MD05Controller::class, 'create'])->name('MD05.create');
 Route::put('/MD05/{id}', [MD05Controller::class, 'update'])->name('MD05.update');
 Route::delete('/MD05/{id}', [MD05Controller::class, 'delete'])->name('MD05.delete');
 
+Route::get('/MD06', [MD06Controller::class, 'index'])->name('MD06');
+Route::get('/MD06/header-table', [MD06Controller::class, 'headerTable'])->name('MD06.header-table');
+Route::post('/MD06', [MD06Controller::class, 'create'])->name('MD06.create');
+Route::put('/MD06/{id}', [MD06Controller::class, 'update'])->name('MD06.update');
+Route::delete('/MD06/{id}', [MD06Controller::class, 'delete'])->name('MD06.delete');
 
 Route::get('/AD05', [AD05Controller::class, 'index'])->name('AD05');
 Route::get('/AD05/detail-table', [AD05Controller::class, 'detailTable'])->name('AD05.detail-table');
@@ -109,6 +114,11 @@ Route::post('/AD06', [AD06Controller::class, 'create'])->name('AD06.create');
 Route::put('/AD06/{id}', [AD06Controller::class, 'update'])->name('AD06.update');
 Route::delete('/AD06/{id}', [AD06Controller::class, 'delete'])->name('AD06.delete');
 
+Route::get('/AD07', [AD07Controller::class, 'index'])->name('AD07');
+Route::get('/AD07/header-table', [AD07Controller::class, 'headerTable'])->name('AD07.header-table');
+Route::post('/AD07', [AD07Controller::class, 'create'])->name('AD07.create');
+Route::put('/AD07/{id}', [AD07Controller::class, 'update'])->name('AD07.update');
+Route::delete('/AD07/{id}', [AD07Controller::class, 'delete'])->name('AD07.delete');
 
 Route::post('/AD18', [AD18Controller::class, 'create'])->name('AD18.create');
 Route::delete('/AD18', [AD18Controller::class, 'destroy'])->name('AD18.destroy');

@@ -6,6 +6,7 @@ use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use PHPUnit\Framework\Constraint\Count;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,9 @@ class DatabaseSeeder extends Seeder
     {
         // Call individual seeders
         $this->call([
+            CountriesSeeder::class,
+            StatesSeeder::class,
+            CitiesSeeder::class,
             BusinessCategorySeeder::class,
             XcodesSeeder::class,
             ScreensSeeder::class,
