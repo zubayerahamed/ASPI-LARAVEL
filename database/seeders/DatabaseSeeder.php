@@ -19,9 +19,9 @@ class DatabaseSeeder extends Seeder
     {
         // Call individual seeders
         $this->call([
-            CountriesSeeder::class,
-            StatesSeeder::class,
-            CitiesSeeder::class,
+            // CountriesSeeder::class,
+            // StatesSeeder::class,
+            // CitiesSeeder::class,
             BusinessCategorySeeder::class,
             XcodesSeeder::class,
             ScreensSeeder::class,
