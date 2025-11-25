@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DatatableRequestHelper;
 use App\Helpers\DatatableResponseHelper;
 use App\Services\ProductOptionService;
+use App\Services\ProductSpecificationAttributeService;
 use App\Services\ProfileService;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class SearchSuggestController extends ZayaanController
 
     public function __construct(
         private ProfileService $profileService,
-        private ProductOptionService $productOptionService
+        private ProductOptionService $productOptionService,
+        private ProductSpecificationAttributeService $productSpecificationAttributeService,
     )
     {
         parent::__construct();
@@ -107,6 +109,45 @@ class SearchSuggestController extends ZayaanController
 
         // Get total rows count
         $totalRows = $this->productOptionService->LMD07Count(
+            orderColumn: $helper->columns->get($helper->orderColumnNo)->name,
+            orderType: $helper->orderType,
+            searchValue: $helper->searchValue,
+            suffix: $suffix,
+            dependentParam: $dependentParam
+        );
+
+        // Create response
+        $response = new DatatableResponseHelper(
+            draw: $helper->draw,
+            recordsTotal: $totalRows,
+            recordsFiltered: $totalRows,
+            data: $list
+        );
+
+        return $response->toResponse();
+    }
+
+    public function LMD09(Request $request, int $suffix)
+    {
+        $helper = DatatableRequestHelper::fromRequest($request);
+
+        // dd($helper);
+
+        $dependentParam = $request->query('dependentparam');
+        
+        // Get paginated data
+        $list = $this->productSpecificationAttributeService->LMD09(
+            length: $helper->length,
+            start: $helper->start,
+            orderColumn: $helper->columns->get($helper->orderColumnNo)->name,
+            orderType: $helper->orderType,
+            searchValue: $helper->searchValue,
+            suffix: $suffix,
+            dependentParam: $dependentParam
+        );
+
+        // Get total rows count
+        $totalRows = $this->productSpecificationAttributeService->LMD09Count(
             orderColumn: $helper->columns->get($helper->orderColumnNo)->name,
             orderType: $helper->orderType,
             searchValue: $helper->searchValue,

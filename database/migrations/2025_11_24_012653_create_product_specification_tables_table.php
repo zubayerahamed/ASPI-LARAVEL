@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->text('description')->nullable();
-            $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
+            $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
             $table->timestamps();
         });
     }

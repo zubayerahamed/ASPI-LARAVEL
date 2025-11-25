@@ -57,19 +57,8 @@ class Business extends Model
         return $this->belongsToMany(User::class, 'user_businesseses')->withPivot('is_active');
     }
 
-    public function branches()
+    public function businessUnits()
     {
-        return $this->hasMany(Branch::class, 'business_id', 'id');
+        return $this->hasMany(BusinessUnit::class, 'business_id', 'id');
     }
-
-    public function stores()
-    {
-        return $this->hasMany(Store::class, 'business_id', 'id');
-    }
-
-    public function activeBranches()
-    {
-        return $this->hasMany(Branch::class, 'business_id', 'id')->where('is_active', true)->count();
-    }
-
 }

@@ -4,15 +4,16 @@ namespace App\Services;
 
 use App\Helpers\DatatableSortOrderType;
 use App\Models\ProductOption;
+use App\Models\ProductSpecificationAttribute;
 use App\Models\Profile;
 use Illuminate\Support\Collection;
 
-class ProductOptionService
+class ProductSpecificationAttributeService
 {
     /**
      * Get paginated Profiles data
      */
-    public function LMD07(
+    public function LMD09(
         int $length,
         int $start,
         string $orderColumn,
@@ -23,7 +24,10 @@ class ProductOptionService
     ): Collection {
         $searchValue = str_replace("'", "''", $searchValue);
 
-        $query = ProductOption::query();
+        $query = ProductSpecificationAttribute::query();
+
+        // With group relation
+        $query->with('group');
 
         $query->where('business_id', getBusinessId());
 
@@ -33,6 +37,11 @@ class ProductOptionService
                 $q->where('name', 'like', "%{$searchValue}%")
                   ->orWhere('type', 'like', "%{$searchValue}%");
                 // Add other searchable columns as needed
+            });
+
+            // Include search on related group name
+            $query->orWhereHas('group', function ($q) use ($searchValue) {
+                $q->where('name', 'like', "%{$searchValue}%");
             });
         }
 
@@ -55,16 +64,18 @@ class ProductOptionService
     }
 
     /**
-     * Get total count for LMD07 with filters
+     * Get total count for LMD09 with filters
      */
-    public function LMD07Count(
+    public function LMD09Count(
         string $orderColumn,
         DatatableSortOrderType $orderType,
         string $searchValue,
         int $suffix,
         ?string $dependentParam = null
     ): int {
-        $query = ProductOption::query();
+        $query = ProductSpecificationAttribute::query();
+
+        $query->with('group');
 
         $query->where('business_id', getBusinessId());
 
@@ -73,6 +84,11 @@ class ProductOptionService
             $query->where(function ($q) use ($searchValue) {
                 $q->where('name', 'like', "%{$searchValue}%")
                   ->orWhere('type', 'like', "%{$searchValue}%");
+            });
+
+            // Include search on related group name
+            $query->orWhereHas('group', function ($q) use ($searchValue) {
+                $q->where('name', 'like', "%{$searchValue}%");
             });
         }
 

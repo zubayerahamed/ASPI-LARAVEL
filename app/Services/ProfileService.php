@@ -65,6 +65,8 @@ class ProfileService
     ): int {
         $query = Profile::query();
 
+        $query->where('business_id', getBusinessId());
+
         // Apply the same filters as in LSA11 method
         if (!empty($searchValue)) {
             $query->where(function ($q) use ($searchValue) {

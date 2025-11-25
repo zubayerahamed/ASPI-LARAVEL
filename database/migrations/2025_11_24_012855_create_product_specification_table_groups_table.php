@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('product_specification_table_groups', function (Blueprint $table) {
             $table->foreignId("table_id")->references("id")->on("product_specification_tables")->onDelete("cascade");
             $table->foreignId("group_id")->references("id")->on("product_specification_groups")->onDelete("cascade");
-            $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
         });
     }
 

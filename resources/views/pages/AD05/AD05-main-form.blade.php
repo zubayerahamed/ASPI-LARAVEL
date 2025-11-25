@@ -17,6 +17,7 @@
                                     class="form-control searchsuggest2" 
                                     name="name" 
                                     value="{{ $profile->name }}"
+                                    placeholder="Create or Open Existing..."
                                     {{ $profile->id != null ? 'disabled' : '' }}
                                     {{ $profile->id == null ? 'required' : '' }}>
                             <div class="input-group-append btn-search"

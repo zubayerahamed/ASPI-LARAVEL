@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('label', 100);
             $table->foreignId("attribute_id")->references("id")->on("product_specification_attributes")->onDelete("cascade");
-            $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
             $table->timestamps();
         });
     }

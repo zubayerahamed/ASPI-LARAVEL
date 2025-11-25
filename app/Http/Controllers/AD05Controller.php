@@ -202,6 +202,7 @@ class AD05Controller extends ZayaanController
         $profile = Profile::create($request->only([
             'name',
             'seqn',
+            'description',
             'is_active',
             'business_id'
         ]));

@@ -22,6 +22,9 @@ use App\Http\Controllers\AD07Controller;
 use App\Http\Controllers\AD08Controller;
 use App\Http\Controllers\MD06Controller;
 use App\Http\Controllers\MD07Controller;
+use App\Http\Controllers\MD08Controller;
+use App\Http\Controllers\MD09Controller;
+use App\Http\Controllers\MD10Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
@@ -109,8 +112,29 @@ Route::put('/MD07/{id}', [MD07Controller::class, 'update'])->name('MD07.update')
 Route::delete('/MD07/{id}', [MD07Controller::class, 'delete'])->name('MD07.delete');
 Route::get('/MD07/detail-table', [MD07Controller::class, 'detailTable'])->name('MD07.detail-table');
 Route::post('/MD07/detail-table', [MD07Controller::class, 'detailCreate'])->name('MD07.detail-table.create');
-Route::put('/MD07/detail-table', [MD07Controller::class, 'detailUpdate'])->name('MD07.detail-table.update');
+Route::put('/MD07/detail-table/{id}', [MD07Controller::class, 'detailUpdate'])->name('MD07.detail-table.update');
 Route::delete('/MD07/detail-table/{id}', [MD07Controller::class, 'detailDelete'])->name('MD07.detail-table.delete');
+
+Route::get('/MD08', [MD08Controller::class, 'index'])->name('MD08');
+Route::get('/MD08/header-table', [MD08Controller::class, 'headerTable'])->name('MD08.header-table');
+Route::post('/MD08', [MD08Controller::class, 'create'])->name('MD08.create');
+Route::put('/MD08/{id}', [MD08Controller::class, 'update'])->name('MD08.update');
+Route::delete('/MD08/{id}', [MD08Controller::class, 'delete'])->name('MD08.delete');
+
+Route::get('/MD09', [MD09Controller::class, 'index'])->name('MD09');
+Route::post('/MD09', [MD09Controller::class, 'create'])->name('MD09.create');
+Route::put('/MD09/{id}', [MD09Controller::class, 'update'])->name('MD09.update');
+Route::delete('/MD09/{id}', [MD09Controller::class, 'delete'])->name('MD09.delete');
+Route::get('/MD09/detail-table', [MD09Controller::class, 'detailTable'])->name('MD09.detail-table');
+Route::post('/MD09/detail-table', [MD09Controller::class, 'detailCreate'])->name('MD09.detail-table.create');
+Route::put('/MD09/detail-table/{id}', [MD09Controller::class, 'detailUpdate'])->name('MD09.detail-table.update');
+Route::delete('/MD09/detail-table/{id}', [MD09Controller::class, 'detailDelete'])->name('MD09.detail-table.delete');
+
+Route::get('/MD10', [MD10Controller::class, 'index'])->name('MD10');
+Route::get('/MD10/header-table', [MD10Controller::class, 'headerTable'])->name('MD10.header-table');
+Route::post('/MD10', [MD10Controller::class, 'create'])->name('MD10.create');
+Route::put('/MD10/{id}', [MD10Controller::class, 'update'])->name('MD10.update');
+Route::delete('/MD10/{id}', [MD10Controller::class, 'delete'])->name('MD10.delete');
 
 Route::get('/AD05', [AD05Controller::class, 'index'])->name('AD05');
 Route::get('/AD05/detail-table', [AD05Controller::class, 'detailTable'])->name('AD05.detail-table');
@@ -149,3 +173,4 @@ Route::get('/profile-selection/{id}', [ProfileSelectionController::class, 'selec
 Route::post('/search/table/{fragmentcode}/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'index'])->name('search.index');
 Route::post('/search/LAD05/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LAD05'])->name('search.LAD05');
 Route::post('/search/LMD07/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LMD07'])->name('search.LMD07');
+Route::post('/search/LMD09/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LMD09'])->name('search.LMD09');

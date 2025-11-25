@@ -32,7 +32,7 @@
                         <p class="text-sm">Joined {{ date('d-M-Y', strtotime($business->created_at)) }}</p>
                     </div>
                     <div class="bg-white p-2">
-                        <div class="mt-2 mb-2">Active {{ $business->activeBranches() }} Branches</div>
+                        <div class="mt-2 mb-2">Active {{ $business->businessUnits()->count() }} Branches</div>
                         <div class="col-md-12 d-flex justify-content-between align-items-center">
                             <div class="d-flex flex-column justify-content-center flex-grow-1 p-2">
                                 @if ($business->is_inhouse)

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('product_specification_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
-            $table->text('description')->nullable();
-            $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
+            $table->string('description', 100)->nullable();
+            $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
             $table->timestamps();
         });
     }

@@ -118,14 +118,72 @@ class MD07Controller extends ZayaanController
 
         if ($productOption) {
             $this->setReloadSections([
-                new ReloadSection('main-form-container', route('MD07', ['id' => 'RESET'])),
-                new ReloadSection('detail-table-container', route('MD07.detail-table')),
+                new ReloadSection('main-form-container', route('MD07', ['id' => $productOption->id])),
+                new ReloadSection('detail-table-container', route('MD07.detail-table', ['id' => 'RESET', 'product_option_id' => $productOption->id])),
             ]);
             $this->setSuccessStatusAndMessage("Product Option created successfully");
             return $this->getResponse();
         }
 
         $this->setErrorStatusAndMessage("Product Option creation failed");
+        return $this->getResponse();
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:50',
+            'type' => 'required|in:dropdown,radio,checkbox',
+        ], [
+            'name.required' => 'The Name field is required.',
+            'name.max' => 'The Name may not be greater than 20 characters.',
+            'type.required' => 'The Type field is required.',
+            'type.in' => 'The selected Type is invalid.',
+        ]);
+
+        $validator->validate();
+
+        $request['is_required'] = $request->has('is_required');
+
+        $productOption = ProductOption::findOrFail($id);
+        $productOption->fill($request->only([
+            'name',
+            'type',
+            'is_required',
+        ]));
+
+        if ($productOption->save()) {
+            $this->setReloadSections([
+                new ReloadSection('main-form-container', route('MD07', ['id' => $productOption->id])),
+                new ReloadSection('detail-table-container', route('MD07.detail-table', ['id' => 'RESET', 'product_option_id' => $productOption->id])),
+            ]);
+            $this->setSuccessStatusAndMessage("Product Option updated successfully");
+            return $this->getResponse();
+        }
+
+        $this->setErrorStatusAndMessage("Product Option update failed");
+        return $this->getResponse();
+    }
+
+    public function delete($id)
+    {
+        $productOption = ProductOption::find($id);
+
+        if($productOption == null) {
+            $this->setErrorStatusAndMessage("Product Option not found");
+            return $this->getResponse();
+        }
+
+        if ($productOption->delete()) {
+            $this->setReloadSections([
+                new ReloadSection('main-form-container', route('MD07', ['id' => 'RESET'])),
+                new ReloadSection('detail-table-container', route('MD07.detail-table', ['id' => 'RESET', 'product_option_id' => 'RESET'])),
+            ]);
+            $this->setSuccessStatusAndMessage("Product Option deleted successfully");
+            return $this->getResponse();
+        }
+
+        $this->setErrorStatusAndMessage("Product Option deletion failed");
         return $this->getResponse();
     }
 
@@ -171,6 +229,72 @@ class MD07Controller extends ZayaanController
         }
 
         $this->setErrorStatusAndMessage("Product Option Detail creation failed");
+        return $this->getResponse();
+    }
+
+    public function detailUpdate(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'product_option_id' => 'required|exists:product_options,id',
+            'label' => 'required|string|max:100',
+            'additional_price' => 'required|numeric|min:0',
+            'price_type' => 'required|in:fixed,percentage',
+            'seqn' => 'required|integer|min:0',
+        ], [
+            'product_option_id.required' => 'The Product Option field is required.',
+            'product_option_id.exists' => 'The selected Product Option is invalid.',
+            'label.required' => 'The Label field is required.',
+            'label.max' => 'The Label may not be greater than 100 characters.',
+            'additional_price.required' => 'The Additional Price field is required.',
+            'additional_price.numeric' => 'The Additional Price must be a number.',
+            'additional_price.min' => 'The Additional Price must be at least 0.',
+            'price_type.required' => 'The Price Type field is required.',
+            'price_type.in' => 'The selected Price Type is invalid.',
+            'seqn.required' => 'The Sequence field is required.',
+            'seqn.integer' => 'The Sequence must be an integer.',
+            'seqn.min' => 'The Sequence must be at least 0.',
+        ]);
+
+        $validator->validate();
+
+        $productOptionDetail = ProductOptionDetail::findOrFail($id);
+        $productOptionDetail->fill($request->only([
+            'label',
+            'additional_price',
+            'price_type',
+            'seqn',
+        ]));
+
+        if ($productOptionDetail->save()) {
+            $this->setReloadSections([
+                new ReloadSection('detail-table-container', route('MD07.detail-table', ['id' => $productOptionDetail->id, 'product_option_id' => $productOptionDetail->product_option_id])),
+            ]);
+            $this->setSuccessStatusAndMessage("Product Option Detail updated successfully");
+            return $this->getResponse();
+        }
+
+        $this->setErrorStatusAndMessage("Product Option Detail update failed");
+        return $this->getResponse();
+    }
+
+    public function detailDelete($id)
+    {
+        $productOptionDetail = ProductOptionDetail::find($id);
+
+        if($productOptionDetail == null) {
+            $this->setErrorStatusAndMessage("Product Option Detail not found");
+            return $this->getResponse();
+        }
+
+        if ($productOptionDetail->delete()) {
+            $this->setReloadSections([
+                new ReloadSection('detail-table-container', route('MD07.detail-table', ['id' => 'RESET', 'product_option_id' => $productOptionDetail->product_option_id])),
+            ]);
+            $this->setSuccessStatusAndMessage("Product Option Detail deleted successfully");
+            return $this->getResponse();
+        }
+
+        $this->setErrorStatusAndMessage("Product Option Detail deletion failed");
         return $this->getResponse();
     }
 

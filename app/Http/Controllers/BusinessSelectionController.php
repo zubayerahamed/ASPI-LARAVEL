@@ -15,7 +15,7 @@ class BusinessSelectionController extends ZayaanController
         $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
 
         // Get Auth User's businesses
-        $loggedInUser = User::with('businesses')->find(getLoggedInUserDetails()['id']); // Refresh user data
+        $loggedInUser = User::with(['businesses', 'businesses.businessUnits'])->find(getLoggedInUserDetails()['id']); // Refresh user data
         $businesses = $loggedInUser->businesses()->orderBy('name', 'asc')->get();
 
         // Check if user has selected business
