@@ -19,7 +19,9 @@ use App\Http\Controllers\AD18Controller;
 use App\Http\Controllers\ProfileSelectionController;
 use App\Http\Controllers\AD04Controller;
 use App\Http\Controllers\AD07Controller;
+use App\Http\Controllers\AD08Controller;
 use App\Http\Controllers\MD06Controller;
+use App\Http\Controllers\MD07Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
@@ -101,6 +103,15 @@ Route::post('/MD06', [MD06Controller::class, 'create'])->name('MD06.create');
 Route::put('/MD06/{id}', [MD06Controller::class, 'update'])->name('MD06.update');
 Route::delete('/MD06/{id}', [MD06Controller::class, 'delete'])->name('MD06.delete');
 
+Route::get('/MD07', [MD07Controller::class, 'index'])->name('MD07');
+Route::post('/MD07', [MD07Controller::class, 'create'])->name('MD07.create');
+Route::put('/MD07/{id}', [MD07Controller::class, 'update'])->name('MD07.update');
+Route::delete('/MD07/{id}', [MD07Controller::class, 'delete'])->name('MD07.delete');
+Route::get('/MD07/detail-table', [MD07Controller::class, 'detailTable'])->name('MD07.detail-table');
+Route::post('/MD07/detail-table', [MD07Controller::class, 'detailCreate'])->name('MD07.detail-table.create');
+Route::put('/MD07/detail-table', [MD07Controller::class, 'detailUpdate'])->name('MD07.detail-table.update');
+Route::delete('/MD07/detail-table/{id}', [MD07Controller::class, 'detailDelete'])->name('MD07.detail-table.delete');
+
 Route::get('/AD05', [AD05Controller::class, 'index'])->name('AD05');
 Route::get('/AD05/detail-table', [AD05Controller::class, 'detailTable'])->name('AD05.detail-table');
 Route::post('/AD05', [AD05Controller::class, 'create'])->name('AD05.create');
@@ -120,6 +131,13 @@ Route::post('/AD07', [AD07Controller::class, 'create'])->name('AD07.create');
 Route::put('/AD07/{id}', [AD07Controller::class, 'update'])->name('AD07.update');
 Route::delete('/AD07/{id}', [AD07Controller::class, 'delete'])->name('AD07.delete');
 
+Route::get('/AD08', [AD08Controller::class, 'index'])->name('AD08');
+Route::get('/AD08/header-table', [AD08Controller::class, 'headerTable'])->name('AD08.header-table');
+Route::post('/AD08', [AD08Controller::class, 'create'])->name('AD08.create');
+Route::put('/AD08/{id}', [AD08Controller::class, 'update'])->name('AD08.update');
+Route::delete('/AD08/{id}', [AD08Controller::class, 'delete'])->name('AD08.delete');
+
+
 Route::post('/AD18', [AD18Controller::class, 'create'])->name('AD18.create');
 Route::delete('/AD18', [AD18Controller::class, 'destroy'])->name('AD18.destroy');
 
@@ -130,3 +148,4 @@ Route::get('/profile-selection/{id}', [ProfileSelectionController::class, 'selec
 
 Route::post('/search/table/{fragmentcode}/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'index'])->name('search.index');
 Route::post('/search/LAD05/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LAD05'])->name('search.LAD05');
+Route::post('/search/LMD07/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LMD07'])->name('search.LMD07');

@@ -21,6 +21,20 @@ class AD06Controller extends ZayaanController
         $frommenu = $request->query('frommenu', 'N'); // Returns null if not present
         $currentBusinessId = getBusinessId();
 
+        // $users = User::with([
+        //         'businesses', 
+        //         'profiles' => function ($q) use ($currentBusinessId) {
+        //             $q->wherePivot('business_id', $currentBusinessId);
+        //         }
+        //     ])
+        //     ->where('is_system_admin', 0)
+        //     ->where('is_business_admin', 0)
+        //     ->where('is_driver', 0)
+        //     ->where('is_customer', 0)
+        //     ->get();
+        // dd($users->toArray());
+
+
         // Get Business Admins list
         $businessAdmin = Business::find(getBusinessId())
             ->users()

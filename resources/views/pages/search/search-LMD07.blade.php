@@ -3,10 +3,9 @@
         <table class="table table-hover table-bordered p-0 m-0 datatable-fragment {{ $tablename }}">
             <thead>
                 <tr>
-                    <th>Profile</th>
-                    <th>Description</th>
-                    <th class="text-center">Sequence</th>
-                    <th class="text-center">Is Active?</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th class="text-center">Is Required?</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -43,18 +42,13 @@
                 }
             }, {
                 suffix: [0],
-                name: 'description',
-                rendername: 'description',
+                name: 'type',
+                rendername: 'type',
             }, {
                 suffix: [0],
                 class: 'text-center',
-                name: 'seqn',
-                rendername: 'seqn',
-            }, {
-                suffix: [0],
-                class: 'text-center',
-                name: 'is_active',
-                rendername: 'is_active',
+                name: 'is_required',
+                rendername: 'is_required',
                 render: function(data, type, row, meta) {
                     if (data == 1) {
                         return '<span class="badge badge-success">Yes</span>';
@@ -65,7 +59,7 @@
             }
         ];
 
-        orderarr = [2, 'asc'];
+        orderarr = [0, 'asc'];
 
         var columnDefs = [];
         var targetCounter = 0;
@@ -96,7 +90,7 @@
             "order": [orderarr],
             "columnDefs": columnDefs,
             "ajax": {
-                "url" : "{{ route('search.LAD05', ['suffix' => $suffix, 'dependentparam' => $dependentParam ?? '' ]) }}",
+                "url" : "{{ route('search.LMD07', ['suffix' => $suffix, 'dependentparam' => $dependentParam ?? '' ]) }}",
                 "type": 'POST', 
                 "headers": {
                     'X-CSRF-TOKEN': getCSRFToken()

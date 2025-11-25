@@ -117,7 +117,7 @@ class SA03Controller extends ZayaanController
             // Send verification email logic can be added here
             $verificationUrl = route("verification.verify", ['token' => $user->activation_token]);
 
-            Mail::to($user->email)->send(new EmailVerificationMail($user, $verificationUrl));
+            Mail::to($user->email)->queue(new EmailVerificationMail($user, $verificationUrl));
 
             $this->setReloadSections([
                 new ReloadSection('main-form-container', route('SA03', ['id' => 'RESET'])),
@@ -186,9 +186,8 @@ class SA03Controller extends ZayaanController
         }
 
         $user->businesses()->detach(); // Detach all associated businesses
-        $user->delete();
 
-        if (!$user) {
+        if ($user->delete()) {
             $this->setReloadSections([
                 new ReloadSection('main-form-container', route('SA03', ['id' => 'RESET'])),
                 new ReloadSection('header-table-container', route('SA03.header-table')),

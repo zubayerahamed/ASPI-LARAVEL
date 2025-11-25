@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ForcePasswordChangeController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,4 +16,9 @@ Auth::routes();
 Route::get('/', function () {
     return "Welcome to the Application!";
 });
+
+Route::get('/process-queue', function() {
+    processQueueInBackground();
+    return response()->json(['processed' => true]);
+})->name('process.queue');
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Services\ZayaanSessionManager;
+use Illuminate\Support\Facades\Artisan;
 
 if (!function_exists('getLoggedInUserDetails')) {
     function getLoggedInUserDetails()
@@ -19,7 +20,7 @@ if (!function_exists('getSelectedBusiness')) {
         if (ZayaanSessionManager::get('user_info')) {
             $loggedInUser = ZayaanSessionManager::get('user_info');
 
-            if($loggedInUser['selected_business']) {
+            if ($loggedInUser['selected_business']) {
                 return $loggedInUser['selected_business'];
             }
         }
@@ -33,7 +34,7 @@ if (!function_exists('getSelectedProfile')) {
         if (ZayaanSessionManager::get('user_info')) {
             $loggedInUser = ZayaanSessionManager::get('user_info');
 
-            if($loggedInUser != null && array_key_exists('selected_profile', $loggedInUser) && $loggedInUser['selected_profile']) {
+            if ($loggedInUser != null && array_key_exists('selected_profile', $loggedInUser) && $loggedInUser['selected_profile']) {
                 return $loggedInUser['selected_profile'];
             }
         }
@@ -61,5 +62,17 @@ if (!function_exists('getProfileId')) {
             return $selectedProfile['id'];
         }
         return null;
+    }
+}
+
+
+if (!function_exists('processQueueInBackground')) {
+    function processQueueInBackground()
+    {
+        Artisan::call('queue:work', [
+            '--stop-when-empty' => true,
+            '--timeout' => 60,
+            '--tries' => 3
+        ]);
     }
 }

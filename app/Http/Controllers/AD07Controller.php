@@ -31,7 +31,7 @@ class AD07Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.AD07.AD07', [
                         'businessUnit' => $businessUnit,
-                        'detailList' => BusinessUnit::where('business_id', getBusinessId())->get()
+                        'detailList' => BusinessUnit::where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Business Unit Management',
                     'subtitle' => 'Business Units',
@@ -69,7 +69,7 @@ class AD07Controller extends ZayaanController
             'content_header_title' => 'Business Unit Management',
             'subtitle' => 'Business Units',
             'businessUnit' => (new BusinessUnit())->fill(['seqn' => 0]),
-            'detailList' => BusinessUnit::where('business_id', getBusinessId())->get()
+            'detailList' => BusinessUnit::where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
         ]);
     }
 
@@ -77,7 +77,7 @@ class AD07Controller extends ZayaanController
     {
         return response()->json([
             'page' => view('pages.AD07.AD07-header-table', [
-                'detailList' => BusinessUnit::where('business_id', getBusinessId())->get()
+                'detailList' => BusinessUnit::where('business_id', getBusinessId())->orderBy('seqn', 'asc')->get()
             ])->render(),
         ]);
     }

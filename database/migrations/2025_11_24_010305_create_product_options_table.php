@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('type', ['dropdown', 'radio', 'checkbox'])->default('dropdown');
             $table->boolean('is_required')->default(false);
 
-            $table->foreignId("business_id")->nullable()->references("id")->on("businesses")->onDelete("cascade");
+            $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
 
             $table->timestamps();
         });

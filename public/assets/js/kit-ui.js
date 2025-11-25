@@ -10,54 +10,24 @@ kit.ui = kit.ui || {};
 kit.ui.config = kit.ui.config || {};
 
 kit.ui.config.initSelect2 = function () {
-    $('.select2').select2({
-        width: '100%'
+    // For regular select2
+    $('.select2').each(function() {
+        const $el = $(this);
+        if ($el.hasClass('select2-hidden-accessible')) {
+            $el.select2('destroy');
+            $el.siblings('span.select2-container--default').remove();
+        }
+        $el.select2({ width: '100%' });
     });
 
-    // Select2 with boostrap4 theme
-    $('.select2bs4').select2({
-        theme: 'bootstrap4',
-        width: '100%'
-    });
-
-    // Select2 with ajax data source
-    $('.select2-ajax').each(function () {
-        var sourceUrl = $(this).data('source-url');
-        var placeholder = $(this).data('placeholder') != undefined ? $(this).data('placeholder') : 'Search...';
-
-        $(this).select2({
-            width: '100%',
-            theme: 'bootstrap4',
-            placeholder: placeholder,
-            minimumInputLength: 1 ,// only start searching when the user has input 1 or more characters
-            maximumInputLength: 20, // only allow terms up to 20 characters long
-            ajax: {
-                url: sourceUrl,
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        q: params.term, // search term
-                        page: params.page
-                    };
-                },
-                processResults: function (data, params) {
-                    // parse the results into the format expected by Select2
-                    // since we are using custom formatting functions we do not need to
-                    // alter the remote JSON data, except to indicate that infinite
-                    // scrolling can be used
-                    params.page = params.page || 1;
-
-                    return {
-                        results: data.items,
-                        pagination: {
-                            more: (params.page * 30) < data.total_count
-                        }
-                    };
-                },
-                cache: true
-            },
-        });
+    // Select2 with bootstrap4 theme
+    $('.select2bs4').each(function() {
+        const $el = $(this);
+        if ($el.hasClass('select2-hidden-accessible')) {
+            $el.select2('destroy');
+            $el.siblings('span.select2-container--default').remove();
+        }
+        $el.select2({ theme: 'bootstrap4', width: '100%' });
     });
 }
 

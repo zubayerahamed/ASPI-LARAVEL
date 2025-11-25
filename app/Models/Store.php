@@ -8,18 +8,19 @@ class Store extends Model
 {
     protected $fillable = [
         'name',
-        'is_active',
-        'branch_id',
+        'description',
+        'seqn',
+        'business_unit_id',
         'business_id',
     ];
-
-    public function branch()
-    {
-        return $this->belongsTo(Branch::class, 'branch_id', 'id');
-    }
 
     public function business()
     {
         return $this->belongsTo(Business::class, 'business_id', 'id');
+    }
+
+    public function businessUnit()
+    {
+        return $this->belongsTo(BusinessUnit::class, 'business_unit_id', 'id');
     }
 }

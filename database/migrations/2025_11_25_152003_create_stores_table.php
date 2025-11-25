@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string("name", 20);
-            $table->boolean('is_active')->default(false);
+            $table->string('description', 100)->nullable();
 
-            $table->foreignId("branch_id")->references("id")->on("branches")->onDelete("cascade");
+            $table->integer('seqn')->default(0);
+
+            $table->foreignId("business_unit_id")->references("id")->on("business_units")->onDelete("cascade");
             $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
+    
+             $table->unique(['name', 'business_unit_id', 'business_id']);
 
             $table->timestamps();
         });
