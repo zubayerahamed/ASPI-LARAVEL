@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class TaxRule extends Model
 {
     protected $fillable = [
-        'name',
         'notes',
         'transaction_type',
         'effective_from',
         'effective_to',
         'tax_category_id',
+        'business_id',
     ];
 
     protected $dates = [

@@ -26,5 +26,9 @@ class TaxRuleComponent extends Model
         return $this->belongsTo(TaxRule::class);
     }
 
+    public function taxComponent()
+    {
+        return $this->belongsTo(TaxComponent::class);
+    }
 
 }

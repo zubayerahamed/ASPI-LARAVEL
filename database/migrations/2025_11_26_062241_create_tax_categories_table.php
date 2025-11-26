@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tax_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 150);
+            $table->string('name', 100);
             $table->string('description')->nullable();
 
             $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");

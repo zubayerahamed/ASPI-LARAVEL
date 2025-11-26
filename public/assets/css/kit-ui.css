@@ -297,13 +297,16 @@ label.required:after {
 table{
 	white-space: nowrap;
 }
-table td, table th {
+
+.data-table-responsive table td, .data-table-responsive table th, 
+.table-responsive table td, .table-responsive table th{
 	vertical-align: middle !important;
 	padding-top: 8px !important;
 	padding-bottom: 8px !important;
 	padding-left: 20px !important;
 	padding-right: 20px !important;
 }
+
 table th::before, table th::after {
 	bottom: 10px !important;
 }

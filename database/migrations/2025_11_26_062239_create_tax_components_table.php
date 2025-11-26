@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('tax_components', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 50)->unique(); // e.g. VAT, SD, AIT, RD, CD
-            $table->string('name', 150);
+            $table->string('code', 10)->unique(); // e.g. VAT, SD, AIT, RD, CD
+            $table->string('name', 100);
             $table->string('description')->nullable();
             $table->boolean('is_recoverable')->default(false); // e.g., VAT = true, SD = false
 
             $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
+
+            $table->unique(['code', 'business_id']);
 
             $table->timestamps();
         });

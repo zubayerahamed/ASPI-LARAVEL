@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('tax_rules', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 150); // e.g. "Standard 2025-01-01"
             $table->text('notes')->nullable();
 
-            $table->enum('transaction_type', ['sale', 'purchase', 'both'])->default('both');   // both or (sale/purchase individually)
+            $table->enum('transaction_type', ['sales', 'purchase']);
            
             $table->date('effective_from');
             $table->date('effective_to')->nullable();
 
             $table->foreignId("tax_category_id")->references("id")->on("tax_categories")->onDelete("cascade");
+            $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
+
 
             $table->timestamps();
         });
