@@ -14,6 +14,8 @@ class ProductSpecificationTable extends Model
 
     public function groups()
     {
-        return $this->belongsToMany(ProductSpecificationGroup::class, 'product_specification_table_groups', 'table_id', 'group_id');
+        return $this->belongsToMany(ProductSpecificationGroup::class, 'product_specification_table_groups', 'table_id', 'group_id')
+                    ->withPivot('seqn')
+                    ->orderBy('product_specification_table_groups.seqn');
     }
 }
