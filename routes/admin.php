@@ -20,6 +20,9 @@ use App\Http\Controllers\ProfileSelectionController;
 use App\Http\Controllers\AD04Controller;
 use App\Http\Controllers\AD07Controller;
 use App\Http\Controllers\AD08Controller;
+use App\Http\Controllers\AD17Controller;
+use App\Http\Controllers\AD19Controller;
+use App\Http\Controllers\AD20Controller;
 use App\Http\Controllers\MD06Controller;
 use App\Http\Controllers\MD07Controller;
 use App\Http\Controllers\MD08Controller;
@@ -170,9 +173,29 @@ Route::post('/AD08', [AD08Controller::class, 'create'])->name('AD08.create');
 Route::put('/AD08/{id}', [AD08Controller::class, 'update'])->name('AD08.update');
 Route::delete('/AD08/{id}', [AD08Controller::class, 'delete'])->name('AD08.delete');
 
+Route::get('/AD17', [AD17Controller::class, 'index'])->name('AD17');
+Route::get('/AD17/header-table', [AD17Controller::class, 'headerTable'])->name('AD17.header-table');
+Route::post('/AD17', [AD17Controller::class, 'create'])->name('AD17.create');
+Route::put('/AD17/{id}', [AD17Controller::class, 'update'])->name('AD17.update');
+Route::delete('/AD17/{id}', [AD17Controller::class, 'delete'])->name('AD17.delete');
+
 
 Route::post('/AD18', [AD18Controller::class, 'create'])->name('AD18.create');
 Route::delete('/AD18', [AD18Controller::class, 'destroy'])->name('AD18.destroy');
+
+
+Route::get('/AD19*', [AD19Controller::class, 'index'])->name('AD19');
+Route::get('/AD19/header-table', [AD19Controller::class, 'headerTable'])->name('AD19.header-table');
+Route::post('/AD19', [AD19Controller::class, 'create'])->name('AD19.create');
+Route::put('/AD19/{id}', [AD19Controller::class, 'update'])->name('AD19.update');
+Route::delete('/AD19/{id}', [AD19Controller::class, 'delete'])->name('AD19.delete');
+
+Route::get('/AD20*', [AD20Controller::class, 'index'])->name('AD20');
+Route::get('/AD20/header-table', [AD20Controller::class, 'headerTable'])->name('AD20.header-table');
+Route::post('/AD20', [AD20Controller::class, 'create'])->name('AD20.create');
+Route::put('/AD20/{id}', [AD20Controller::class, 'update'])->name('AD20.update');
+Route::delete('/AD20/{id}', [AD20Controller::class, 'delete'])->name('AD20.delete');
+
 
 Route::get('/business-selection', [BusinessSelectionController::class, 'index'])->name('business-selection');
 Route::get('/business-selection/{id}', [BusinessSelectionController::class, 'selectBusiness'])->name('business-selection.select');

@@ -33,10 +33,6 @@ return new class extends Migration
     
             $table->string('product_type', 20)->default('simple'); // simple, variable, grouped, external, addon, bundle
 
-            
-
-
-
             $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
             $table->unique(['slug', 'business_id']);
 

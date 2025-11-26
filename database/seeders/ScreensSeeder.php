@@ -30,9 +30,11 @@ class ScreensSeeder extends Seeder
             ['xscreen' => 'AD12', 'title' => 'Phone Numbers', 'icon' => 'ph ph-phone', 'keywords' => 'phone,contact', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 13],
             ['xscreen' => 'AD13', 'title' => 'Opening Hours', 'icon' => 'ph ph-clock', 'keywords' => 'hours,time,settings', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 14],
             ['xscreen' => 'AD14', 'title' => 'Store Holiday', 'icon' => 'ph ph-calendar-minus', 'keywords' => 'holiday,calendar,store', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 15],
-            ['xscreen' => 'AD15', 'title' => 'Charges', 'icon' => 'ph ph-receipt', 'keywords' => 'charges,fees', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 16],
-            ['xscreen' => 'AD16', 'title' => 'Payment Methods', 'icon' => 'ph ph-credit-card', 'keywords' => 'payment,methods,transaction', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 17],
-            ['xscreen' => 'AD17', 'title' => 'Transactions', 'icon' => 'ph ph-arrows-left-right', 'keywords' => 'transactions,records', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 18],
+            ['xscreen' => 'AD15', 'title' => 'Payment Methods', 'icon' => 'ph ph-credit-card', 'keywords' => 'payment,methods,transaction', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 16],
+            ['xscreen' => 'AD16', 'title' => 'Transactions', 'icon' => 'ph ph-arrows-left-right', 'keywords' => 'transactions,records', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 17],
+            ['xscreen' => 'AD17', 'title' => 'TAX Components', 'icon' => 'ph ph-arrows-left-right', 'keywords' => 'transactions,records', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 18],
+            ['xscreen' => 'AD19', 'title' => 'TAX Categories', 'icon' => 'ph ph-arrows-left-right', 'keywords' => 'transactions,records', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 19],
+            ['xscreen' => 'AD20', 'title' => 'TAX Rules', 'icon' => 'ph ph-arrows-left-right', 'keywords' => 'transactions,records', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 20],
 
             // ===== MASTER DATA =====
             ['xscreen' => 'MD01', 'title' => 'Brands', 'icon' => 'ph ph-tag', 'keywords' => 'brands,product', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 16],

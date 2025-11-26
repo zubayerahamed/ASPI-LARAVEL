@@ -40,7 +40,7 @@ class MenuScreensSeeder extends Seeder
         if ($M101) {
             $screens = DB::table('screens')
                 ->whereIn('xscreen', [
-                    'AD01','AD02','AD03','AD04','AD05','AD06','AD07','AD08','AD09','AD10','AD11','AD12','AD13','AD14','AD15','AD16','AD17',
+                    'AD01','AD02','AD03','AD04','AD05','AD06','AD07','AD08','AD09','AD10','AD11','AD12','AD13','AD14','AD15','AD16','AD17','AD19','AD20',
                 ])
                 ->pluck('id');
 
@@ -60,7 +60,7 @@ class MenuScreensSeeder extends Seeder
         if ($M102) {
             $screens = DB::table('screens')
                 ->whereIn('xscreen', [
-                    'MD01','MD02','MD03','MD04','MD05','MD06','MD07','MD08','MD09','MD10','MD11','MD12','MD13','MD14','MD15','MD16','MD17',
+                    'MD01','MD02','MD03','MD05','MD06','MD07','MD08','MD09','MD10','MD11','MD12','MD13','MD14','MD15','MD16','MD17',
                 ])
                 ->pluck('id'); 
 

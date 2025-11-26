@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
 
             // General
-            $table->decimal('price', 15, 4)->default(0);
+            $table->decimal('price', 8, 2)->default(0.00);
             $table->enum('discount_type', ['NONE', 'FLAT', 'PERCENT'])->default('NONE');
             $table->decimal('discount_amt', 8, 2)->default(0);  // Done
             $table->decimal('selling_price', 8, 2)->default(0);
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->time('discount_start_time', $precision = 0)->nullable();
             $table->date('discount_end_date')->nullable();
             $table->time('discount_end_time', $precision = 0)->nullable();
-            $table->decimal('cost_price', 15, 4)->default(0);
+            $table->decimal('cost_price', 8, 2)->default(0.00);
 
             $table->foreignId('tax_category_id')->nullable()->references('id')->on('tax_categories')->onDelete('set null');
             
@@ -37,19 +37,19 @@ return new class extends Migration
 
             // Inventory
             $table->boolean('stock_track')->default(false);
-            $table->double('opening_stock', 8, 2)->default(0);  // Donot editable if status is published
+            $table->decimal('opening_stock', 8, 2)->default(0.00);  // Donot editable if status is published
             $table->enum('backorder_type', ['DONT_ALLOW', 'ALLOW_NOTIFY_CUSTOMER', 'ALLOW'])->default('DONT_ALLOW');
-            $table->double('low_stock_threshold', 8, 2)->default(0);
+            $table->decimal('low_stock_threshold', 8, 2)->default(0.00);
             $table->enum('stock_status', ['IN_STOCK', 'OUT_OF_STOCK', 'ON_BACKORDER'])->default('IN_STOCK');
-            $table->double('min_order_qty', 8, 2)->default(0);
-            $table->double('max_order_qty', 8, 2)->default(0);
+            $table->double('min_order_qty', 8, 2)->default(0.00);
+            $table->double('max_order_qty', 8, 2)->default(0.00);
 
 
-            $table->decimal('weight', 15, 4)->default(0);
-            $table->decimal('length', 15, 4)->default(0);
-            $table->decimal('width', 15, 4)->default(0);
-            $table->decimal('height', 15, 4)->default(0);
-            $table->decimal('shipping_charge', 8, 2)->default(0);
+            $table->decimal('weight', 8, 2)->default(0.00);
+            $table->decimal('length', 8, 2)->default(0.00);
+            $table->decimal('width', 8, 2)->default(0.00);
+            $table->decimal('height', 8, 2)->default(0.00);
+            $table->decimal('shipping_charge', 8, 2)->default(0.00);
             $table->boolean('free_shipping')->default(false);
 
             $table->timestamps();
