@@ -95,7 +95,7 @@ class MD02Controller extends ZayaanController
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:50',
+            'name' => 'required|string|max:150',
             'icon' => 'nullable|string|max:50',
             'thumbnail' => 'nullable|string|max:255',
             'description' => 'nullable|string',
@@ -103,7 +103,7 @@ class MD02Controller extends ZayaanController
             'parent_category_id' => 'nullable|exists:categories,id',
         ], [
             'name.required' => 'The category name is required.',
-            'name.max' => 'The category name may not be greater than 50 characters.',
+            'name.max' => 'The category name may not be greater than 150 characters.',
             'icon.max' => 'The category icon may not be greater than 50 characters.',
             'thumbnail.max' => 'The category thumbnail may not be greater than 255 characters.',
             'description.max' => 'The category description may not be greater than 255 characters.',
@@ -162,7 +162,7 @@ class MD02Controller extends ZayaanController
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:50',
+            'name' => 'required|string|max:150',
             'icon' => 'nullable|string|max:50',
             'thumbnail' => 'nullable|string|max:255',
             'description' => 'nullable|string',
@@ -170,7 +170,7 @@ class MD02Controller extends ZayaanController
             'parent_category_id' => 'nullable|exists:categories,id',
         ], [
             'name.required' => 'The category name is required.',
-            'name.max' => 'The category name may not be greater than 50 characters.',
+            'name.max' => 'The category name may not be greater than 150 characters.',
             'icon.max' => 'The category icon may not be greater than 50 characters.',
             'thumbnail.max' => 'The category thumbnail may not be greater than 255 characters.',
             'description.max' => 'The category description may not be greater than 255 characters.',

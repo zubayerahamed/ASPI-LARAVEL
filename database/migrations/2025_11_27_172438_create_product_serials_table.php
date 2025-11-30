@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_item_id')->references('id')->on('product_items')->onDelete('cascade');
 
-            $table->string('serial_number', 255)->unique();  // Serial number or IMEI number
+            $table->string('serial_number', 255); // Serial number or IMEI number
             $table->enum('status', ['IN_STOCK', 'SOLD', 'RETURNED', 'DAMAGED', 'UNDER_REPAIR', 'IN_TRANSFER'])->default('IN_STOCK');
             $table->date('warranty_expiry_date')->nullable();  // Warranty expiry date
             $table->text('notes')->nullable();  // Additional notes about the serial number

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('slug', 255);  // unique per business
 
             $table->foreignId("brand_id")->nullable()->references("id")->on("brands")->onDelete("set null");  // Though brands cant be deleted if products exist, but just in case
-            $table->foreignId("category_id")->nullable()->references("id")->on("categories")->onDelete("set null");  // Though categories cant be deleted if products exist, but just in case
+
             $table->string('item_group', 100);  // Services, Accessories, Finished Goods, Raw Materials, Subscriptions, Digital   // declared from xcodes
 
             $table->text('short_description')->nullable();  // Short description of the product

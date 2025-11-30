@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_batches', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_item_id')->references('id')->on('product_items')->onDelete('cascade');
-            $table->string('batch_number', 100)->unique();  // Batch number for the product item
+            $table->string('batch_number', 100);  // Batch number for the product item
             $table->date('manufacture_date')->nullable();  // Manufacture date of the batch
             $table->date('expiry_date')->nullable();  // Expiry date of the batch
             $table->decimal('quantity', 8, 2)->default(0.00);  // Quantity available in this batch

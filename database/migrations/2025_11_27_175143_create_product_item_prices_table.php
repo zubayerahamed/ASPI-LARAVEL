@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_item_id')->references('id')->on('product_items')->onDelete('cascade');
 
-            $table->string('price_type', 50); // e.g., base, mrp, list, promo_override, contract
+            $table->string('price_type', 50); // e.g., base, mrp, list, promo_override, contract etc. It will be declared from xcodes
 
             $table->decimal('amount', 8, 2)->default(0.00);
             $table->string('currency', 10)->default('BDT'); // Currency code, e.g., USD, EUR, BDT. It will be declared from xcodes. Default is BDT set from business settings

@@ -47,13 +47,14 @@ class ScreensSeeder extends Seeder
             ['xscreen' => 'MD08', 'title' => 'Product Spec Groups', 'icon' => 'ph ph-folders', 'keywords' => 'specification groups', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 24],
             ['xscreen' => 'MD09', 'title' => 'Product Spec Attributes', 'icon' => 'ph ph-sliders', 'keywords' => 'product specs', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 25],
             ['xscreen' => 'MD10', 'title' => 'Product Spec Tables', 'icon' => 'ph ph-table', 'keywords' => 'spec tables', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 26],
-            ['xscreen' => 'MD11', 'title' => 'Product', 'icon' => 'ph ph-package', 'keywords' => 'product,item', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 27],
-            ['xscreen' => 'MD12', 'title' => 'Product Addons', 'icon' => 'ph ph-plus-circle', 'keywords' => 'addons,product', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 28],
-            ['xscreen' => 'MD13', 'title' => 'Product Collections', 'icon' => 'ph ph-archive', 'keywords' => 'collections,product', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 22],
-            ['xscreen' => 'MD14', 'title' => 'Flash Sales', 'icon' => 'ph ph-lightning', 'keywords' => 'flash sales', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 29],
-            ['xscreen' => 'MD15', 'title' => 'Discounts', 'icon' => 'ph ph-percent', 'keywords' => 'discounts,offer', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 30],
-            ['xscreen' => 'MD16', 'title' => 'Offers', 'icon' => 'ph ph-gift', 'keywords' => 'offers,promotions', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 31],
-            ['xscreen' => 'MD17', 'title' => 'Reviews', 'icon' => 'ph ph-star', 'keywords' => 'reviews,ratings', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 32],
+            ['xscreen' => 'MD11', 'title' => 'Brand', 'icon' => 'ph ph-crown', 'keywords' => 'product,item', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 27],
+            ['xscreen' => 'MD12', 'title' => 'Product', 'icon' => 'ph ph-package', 'keywords' => 'product,item', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 27],
+            ['xscreen' => 'MD13', 'title' => 'Product Addons', 'icon' => 'ph ph-plus-circle', 'keywords' => 'addons,product', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 28],
+            ['xscreen' => 'MD14', 'title' => 'Product Collections', 'icon' => 'ph ph-archive', 'keywords' => 'collections,product', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 22],
+            ['xscreen' => 'MD15', 'title' => 'Flash Sales', 'icon' => 'ph ph-lightning', 'keywords' => 'flash sales', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 29],
+            ['xscreen' => 'MD16', 'title' => 'Discounts', 'icon' => 'ph ph-percent', 'keywords' => 'discounts,offer', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 30],
+            ['xscreen' => 'MD17', 'title' => 'Offers', 'icon' => 'ph ph-gift', 'keywords' => 'offers,promotions', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 31],
+            ['xscreen' => 'MD18', 'title' => 'Reviews', 'icon' => 'ph ph-star', 'keywords' => 'reviews,ratings', 'type' => 'SCREEN', 'xnum' => 0, 'seqn' => 32],
 
 
             // ===== PURCHASE =====

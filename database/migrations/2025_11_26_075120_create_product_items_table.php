@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
 
             // Identification
-            $table->string('sku', 100)->unique();  // Stock Keeping Unit, unique per business
+            $table->string('sku', 100);  // Stock Keeping Unit, unique identifier for the product item
             $table->string('barcode', 255)->nullable();  // Barcode value EAN/UPC code
             $table->string('manufacturer_sku', 100)->nullable();  // SKU given by manufacturer
             $table->string('country_of_origin', 100)->nullable();  // Country where the product is manufactured
@@ -63,7 +63,7 @@ return new class extends Migration
             $table->decimal('max_order_qty', 8, 2)->default(0.00);  // Customer can order at max this quantity
             $table->integer('lead_time_days')->default(0);  // Lead time in days for restocking
             $table->decimal('reorder_point', 8, 2)->default(0.00);  // When stock reaches this point, reorder is suggested
-            $table->decimal('max_stock_level ', 8, 2)->default(0.00);  // Maximum stock level to prevent overstocking
+            $table->decimal('max_stock_level', 8, 2)->default(0.00);  // Maximum stock level to prevent overstocking
 
             // General
             $table->decimal('price', 8, 2)->default(0.00);
@@ -86,6 +86,7 @@ return new class extends Migration
             $table->string('warranty_period_type', 20)->nullable(); // days, months, years
             $table->integer('download_limit')->nullable(); // If is_downloadable is true
             $table->integer('download_expiry')->nullable(); // If is_downloadable is true
+
 
             $table->timestamps();
         });
