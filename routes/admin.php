@@ -30,6 +30,7 @@ use App\Http\Controllers\MD08Controller;
 use App\Http\Controllers\MD09Controller;
 use App\Http\Controllers\MD10Controller;
 use App\Http\Controllers\MD11Controller;
+use App\Http\Controllers\MD12Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
@@ -147,6 +148,14 @@ Route::get('/MD11/header-table', [MD11Controller::class, 'headerTable'])->name('
 Route::post('/MD11', [MD11Controller::class, 'create'])->name('MD11.create');
 Route::put('/MD11/{id}', [MD11Controller::class, 'update'])->name('MD11.update');
 Route::delete('/MD11/{id}', [MD11Controller::class, 'delete'])->name('MD11.delete');
+
+
+Route::get('/MD12', [MD12Controller::class, 'index'])->name('MD12');
+Route::get('/MD12/header-table', [MD12Controller::class, 'headerTable'])->name('MD12.header-table');
+Route::post('/MD12', [MD12Controller::class, 'create'])->name('MD12.create');
+Route::put('/MD12/{id}', [MD12Controller::class, 'update'])->name('MD12.update');
+Route::delete('/MD12/{id}', [MD12Controller::class, 'delete'])->name('MD12.delete');
+
 
 
 Route::get('/AD05', [AD05Controller::class, 'index'])->name('AD05');

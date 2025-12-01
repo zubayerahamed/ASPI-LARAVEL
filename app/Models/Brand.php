@@ -10,7 +10,7 @@ class Brand extends Model
     protected $fillable = [
         'name',
         'slug',
-        'logo_cadoc_id',
+        'thumbnail_id',
         'website',
         'description',
         'is_active',

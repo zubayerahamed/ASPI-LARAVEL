@@ -343,56 +343,124 @@ kit.ui.config.initFilePond = function () {
 
         // Initialize with individual configuration
         $(this).filepond(config);
+
+        // initialize pond + get instance
+        // var pond = FilePond.create(this, config);
+
+        // --- Correct event bindings on POND instance ---
+        // pond.on("processfilestart", () => {
+        //     console.log('File upload started');
+        //     loadingMask2.show();
+        // });
+
+        // pond.on("processfiledone", () => {
+        //     console.log('File upload completed');
+        //     loadingMask2.hide();  // success
+        // });
+
+        // pond.on("processfileerror", () => {
+        //     console.log('File upload error');
+        //     loadingMask2.hide();  // error case
+        // });
+
+        // pond.on("processfileabort", () => {
+        //     console.log('File upload aborted');
+        //     loadingMask2.hide();  // user cancel
+        // });
     });
+
+    
+
 
     // Set server options (common for all instances)
     $.fn.filepond.setOptions({
         server: {
-            process: {
-                url: $('a.filepond-process-url').attr('href'),
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': getCSRFToken(),
-                },
-                onload: (response) => {
-                    // Assuming the server returns a JSON object with a 'fileId' property
-                    console.log("FilePond upload response:", response);
-                    const res = JSON.parse(response);
+            process: (fieldName, file, metadata, load, error, progress, abort) => {
 
-                    if (res.error) {
-                        showMessage('error', res.error);
-                        return;
-                    }
+                // Show loading mask BEFORE uploading
+                loadingMask2.show();
 
-                    return res.media_id; // Adjust based on your server response
-                }
-            },
-            revert: (uniqueFileId, load, error) => {
-                console.log('Reverting file with ID:', uniqueFileId);
-                // Make the DELETE request to your server
-                fetch($('a.filepond-revert-url').attr('href') + '?id=' + uniqueFileId, { // Example of sending ID as query param
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': getCSRFToken(),
-                        },
-                    })
-                    .then(res => {
-                        if (res.ok) {
-                            load(); // Call load() to inform FilePond the revert is successful
-                        } else {
-                            error('Error reverting file'); // Call error() if something went wrong
-                            showMessage('error', 'Error reverting file');
+                // ---- proceed with your upload logic ----
+                const url = $('a.filepond-process-url').attr('href');
+                const formData = new FormData();
+                formData.append(fieldName, file, file.name);
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", url);
+                xhr.setRequestHeader('X-CSRF-TOKEN', getCSRFToken());
+
+                xhr.upload.onprogress = (e) => {
+                    console.log('Upload progress:', e.loaded / e.total);
+                    progress(e.lengthComputable, e.loaded, e.total);
+                };
+
+                xhr.onload = () => {
+                    console.log('Upload complete');
+                    // Hide loading mask AFTER upload complete
+                    const response = xhr.responseText;
+
+                    try {
+                        const res = JSON.parse(response);
+
+                        if (res.error) {
+                            loadingMask2.hide();
+                            showMessage('error', res.error);
+                            error("Upload failed");
+                            return;
                         }
-                    })
-                    .catch(() => {
-                        error('Network error during revert');
-                        showMessage('error', 'Network error during revert');
-                    });
-            },
-            // work with return data from server
 
+                        load(res.media_id); // return your server's unique ID
+                        loadingMask2.hide();
+                    } catch (err) {
+                        loadingMask2.hide();
+                        console.error("Invalid JSON:", response);
+                        error("Invalid server response");
+                    }
+                };
+
+                xhr.onerror = () => {
+                    // Hide loading mask on error
+                    loadingMask2.hide();
+                    error("Network error");
+                };
+
+                xhr.onabort = () => {
+                    loadingMask2.hide(); // FIX: ensure mask closes on user cancel
+                };
+
+                xhr.send(formData);
+
+                return {
+                    abort: () => xhr.abort()
+                };
+            },
+
+            revert: (uniqueFileId, load, error) => {
+                loadingMask2.show();
+
+                fetch($('a.filepond-revert-url').attr('href') + '?id=' + uniqueFileId, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': getCSRFToken(),
+                    },
+                }).then(res => {
+                    loadingMask2.hide();
+
+                    if (res.ok) {
+                        load();
+                    } else {
+                        error('Error reverting file');
+                        showMessage('error', 'Error reverting file');
+                    }
+                }).catch(() => {
+                    loadingMask2.hide();
+                    error('Network error during revert');
+                    showMessage('error', 'Network error during revert');
+                });
+            },
         },
     });
+
 }
 
 kit.ui.config.formRequiredLabel = function () {
