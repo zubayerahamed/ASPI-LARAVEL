@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Xcodes;
 use Illuminate\Http\Request;
@@ -16,7 +18,12 @@ class MD12Controller extends ZayaanController
         $id = $request->query('id', 'RESET'); // Returns null if not present
         $frommenu = $request->query('frommenu', 'N');
 
+        $businessId = getBusinessId();
+        $categoryBusinessId = allowCondition('is_allow_custom_category') ? $businessId : null;
+
         $itemGroups = Xcodes::active()->where('type', 'Item Group')->orderBy('seqn', 'asc')->get();
+        $brands = Brand::active()->where('business_id', $businessId)->orderBy('name', 'asc')->get();
+        $categories = Category::generateCategoryTree($categoryBusinessId);
 
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
@@ -34,6 +41,8 @@ class MD12Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.MD12.MD12', [
                         'itemGroups' => $itemGroups,
+                        'brands' => $brands,
+                        'categoryTree' => $categories,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -46,6 +55,8 @@ class MD12Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.MD12.MD12-main-form', [
                         'itemGroups' => $itemGroups,
+                        'brands' => $brands,
+                        'categoryTree' => $categories,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -58,6 +69,8 @@ class MD12Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.MD12.MD12-main-form', [
                         'itemGroups' => $itemGroups,
+                        'brands' => $brands,
+                        'categoryTree' => $categories,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -66,6 +79,8 @@ class MD12Controller extends ZayaanController
                 return response()->json([
                     'page' => view('pages.MD12.MD12-main-form', [
                         'itemGroups' => $itemGroups,
+                        'brands' => $brands,
+                        'categoryTree' => $categories,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -79,6 +94,8 @@ class MD12Controller extends ZayaanController
             'content_header_title' => 'Product',
             'subtitle' => 'Product',
             'itemGroups' => $itemGroups,
+            'brands' => $brands,
+            'categoryTree' => $categories,
             'product' => new Product(),
             'detailList' => Collection::empty(),
         ]);

@@ -76,3 +76,9 @@ if (!function_exists('processQueueInBackground')) {
         ]);
     }
 }
+
+if (!function_exists('allowCondition')) {
+    function allowCondition($key){
+        return getSelectedBusiness()[$key] ?? false;
+    }
+}

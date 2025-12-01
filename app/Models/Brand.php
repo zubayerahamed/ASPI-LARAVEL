@@ -25,6 +25,19 @@ class Brand extends Model
         'business_id',
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+        'is_featured' => 'boolean',
+        'is_popular' => 'boolean',
+        'is_highlighted' => 'boolean',
+        'is_listed' => 'boolean',
+    ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
     public function business()
     {
         return $this->belongsTo(Business::class);

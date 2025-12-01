@@ -21,6 +21,17 @@ class Category extends Model
         'thumbnail_id',
     ];
 
+    protected $casts = [
+        'is_featured' => 'boolean',
+        'is_system_defined' => 'boolean',
+        'is_active' => 'boolean',
+    ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
     public function thumbnail()
     {
         return $this->belongsTo(Cadoc::class, 'thumbnail_id');
