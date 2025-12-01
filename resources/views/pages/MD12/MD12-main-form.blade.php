@@ -1,10 +1,10 @@
 <div class="card card-default">
     <div class="card-body">
-        <form id="mainform" action="{{ $productOption->id == null ? route('MD12.create') : route('MD12.update', ['id' => $productOption->id]) }}" method="POST">
+        <form id="mainform" action="{{ $product->id == null ? route('MD12.create') : route('MD12.update', ['id' => $product->id]) }}" method="POST">
             @csrf
-            @if ($productOption->id != null)
+            @if ($product->id != null)
                 @method('PUT')
-                <input type="hidden" name="id" value="{{ $productOption->id }}">
+                <input type="hidden" name="id" value="{{ $product->id }}">
             @endif
 
             <div class="row">
@@ -16,7 +16,7 @@
                             <input  type="text" 
                                     class="form-control searchsuggest2" 
                                     name="name" 
-                                    value="{{ $productOption->name }}"
+                                    value="{{ $product->name }}"
                                     placeholder="Create or Open Existing..."
                                     required>
                             <div class="input-group-append btn-search"
@@ -26,7 +26,7 @@
                                 data-mainscreen=true
                                 data-mainreloadurl="{{ route('MD12', ['id' => '']) }}"
                                 data-mainreloadid="main-form-container"
-                                data-detailreloadurl="{{ route('MD12.detail-table', ['id' => 'RESET', 'product_option_id' => '']) }}"
+                                data-detailreloadurl="{{ route('MD12.detail-table', ['id' => 'RESET', 'product_id' => '']) }}"
                                 data-detailreloadid="detail-table-container">
                                 <div class="input-group-text">
                                     <i class="ph ph-magnifying-glass"></i>
@@ -40,12 +40,12 @@
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="form-label" for="type">Type</label>
-                        <select class="form-control select2bs4" id="type" name="type" required>
-                            <option value="">-- Select Type --</option>
-                            <option value="dropdown" {{ $productOption->type == 'dropdown' ? 'selected' : '' }}>Dropdown</option>
-                            <option value="radio" {{ $productOption->type == 'radio' ? 'selected' : '' }}>Radio</option>
-                            <option value="checkbox" {{ $productOption->type == 'checkbox' ? 'selected' : '' }}>Checkbox</option>
+                        <label class="form-label" for="type">Item Group</label>
+                        <select class="form-control select2bs4" id="item_group" name="item_group" required>
+                            <option value="">-- Select Item Group --</option>
+                            @foreach ($itemGroups as $ig)
+                                <option value="{{ $ig->xcode }}" {{ $product->item_group == $ig->xcode ? 'selected' : '' }}>{{ $ig->description }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -55,8 +55,8 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input class="custom-control-input" type="checkbox" id="is_required" name="is_required" {{ $productOption->is_required ? 'checked' : '' }}>
-                            <label for="is_required" class="custom-control-label form-label">Is Required?</label>
+                            <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $product->is_active ? 'checked' : '' }}>
+                            <label for="is_active" class="custom-control-label form-label">Is Active?</label>
                         </div>
                     </div>
                 </div>
@@ -76,12 +76,12 @@
                     </button>
                 </div>
                 <div class="flex-grow-1 justify-content-end d-flex gap-2">
-                    @if ($productOption->id == null)
+                    @if ($product->id == null)
                         <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">
                             <i class="ph ph-floppy-disk"></i> <span>Save</span>
                         </button>
                     @else
-                        <button data-url="{{ route('MD12.delete', ['id' => $productOption->id]) }}" type="button" class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
+                        <button data-url="{{ route('MD12.delete', ['id' => $product->id]) }}" type="button" class="btn btn-sm btn-danger btn-delete d-flex align-items-center gap-2">
                             <i class="ph ph-trash"></i> <span>Delete</span>
                         </button>
                         <button type="submit" class="btn btn-sm btn-primary btn-submit d-flex align-items-center gap-2">

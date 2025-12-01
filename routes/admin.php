@@ -151,7 +151,7 @@ Route::delete('/MD11/{id}', [MD11Controller::class, 'delete'])->name('MD11.delet
 
 
 Route::get('/MD12', [MD12Controller::class, 'index'])->name('MD12');
-Route::get('/MD12/header-table', [MD12Controller::class, 'headerTable'])->name('MD12.header-table');
+Route::get('/MD12/detail-table', [MD12Controller::class, 'detailTable'])->name('MD12.detail-table');
 Route::post('/MD12', [MD12Controller::class, 'create'])->name('MD12.create');
 Route::put('/MD12/{id}', [MD12Controller::class, 'update'])->name('MD12.update');
 Route::delete('/MD12/{id}', [MD12Controller::class, 'delete'])->name('MD12.delete');
@@ -221,3 +221,4 @@ Route::post('/search/table/{fragmentcode}/{suffix}', [App\Http\Controllers\Searc
 Route::post('/search/LAD05/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LAD05'])->name('search.LAD05');
 Route::post('/search/LMD07/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LMD07'])->name('search.LMD07');
 Route::post('/search/LMD09/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LMD09'])->name('search.LMD09');
+Route::post('/search/LMD12/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LMD12'])->name('search.LMD12');
