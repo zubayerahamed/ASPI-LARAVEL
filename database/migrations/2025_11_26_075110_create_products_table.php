@@ -19,12 +19,10 @@ return new class extends Migration
 
             $table->foreignId("brand_id")->nullable()->references("id")->on("brands")->onDelete("set null");  // Though brands cant be deleted if products exist, but just in case
 
-            $table->string('item_group', 100);  // Services, Accessories, Finished Goods, Raw Materials, Subscriptions, Digital   // declared from xcodes
-
             $table->text('short_description')->nullable();  // Short description of the product
             $table->longText('description')->nullable();  // Detailed description of the product
 
-            $table->string('product_type', 20)->default('standard'); // standard, variable, grouped, digital, external, addon, bundle/set, service, , subscription, it will be declared from xcodes
+            $table->foreignId('product_type')->references('xcode')->on('xcodes')->onDelete('restrict');
 
             $table->string('base_unit', 50); // kg, g, litre, ml, unit, pcs, dozen, box, packet etc. It will be declared from xcodes
 

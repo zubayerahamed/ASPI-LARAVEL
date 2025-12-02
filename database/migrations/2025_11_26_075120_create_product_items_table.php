@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('product_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignId('product_behaviour')->references('xcode')->on('xcodes')->onDelete('restrict');
 
             // Identification
             $table->string('sku', 100);  // Stock Keeping Unit, unique identifier for the product item

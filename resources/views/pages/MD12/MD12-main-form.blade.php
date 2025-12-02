@@ -41,27 +41,16 @@
                         </div>
 
 
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="type">Item Group</label>
-                                <select class="form-control select2bs4" id="item_group" name="item_group" required>
-                                    <option value="">-- Select Item Group --</option>
-                                    @foreach ($itemGroups as $ig)
-                                        <option value="{{ $ig->xcode }}" {{ $product->item_group == $ig->xcode ? 'selected' : '' }}>{{ $ig->description }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                        
 
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label" for="type">Product Type</label>
                                 <select class="form-control select2bs4" id="product_type" name="product_type" required>
                                     <option value="">-- Select Product Type --</option>
-                                    <option value="standard">Standard</option>
-                                    <option value="variable">Variable</option>
-                                    <option value="grouped">Grouped</option>
+                                    @foreach ($productTypes as $pType)
+                                        <option value="{{ $pType->xcode }}" {{ $product->product_type == $pType->xcode ? 'selected' : '' }}>{{ $pType->description }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

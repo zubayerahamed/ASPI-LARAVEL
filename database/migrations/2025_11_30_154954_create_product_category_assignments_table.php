@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_category_assignments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreignId('category_id')->references('id')->on('categories')->onDelete('restrict'); // Prevent deletion if products are assigned
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->boolean('is_primary')->default(false); // Whether this category is the primary category for the product
 

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_label_assignments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_label_id')->references('id')->on('product_labels')->onDelete('cascade');
+            $table->foreignId('product_label_id')->references('id')->on('product_labels')->onDelete('restrict'); // Prevent deletion if products are assigned
             $table->foreignId('product_id')->nullable()->references('id')->on('products')->onDelete('cascade');
             $table->foreignId('product_item_id')->nullable()->references('id')->on('product_items')->onDelete('cascade');
             
