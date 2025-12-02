@@ -28,6 +28,11 @@ class Product extends Model
         'business_id',
     ];
 
+    public function getNameAttribute($value)
+    {
+        return $value == 'AUTO-DRAFT' ? '' : $value;
+    }
+
     public function brand()
     {
         return $this->belongsTo(Brand::class);
@@ -66,4 +71,6 @@ class Product extends Model
         }
         return $slug;
     }
+
+    
 }

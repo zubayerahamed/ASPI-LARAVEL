@@ -199,8 +199,8 @@ class XcodesSeeder extends Seeder
             ],
             [
                 'type' => 'Unit of Measurement',
-                'xcode' => 'kg',
-                'description' => 'Kilogram',
+                'xcode' => 'pcs',
+                'description' => 'Pieces',
                 'symbol' => '',
                 'is_active' => true,
                 'seqn' => 1,
@@ -208,13 +208,14 @@ class XcodesSeeder extends Seeder
             ],
             [
                 'type' => 'Unit of Measurement',
-                'xcode' => 'pcs',
-                'description' => 'Pieces',
+                'xcode' => 'kg',
+                'description' => 'Kilogram',
                 'symbol' => '',
                 'is_active' => true,
                 'seqn' => 2,
                 'business_id' => null,
             ],
+           
 
 
             // Product Type Data

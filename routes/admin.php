@@ -155,6 +155,8 @@ Route::get('/MD12/detail-table', [MD12Controller::class, 'detailTable'])->name('
 Route::post('/MD12', [MD12Controller::class, 'create'])->name('MD12.create');
 Route::put('/MD12/{id}', [MD12Controller::class, 'update'])->name('MD12.update');
 Route::delete('/MD12/{id}', [MD12Controller::class, 'delete'])->name('MD12.delete');
+// New route for product behaviour dropdown
+Route::get('/MD12/product-behaviour-dropdown', [MD12Controller::class, 'productBehaviourDropdown'])->name('MD12.product-behaviour-dropdown');
 
 
 

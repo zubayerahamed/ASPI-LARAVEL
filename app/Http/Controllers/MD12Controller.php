@@ -36,7 +36,10 @@ class MD12Controller extends ZayaanController
                         $product = Product::findOrFail($id);
                     } catch (\Throwable $th) {
                         Log::error("MD12Controller index error: " . $th->getMessage());
+                        $product = $this->createDraftProduct();
                     }
+                } else {
+                    $product = $this->createDraftProduct();
                 }
 
                 return response()->json([
@@ -107,5 +110,48 @@ class MD12Controller extends ZayaanController
         ]);
     }
 
+    public function createDraftProduct(){
+        // Delete all draft products for this business first from previous dates
+        $autodrafts = Product::where('business_id', '=', getBusinessId())
+                    ->where('name', '=', 'AUTO-DRAFT')
+                    ->whereDate('created_at', '<', now()->toDateString())
+                    ->get();
+
+        foreach ($autodrafts as $ad) {
+            $ad->delete();
+        }
+
+        // Create a new product if not found with auto_draft status
+        $p = new Product();
+        $p->name = 'AUTO-DRAFT';
+        $p->slug = 'AUTO-DRAFT';
+        $p->business_id = getBusinessId();
+        $p->product_type = 'STANDARD';
+        $p->base_unit = 'pcs';
+        $p->is_active = true;
+
+        if($p->save()){
+            return $p;
+        } 
+
+        return new Product();
+    }
+
+
+
+
+    // All ajax calls from main form to load partial dom will be set below
+
+    // Load product behaviour dropdown based on product type
+    public function productBehaviourDropdown(Request $request)
+    {
+        $productType = $request->query('product_type', '');
+
+        return response()->json([
+            'page' => view('pages.MD12.MD12-product-behaviour-dropdown', [
+                'productType' => $productType,
+            ])->render(),
+        ]);
+    }
 
 }

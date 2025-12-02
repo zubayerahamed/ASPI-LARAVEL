@@ -46,16 +46,26 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label" for="type">Product Type</label>
-                                <select class="form-control select2bs4" id="product_type" name="product_type" required>
-                                    <option value="">-- Select Product Type --</option>
-                                    @foreach ($productTypes as $pType)
-                                        <option value="{{ $pType->xcode }}" {{ $product->product_type == $pType->xcode ? 'selected' : '' }}>{{ $pType->description }}</option>
-                                    @endforeach
+                                <select 
+                                    class="form-control select2bs4" 
+                                    data-reloadid="product-behaviour-dropdown-container"
+                                    data-reloadurl="{{ route('MD12.product-behaviour-dropdown') }}"
+                                    id="product_type" name="product_type" required>
+                                    
+                                        <option value="">-- Select Product Type --</option>
+                                        @foreach ($productTypes as $pType)
+                                            <option value="{{ $pType->xcode }}" {{ $product->product_type == $pType->xcode ? 'selected' : '' }}>{{ $pType->description }}</option>
+                                        @endforeach
                                 </select>
                             </div>
                         </div>
 
-                        
+                        <div class="col-md-4 product-behaviour-dropdown-container">
+                            @include('pages.MD12.MD12-product-behaviour-dropdown', [
+                                'productType' => $product->product_type, 
+                                'initscript' => false
+                            ])
+                        </div>
 
                     </div>
 
@@ -346,6 +356,15 @@
             e.preventDefault();
             sweetAlertConfirm(() => {
                 deleteRequest($(this).data('url'));
+            });
+        });
+
+        $('#product_type').on('change', function(e) {
+            console.log($(this).data('reloadid'));
+
+            sectionReloadAjaxReq({
+                id: $(this).data('reloadid'),
+                url: $(this).data('reloadurl') + '?product_type=' + $(this).val()
             });
         });
     })

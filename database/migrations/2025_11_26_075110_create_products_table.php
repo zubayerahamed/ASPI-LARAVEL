@@ -22,18 +22,18 @@ return new class extends Migration
             $table->text('short_description')->nullable();  // Short description of the product
             $table->longText('description')->nullable();  // Detailed description of the product
 
-            $table->foreignId('product_type')->references('xcode')->on('xcodes')->onDelete('restrict');
+            $table->string('product_type', 50); // data from xcodes: physical, digital, service etc.
 
             $table->string('base_unit', 50); // kg, g, litre, ml, unit, pcs, dozen, box, packet etc. It will be declared from xcodes
 
             $table->boolean('is_active')->default(true);  // Whether product is active or inactive
-            $table->boolean('is_listed')->default(true);  // Whether to show in storefront
-            $table->boolean('is_featured')->default(true);  // Whether to show in featured section in storefront
-            $table->boolean('is_trending')->default(true);  // Whether to show in trending section in storefront
-            $table->boolean('is_highlighted')->default(true);  // Whether to highlight in storefront
-            $table->boolean('is_for_purchase')->default(true);  // Whether available for purchase
-            $table->boolean('is_for_sell')->default(true);  // Whether available for sell
-            $table->boolean('is_downloadable')->default(true);  // Whether downloadable product if product_type is digital
+            $table->boolean('is_listed')->default(false);  // Whether to show in storefront
+            $table->boolean('is_featured')->default(false);  // Whether to show in featured section in storefront
+            $table->boolean('is_trending')->default(false);  // Whether to show in trending section in storefront
+            $table->boolean('is_highlighted')->default(false);  // Whether to highlight in storefront
+            $table->boolean('is_for_purchase')->default(false);  // Whether available for purchase
+            $table->boolean('is_for_sell')->default(false);  // Whether available for sell
+            $table->boolean('is_downloadable')->default(false);  // Whether downloadable product if product_type is digital
     
             $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
             $table->unique(['slug', 'business_id']);
