@@ -852,7 +852,7 @@ function base64ToArrayBuffer(base64) {
 // Summernote Send uploaded file to server
 function sendSummernoteFile(file, el) {
     var formData = new FormData();
-    formData.append("file", file);
+    formData.append("thumbnail", file);
 
     loadingMask2.show();
     $.ajax({
@@ -865,15 +865,37 @@ function sendSummernoteFile(file, el) {
         contentType: false,
         cache: false,
         enctype: "multipart/form-data",
-        url: $(".media-store-url").attr("href"),
+        url: $(".filepond-process-url").attr("href"),
         success: function (data) {
             loadingMask2.hide();
             var url = getBasepath() + data.mediafile;
-            $(el).summernote("editor.insertImage", url);
+            $(el).summernote("insertImage", url, function($image){
+                // Add custom attribute *right here*
+                $image.attr("data-media-id", data.media_id);
+            });
         },
         error: function (e) {
             loadingMask2.hide();
-            console.log(e);
+            showMessage("error", e.responseJSON.message);
+        },
+    });
+}
+
+
+function deleteSummernoteFile(mediaId) {
+    loadingMask2.show();
+    $.ajax({
+        headers: {
+            "X-CSRF-TOKEN": getCSRFToken(),
+        },
+        type: "DELETE",
+        url: $(".filepond-revert-url").attr("href") + '?id=' + mediaId,
+        success: function (data) {
+            loadingMask2.hide();
+        },
+        error: function (e) {
+            loadingMask2.hide();
+            showMessage("error", e.responseJSON.message);
         },
     });
 }

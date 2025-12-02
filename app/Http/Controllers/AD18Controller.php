@@ -81,7 +81,10 @@ class AD18Controller extends ZayaanController
 
         $saved = $media->save();
         if ($saved) {
-            return response()->json(['media_id' => $media->id]);
+            return response()->json([
+                'media_id' => $media->id,
+                'mediafile' => $media->originalFile,
+            ]);
         }
 
         return response()->json(['error' => 'Failed to save document record.'], 500);

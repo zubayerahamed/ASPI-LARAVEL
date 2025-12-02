@@ -30,12 +30,12 @@ class Cadoc extends Model
      */
     public function getCompressedFileAttribute()
     {
-        if (self::isImageFile()) {
+        if (self::isImageFile() && $this->file_path_compressed) {
             return "/storage" . $this->file_path_compressed . $this->file_name;
         }
 
-        // For non-image files, return the original file
-        return $this->file;
+        // For non-image files, return the original file URL
+        return $this->getOriginalFileAttribute();
     }
 
     /**
@@ -43,11 +43,7 @@ class Cadoc extends Model
      */
     public function getOriginalFileAttribute()
     {
-        if (self::isImageFile()) {
-            return "/storage" . $this->file_path . $this->file_name;
-        }
-
-        return $this->file;
+        return "/storage" . $this->file_path . $this->file_name;
     }
 
     public function isImageFile()

@@ -54,6 +54,18 @@
                             </div>
                         </div>
 
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="type">Product Type</label>
+                                <select class="form-control select2bs4" id="product_type" name="product_type" required>
+                                    <option value="">-- Select Product Type --</option>
+                                    <option value="standard">Standard</option>
+                                    <option value="variable">Variable</option>
+                                    <option value="grouped">Grouped</option>
+                                </select>
+                            </div>
+                        </div>
+
                         
 
                     </div>
@@ -66,11 +78,55 @@
 
 
             
+            
+            <!-- Description Column -->
+            <div class="card card-dark card-outline card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title text-dark">Description</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-lg fa-minus"></i>     
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea class="summernote" id="description" name="description" rows="4">{{ $product->description }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-
+            <!-- Short Description Column -->
+            <div class="card card-dark card-outline card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title text-dark">Short Description</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-lg fa-minus"></i>     
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea class="summernote" id="short_description" name="short_description" rows="4">{{ $product->short_description }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
         </div>
+
+
+
+
 
         
         <div class="col-md-3">

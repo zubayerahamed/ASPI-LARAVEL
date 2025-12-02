@@ -198,6 +198,10 @@ kit.ui.config.initSummernote = function () {
                     sendSummernoteFile(files[i], this);
                 }
             },
+            onMediaDelete: function (target) {
+                let mediaId = target.attr('data-media-id');
+                deleteSummernoteFile(mediaId);
+            }
         },
     });
 }

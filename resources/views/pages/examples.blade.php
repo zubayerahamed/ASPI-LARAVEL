@@ -561,8 +561,8 @@
 
                 <div class="form-group mt-5">
                     <textarea class="summernote">
-                Place <em>some</em> <u>text</u> <strong>here</strong>
-              </textarea>
+                        Place <em>some</em> <u>text</u> <strong>here</strong>
+                    </textarea>
                 </div>
             </div>
         </div>
