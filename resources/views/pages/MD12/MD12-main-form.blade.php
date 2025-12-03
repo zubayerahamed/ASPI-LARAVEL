@@ -50,8 +50,9 @@
                                     class="form-control select2bs4" 
                                     data-reloadid="product-behaviour-dropdown-container"
                                     data-reloadurl="{{ route('MD12.product-behaviour-dropdown') }}"
-                                    id="product_type" name="product_type" required>
-                                    
+                                    id="product_type" 
+                                    name="product_type" 
+                                    required>
                                         <option value="">-- Select Product Type --</option>
                                         @foreach ($productTypes as $pType)
                                             <option value="{{ $pType->xcode }}" {{ $product->product_type == $pType->xcode ? 'selected' : '' }}>{{ $pType->description }}</option>
@@ -76,6 +77,54 @@
             </div>
 
 
+            <!-- Attribute -->
+            <div class="card card-dark card-outline card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title text-dark">Attributes</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-lg fa-minus"></i>     
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select 
+                                            class="form-control select2bs4"
+                                            id="attribute_id" 
+                                            name="attribute_id" 
+                                            required>
+                                                <option value="">-- Add Global Attribute --</option>
+                                                @foreach ($attributes as $attribute)
+                                                    <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
+                                                @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-default">Add Global Attribute</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            {{-- <button class="btn btn-default">Create & Add new attribute</button> --}}
+                        </div>
+                    </div>
+
+                    <!-- Attribute List -->
+                    <div class="attribute-list-container">
+                        @include('pages.MD12.MD12-attribute-list', [
+                            'selectedAttributes' => $productTypes,
+                        ])
+                    </div>
+
+
+                </div>
+            </div>
             
             
             <!-- Description Column -->
@@ -113,12 +162,14 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <textarea class="summernote" id="short_description" name="short_description" rows="4">{{ $product->short_description }}</textarea>
+                                <textarea class="summernote" id="short_description" name="short_description" rows="4" data-height="100">{{ $product->short_description }}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            
 
 
         </div>

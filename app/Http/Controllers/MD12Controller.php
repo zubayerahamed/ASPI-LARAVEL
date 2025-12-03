@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -25,6 +26,7 @@ class MD12Controller extends ZayaanController
         $productBehaviours = Xcodes::active()->where('type', 'Product Behaviour')->orderBy('seqn', 'asc')->get();
         $brands = Brand::active()->where('business_id', $businessId)->orderBy('name', 'asc')->get();
         $categories = Category::generateCategoryTree($categoryBusinessId);
+        $attributes = Attribute::relatedBusiness()->with(['terms'])->orderBy('seqn', 'asc')->get();
 
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
@@ -48,6 +50,7 @@ class MD12Controller extends ZayaanController
                         'productBehaviours' => $productBehaviours,
                         'brands' => $brands,
                         'categoryTree' => $categories,
+                        'attributes' => $attributes,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -63,6 +66,7 @@ class MD12Controller extends ZayaanController
                         'productBehaviours' => $productBehaviours,
                         'brands' => $brands,
                         'categoryTree' => $categories,
+                        'attributes' => $attributes,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -78,6 +82,7 @@ class MD12Controller extends ZayaanController
                         'productBehaviours' => $productBehaviours,
                         'brands' => $brands,
                         'categoryTree' => $categories,
+                        'attributes' => $attributes,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -89,6 +94,7 @@ class MD12Controller extends ZayaanController
                         'productBehaviours' => $productBehaviours,
                         'brands' => $brands,
                         'categoryTree' => $categories,
+                        'attributes' => $attributes,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -105,6 +111,7 @@ class MD12Controller extends ZayaanController
             'productBehaviours' => $productBehaviours,
             'brands' => $brands,
             'categoryTree' => $categories,
+            'attributes' => $attributes,
             'product' => new Product(),
             'detailList' => Collection::empty(),
         ]);

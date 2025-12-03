@@ -177,32 +177,38 @@ kit.ui.config.initBootstrapSwitch = function () {
 
 kit.ui.config.initSummernote = function () {
     //$('textarea.summernote').summernote();
-    $("textarea.summernote").summernote({
-        tabsize: 2,
-        height: 300,
-        codemirror: {
-            theme: "monokai",
-        },
-        toolbar: [
-            ["style", ["style"]],
-            ["font", ["bold", "underline", "clear"]],
-            ["color", ["color"]],
-            ["para", ["ul", "ol", "paragraph"]],
-            ["table", ["table"]],
-            ["insert", ["link", "picture", "video"]],
-            ["view", ["fullscreen", "codeview", "help"]],
-        ],
-        callbacks: {
-            onImageUpload: function (files, editor, welEditable) {
-                for (var i = 0; i < files.length; i++) {
-                    sendSummernoteFile(files[i], this);
+
+    $("textarea.summernote").each(function () {
+        var $element = $(this);
+        var height = $element.data('height') != undefined ? parseInt($element.data('height')) : 300;
+        
+        $element.summernote({
+            tabsize: 2,
+            height: height,
+            codemirror: {
+                theme: "monokai",
+            },
+            toolbar: [
+                ["style", ["style"]],
+                ["font", ["bold", "underline", "clear"]],
+                ["color", ["color"]],
+                ["para", ["ul", "ol", "paragraph"]],
+                ["table", ["table"]],
+                ["insert", ["link", "picture", "video"]],
+                ["view", ["fullscreen", "codeview", "help"]],
+            ],
+            callbacks: {
+                onImageUpload: function (files, editor, welEditable) {
+                    for (var i = 0; i < files.length; i++) {
+                        sendSummernoteFile(files[i], this);
+                    }
+                },
+                onMediaDelete: function (target) {
+                    let mediaId = target.attr('data-media-id');
+                    deleteSummernoteFile(mediaId);
                 }
             },
-            onMediaDelete: function (target) {
-                let mediaId = target.attr('data-media-id');
-                deleteSummernoteFile(mediaId);
-            }
-        },
+        });
     });
 }
 

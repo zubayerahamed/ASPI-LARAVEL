@@ -38,7 +38,7 @@ class MD03Controller extends ZayaanController
                     'page' => view('pages.MD03.MD03', [
                         'allowCustomAttribute' => getSelectedBusiness() == null ? true : $allowCustomAttribute,
                         'attribute' => $att,
-                        'detailList' => Attribute:: relatedBusiness()->with(['terms'])->orderBy('seqn', 'asc')->get()
+                        'detailList' => Attribute::relatedBusiness()->with(['terms'])->orderBy('seqn', 'asc')->get()
                     ])->render(),
                     'content_header_title' => 'Attribute Management',
                     'subtitle' => 'Attribute',
