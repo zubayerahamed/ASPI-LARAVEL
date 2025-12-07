@@ -449,15 +449,8 @@
 
         <div class="col-md-3">
             <!-- Publish Column -->
-            <div class="card card-dark card-outline card-secondary">
-                <div class="card-header">
-                    <h3 class="card-title text-dark">Publish</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-lg fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
+            <div class="card">
+                
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="flex-grow-1 text-left">
