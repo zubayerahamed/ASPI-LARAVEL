@@ -12,11 +12,14 @@ class Product extends Model
         'name',
         'slug',
         'brand_id',
-        'item_group',
+
         'short_description',
         'description',
+
         'product_type',
+
         'base_unit',
+
         'is_active',
         'is_listed',
         'is_featured',
@@ -25,6 +28,7 @@ class Product extends Model
         'is_for_purchase',
         'is_for_sell',
         'is_downloadable',
+
         'business_id',
     ];
 

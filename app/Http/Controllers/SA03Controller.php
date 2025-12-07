@@ -117,7 +117,7 @@ class SA03Controller extends ZayaanController
             // Send verification email logic can be added here
             $verificationUrl = route("verification.verify", ['token' => $user->activation_token]);
 
-            Mail::to($user->email)->queue(new EmailVerificationMail($user, $verificationUrl));
+            // Mail::to($user->email)->queue(new EmailVerificationMail($user, $verificationUrl));
 
             $this->setReloadSections([
                 new ReloadSection('main-form-container', route('SA03', ['id' => 'RESET'])),

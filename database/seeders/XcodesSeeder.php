@@ -215,6 +215,15 @@ class XcodesSeeder extends Seeder
                 'seqn' => 2,
                 'business_id' => null,
             ],
+            [
+                'type' => 'Unit of Measurement',
+                'xcode' => 'cm',
+                'description' => 'Centimeter',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 3,
+                'business_id' => null,
+            ],
            
 
 
@@ -403,8 +412,34 @@ class XcodesSeeder extends Seeder
             ],
             
             
-            
-
+            // Country of Origin Data
+            [
+                'type' => 'Code Type',
+                'xcode' => 'Country of Origin',
+                'description' => '',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 5,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Country of Origin',
+                'xcode' => 'China',
+                'description' => 'China',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 1,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Country of Origin',
+                'xcode' => 'Japan',
+                'description' => 'Japan',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 2,
+                'business_id' => null,
+            ],
 
 
         ]);

@@ -27,6 +27,8 @@ class MD12Controller extends ZayaanController
         $brands = Brand::active()->where('business_id', $businessId)->orderBy('name', 'asc')->get();
         $categories = Category::generateCategoryTree($categoryBusinessId);
         $attributes = Attribute::relatedBusiness()->with(['terms'])->orderBy('seqn', 'asc')->get();
+        $uoms = Xcodes::active()->where('type', 'Unit of Measurement')->orderBy('seqn', 'asc')->get();
+        $countriesOfOrigins = Xcodes::active()->where('type', 'Country of Origin')->orderBy('seqn', 'asc')->get();
 
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
@@ -51,6 +53,8 @@ class MD12Controller extends ZayaanController
                         'brands' => $brands,
                         'categoryTree' => $categories,
                         'attributes' => $attributes,
+                        'uoms' => $uoms,
+                        'countriesOfOrigins' => $countriesOfOrigins,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -67,6 +71,8 @@ class MD12Controller extends ZayaanController
                         'brands' => $brands,
                         'categoryTree' => $categories,
                         'attributes' => $attributes,
+                        'uoms' => $uoms,
+                        'countriesOfOrigins' => $countriesOfOrigins,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -83,6 +89,8 @@ class MD12Controller extends ZayaanController
                         'brands' => $brands,
                         'categoryTree' => $categories,
                         'attributes' => $attributes,
+                        'uoms' => $uoms,
+                        'countriesOfOrigins' => $countriesOfOrigins,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -95,6 +103,8 @@ class MD12Controller extends ZayaanController
                         'brands' => $brands,
                         'categoryTree' => $categories,
                         'attributes' => $attributes,
+                        'uoms' => $uoms,
+                        'countriesOfOrigins' => $countriesOfOrigins,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -112,6 +122,8 @@ class MD12Controller extends ZayaanController
             'brands' => $brands,
             'categoryTree' => $categories,
             'attributes' => $attributes,
+            'uoms' => $uoms,
+            'countriesOfOrigins' => $countriesOfOrigins,
             'product' => new Product(),
             'detailList' => Collection::empty(),
         ]);

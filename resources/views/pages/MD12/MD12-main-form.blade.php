@@ -18,20 +18,20 @@
                                 <label class="form-label" for="name">Name</label>
                                 <div class="input-group">
                                     <input type="text"
-                                        class="form-control searchsuggest2"
-                                        name="name"
-                                        value="{{ $product->name }}"
-                                        placeholder="Create or Open Existing..."
-                                        required>
+                                           class="form-control searchsuggest2"
+                                           name="name"
+                                           value="{{ $product->name }}"
+                                           placeholder="Create or Open Existing..."
+                                           required>
                                     <div class="input-group-append btn-search"
-                                        data-reloadurl="{{ route('search.index', ['fragmentcode' => 'LMD12', 'suffix' => 0]) . '?hint=' }}"
-                                        data-reloadid="search-suggest-results-container"
-                                        data-fieldid="name"
-                                        data-mainscreen=true
-                                        data-mainreloadurl="{{ route('MD12', ['id' => '']) }}"
-                                        data-mainreloadid="main-form-container"
-                                        data-detailreloadurl="{{ route('MD12.detail-table', ['id' => 'RESET', 'product_id' => '']) }}"
-                                        data-detailreloadid="detail-table-container">
+                                         data-reloadurl="{{ route('search.index', ['fragmentcode' => 'LMD12', 'suffix' => 0]) . '?hint=' }}"
+                                         data-reloadid="search-suggest-results-container"
+                                         data-fieldid="name"
+                                         data-mainscreen=true
+                                         data-mainreloadurl="{{ route('MD12', ['id' => '']) }}"
+                                         data-mainreloadid="main-form-container"
+                                         data-detailreloadurl="{{ route('MD12.detail-table', ['id' => 'RESET', 'product_id' => '']) }}"
+                                         data-detailreloadid="detail-table-container">
                                         <div class="input-group-text">
                                             <i class="ph ph-magnifying-glass"></i>
                                         </div>
@@ -41,36 +41,304 @@
                         </div>
 
 
-                        
+
 
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label" for="type">Product Type</label>
-                                <select 
-                                    class="form-control select2bs4" 
-                                    data-reloadid="product-behaviour-dropdown-container"
-                                    data-reloadurl="{{ route('MD12.product-behaviour-dropdown') }}"
-                                    id="product_type" 
-                                    name="product_type" 
-                                    required>
-                                        <option value="">-- Select Product Type --</option>
-                                        @foreach ($productTypes as $pType)
-                                            <option value="{{ $pType->xcode }}" {{ $product->product_type == $pType->xcode ? 'selected' : '' }}>{{ $pType->description }}</option>
-                                        @endforeach
+                                <select
+                                        class="form-control select2bs4"
+                                        data-reloadid="product-behaviour-dropdown-container"
+                                        data-reloadurl="{{ route('MD12.product-behaviour-dropdown') }}"
+                                        id="product_type"
+                                        name="product_type"
+                                        required>
+                                    <option value="">-- Select Product Type --</option>
+                                    @foreach ($productTypes as $pType)
+                                        <option value="{{ $pType->xcode }}" {{ $product->product_type == $pType->xcode ? 'selected' : '' }}>{{ $pType->description }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
 
                         <div class="col-md-4 product-behaviour-dropdown-container">
                             @include('pages.MD12.MD12-product-behaviour-dropdown', [
-                                'productType' => $product->product_type, 
-                                'initscript' => false
+                                'productType' => $product->product_type,
+                                'initscript' => false,
                             ])
                         </div>
 
+
+
+
                     </div>
 
-                    
+
+
+
+                </div>
+            </div>
+
+
+            <!-- Attribute -->
+            <div class="card card-dark card-outline card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title text-dark">Details</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-lg fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <!-- Identification -->
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <h5>Identification</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="sku">SKU</label>
+                                <input
+                                       type="text"
+                                       class="form-control"
+                                       id="sku"
+                                       name="sku"
+                                       value="{{ $product->sku }}"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="barcode">Barcode</label>
+                                <input
+                                       type="text"
+                                       class="form-control"
+                                       id="barcode"
+                                       name="barcode"
+                                       value="{{ $product->barcode }}"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="manufacturer_sku">Manufacturer SKU</label>
+                                <input
+                                       type="text"
+                                       class="form-control"
+                                       id="manufacturer_sku"
+                                       name="manufacturer_sku"
+                                       value="{{ $product->manufacturer_sku }}"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="country_of_origin">Country of Origin</label>
+                                <select
+                                        class="form-control select2bs4"
+                                        id="country_of_origin"
+                                        name="country_of_origin"
+                                        required>
+                                    <option value="">-- Select Country of Origin --</option>
+                                    @foreach ($countriesOfOrigins as $countryOfOrigin)
+                                        <option value="{{ $countryOfOrigin->xcode }}" {{ $product->country_of_origin == $countryOfOrigin->xcode ? 'selected' : '' }}>{{ $countryOfOrigin->description }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Units and Conversions -->
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <h5>Units and Conversions</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="base_unit">Base Unit</label>
+                                <select
+                                        class="form-control select2bs4"
+                                        id="base_unit"
+                                        name="base_unit"
+                                        required>
+                                    <option value="">-- Select Base Unit --</option>
+                                    @foreach ($uoms as $baseUnit)
+                                        <option value="{{ $baseUnit->xcode }}" {{ $product->base_unit == $baseUnit->xcode ? 'selected' : '' }}>{{ $baseUnit->description }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="purchase_unit">Purchase Unit</label>
+                                <select
+                                        class="form-control select2bs4"
+                                        id="purchase_unit"
+                                        name="purchase_unit"
+                                        required>
+                                    <option value="">-- Select Purchase Unit --</option>
+                                    @foreach ($uoms as $purchaseUnit)
+                                        <option value="{{ $purchaseUnit->xcode }}" {{ $product->purchase_unit == $purchaseUnit->xcode ? 'selected' : '' }}>{{ $purchaseUnit->description }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="purchase_conversion">Purchase Conversion</label>
+                                <input
+                                       type="number"
+                                       class="form-control"
+                                       id="purchase_conversion"
+                                       name="purchase_conversion"
+                                       value="{{ $product->purchase_conversion ?? 1 }}"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="sell_unit">Sell Unit</label>
+                                <select
+                                        class="form-control select2bs4"
+                                        id="sell_unit"
+                                        name="sell_unit"
+                                        required>
+                                    <option value="">-- Select Sell Unit --</option>
+                                    @foreach ($uoms as $sellUnit)
+                                        <option value="{{ $sellUnit->xcode }}" {{ $product->sell_unit == $sellUnit->xcode ? 'selected' : '' }}>{{ $sellUnit->description }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="sell_conversion">Sell Conversion</label>
+                                <input
+                                       type="number"
+                                       class="form-control"
+                                       id="sell_conversion"
+                                       name="sell_conversion"
+                                       value="{{ $product->sell_conversion ?? 1 }}"
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Dimensions & Shipping -->
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <h5>Dimensions & Shipping</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="weight_unit">Weight Unit</label>
+                                <select
+                                        class="form-control select2bs4"
+                                        id="weight_unit"
+                                        name="weight_unit">
+                                    <option value="">-- Select Weight Unit --</option>
+                                    @foreach ($uoms as $weightUnit)
+                                        <option value="{{ $weightUnit->xcode }}" {{ $product->weight_unit == $weightUnit->xcode ? 'selected' : '' }}>{{ $weightUnit->description }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="weight">Weight</label>
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            id="weight"
+                                            name="weight"
+                                            value="{{ $product->weight ?? 0 }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="dimension_unit">Dimension Unit</label>
+                                <select
+                                        class="form-control select2bs4"
+                                        id="dimension_unit"
+                                        name="dimension_unit">
+                                    <option value="">-- Select Dimension Unit --</option>
+                                    @foreach ($uoms as $dimensionUnit)
+                                        <option value="{{ $dimensionUnit->xcode }}" {{ $product->dimension_unit == $dimensionUnit->xcode ? 'selected' : '' }}>{{ $dimensionUnit->description }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="length">Length</label>
+                                        <input
+                                               type="number"
+                                               class="form-control"
+                                               id="length"
+                                               name="length"
+                                               value="{{ $product->length ?? 0 }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="width">Width</label>
+                                        <input
+                                               type="number"
+                                               class="form-control"
+                                               id="width"
+                                               name="width"
+                                               value="{{ $product->width ?? 0 }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="height">Height</label>
+                                        <input
+                                               type="number"
+                                               class="form-control"
+                                               id="height"
+                                               name="height"
+                                               value="{{ $product->height ?? 0 }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="volumetric_weight">Volumetric Weight</label>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        id="volumetric_weight"
+                                        name="volumetric_weight"
+                                        value="{{ $product->volumetric_weight ?? 0 }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="shipping_charge">Shipping Charge</label>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        id="shipping_charge"
+                                        name="shipping_charge"
+                                        value="{{ $product->shipping_charge ?? 0 }}">
+                            </div>
+                        </div>
+                    </div>
+
+
+
 
 
                 </div>
@@ -83,7 +351,7 @@
                     <h3 class="card-title text-dark">Attributes</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-lg fa-minus"></i>     
+                            <i class="fas fa-lg fa-minus"></i>
                         </button>
                     </div>
                 </div>
@@ -93,15 +361,15 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <select 
-                                            class="form-control select2bs4"
-                                            id="attribute_id" 
-                                            name="attribute_id" 
-                                            required>
-                                                <option value="">-- Add Global Attribute --</option>
-                                                @foreach ($attributes as $attribute)
-                                                    <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
-                                                @endforeach
+                                        <select
+                                                class="form-control select2bs4"
+                                                id="attribute_id"
+                                                name="attribute_id"
+                                                required>
+                                            <option value="">-- Add Global Attribute --</option>
+                                            @foreach ($attributes as $attribute)
+                                                <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -125,15 +393,15 @@
 
                 </div>
             </div>
-            
-            
+
+
             <!-- Description Column -->
             <div class="card card-dark card-outline card-secondary">
                 <div class="card-header">
                     <h3 class="card-title text-dark">Description</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-lg fa-minus"></i>     
+                            <i class="fas fa-lg fa-minus"></i>
                         </button>
                     </div>
                 </div>
@@ -154,7 +422,7 @@
                     <h3 class="card-title text-dark">Short Description</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-lg fa-minus"></i>     
+                            <i class="fas fa-lg fa-minus"></i>
                         </button>
                     </div>
                 </div>
@@ -169,7 +437,7 @@
                 </div>
             </div>
 
-            
+
 
 
         </div>
@@ -178,7 +446,7 @@
 
 
 
-        
+
         <div class="col-md-3">
             <!-- Publish Column -->
             <div class="card card-dark card-outline card-secondary">
@@ -186,7 +454,7 @@
                     <h3 class="card-title text-dark">Publish</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-lg fa-minus"></i>     
+                            <i class="fas fa-lg fa-minus"></i>
                         </button>
                     </div>
                 </div>
@@ -228,7 +496,7 @@
                     <h3 class="card-title text-dark">Status</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-lg fa-minus"></i>     
+                            <i class="fas fa-lg fa-minus"></i>
                         </button>
                     </div>
                 </div>
@@ -239,6 +507,14 @@
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $product->is_active ? 'checked' : '' }}>
                                     <label for="is_active" class="custom-control-label form-label">Is Active?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_listed" name="is_listed" {{ $product->is_listed ? 'checked' : '' }}>
+                                    <label for="is_listed" class="custom-control-label form-label">Display for Sell?</label>
                                 </div>
                             </div>
                         </div>
@@ -293,12 +569,12 @@
                     <h3 class="card-title text-dark">Category</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-lg fa-minus"></i>     
+                            <i class="fas fa-lg fa-minus"></i>
                         </button>
                     </div>
                 </div>
                 <div class="card-body">
-                    
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -349,7 +625,7 @@
                     <h3 class="card-title text-dark">Brand</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-lg fa-minus"></i>     
+                            <i class="fas fa-lg fa-minus"></i>
                         </button>
                     </div>
                 </div>
@@ -358,10 +634,10 @@
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <select class="form-control select2bs4" id="brand" name="brand">
+                                <select class="form-control select2bs4" id="brand_id" name="brand_id">
                                     <option value="">-- Select Brand --</option>
                                     @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}" {{ $product->brand == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                        <option value="{{ $brand->id }}" {{ $product->brand_id == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
