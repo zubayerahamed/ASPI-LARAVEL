@@ -18,8 +18,6 @@ class Product extends Model
 
         'product_type',
 
-        'base_unit',
-
         'is_active',
         'is_listed',
         'is_featured',

@@ -442,6 +442,84 @@ class XcodesSeeder extends Seeder
             ],
 
 
+            // Stock Status Data
+            [
+                'type' => 'Code Type',
+                'xcode' => 'Stock Status',
+                'description' => '',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 6,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Stock Status',
+                'xcode' => 'IN_STOCK',
+                'description' => 'In Stock',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 1,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Stock Status',
+                'xcode' => 'OUT_OF_STOCK',
+                'description' => 'Out of Stock',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 2,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Stock Status',
+                'xcode' => 'ON_BACKORDER',
+                'description' => 'On Backorder',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 3,
+                'business_id' => null,
+            ],
+
+
+            // Back Order Type Data
+            [
+                'type' => 'Code Type',
+                'xcode' => 'Back Order Type',
+                'description' => '',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 7,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Back Order Type',
+                'xcode' => 'DONT_ALLOW',
+                'description' => 'Don\'t Allow',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 1,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Back Order Type',
+                'xcode' => 'ALLOW_NOTIFY_CUSTOMER',
+                'description' => 'Allow, But Notify Customer',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 2,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Back Order Type',
+                'xcode' => 'ALLOW',
+                'description' => 'Allow',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 3,
+                'business_id' => null,
+            ],
+
+
         ]);
     }
 }

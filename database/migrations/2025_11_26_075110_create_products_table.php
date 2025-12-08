@@ -24,8 +24,6 @@ return new class extends Migration
 
             $table->string('product_type', 50); // data from xcodes: physical, digital, service etc.
 
-            $table->string('base_unit', 50); // kg, g, litre, ml, unit, pcs, dozen, box, packet etc. It will be declared from xcodes
-
             $table->boolean('is_active')->default(true);  // Whether product is active or inactive
             $table->boolean('is_listed')->default(false);  // Whether to show in storefront
             $table->boolean('is_featured')->default(false);  // Whether to show in featured section in storefront

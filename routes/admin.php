@@ -24,6 +24,9 @@ use App\Http\Controllers\AD17Controller;
 use App\Http\Controllers\AD19Controller;
 use App\Http\Controllers\AD20Controller;
 use App\Http\Controllers\AD21Controller;
+use App\Http\Controllers\FA01Controller;
+use App\Http\Controllers\FA02Controller;
+use App\Http\Controllers\FA03Controller;
 use App\Http\Controllers\MD06Controller;
 use App\Http\Controllers\MD07Controller;
 use App\Http\Controllers\MD08Controller;
@@ -213,6 +216,22 @@ Route::get('/AD21/header-table', [AD21Controller::class, 'headerTable'])->name('
 Route::post('/AD21', [AD21Controller::class, 'create'])->name('AD21.create');
 Route::put('/AD21/{id}', [AD21Controller::class, 'update'])->name('AD21.update');
 Route::delete('/AD21/{id}', [AD21Controller::class, 'delete'])->name('AD21.delete');
+
+
+Route::get('/FA01', [FA01Controller::class, 'index'])->name('FA01');
+Route::get('/FA01/header-table', [FA01Controller::class, 'headerTable'])->name('FA01.header-table');
+Route::post('/FA01', [FA01Controller::class, 'create'])->name('FA01.create');
+Route::put('/FA01/{id}', [FA01Controller::class, 'update'])->name('FA01.update');
+Route::delete('/FA01/{id}', [FA01Controller::class, 'delete'])->name('FA01.delete');
+
+Route::get('/FA02', [FA02Controller::class, 'index'])->name('FA02');
+Route::get('/FA02/header-table', [FA02Controller::class, 'headerTable'])->name('FA02.header-table');
+Route::post('/FA02', [FA02Controller::class, 'create'])->name('FA02.create');
+Route::put('/FA02/{id}', [FA02Controller::class, 'update'])->name('FA02.update');
+Route::delete('/FA02/{id}', [FA02Controller::class, 'delete'])->name('FA02.delete');
+
+
+
 
 Route::get('/business-selection', [BusinessSelectionController::class, 'index'])->name('business-selection');
 Route::get('/business-selection/{id}', [BusinessSelectionController::class, 'selectBusiness'])->name('business-selection.select');

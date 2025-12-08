@@ -6,6 +6,7 @@ use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\TaxCategory;
 use App\Models\Xcodes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -22,13 +23,16 @@ class MD12Controller extends ZayaanController
         $businessId = getBusinessId();
         $categoryBusinessId = allowCondition('is_allow_custom_category') ? $businessId : null;
 
-        $productTypes = Xcodes::active()->where('type', 'Product Type')->orderBy('seqn', 'asc')->get();
-        $productBehaviours = Xcodes::active()->where('type', 'Product Behaviour')->orderBy('seqn', 'asc')->get();
+        $productTypes = Xcodes::relatedBusiness()->active()->where('type', 'Product Type')->orderBy('seqn', 'asc')->get();
+        $productBehaviours = Xcodes::relatedBusiness()->active()->where('type', 'Product Behaviour')->orderBy('seqn', 'asc')->get();
         $brands = Brand::active()->where('business_id', $businessId)->orderBy('name', 'asc')->get();
         $categories = Category::generateCategoryTree($categoryBusinessId);
         $attributes = Attribute::relatedBusiness()->with(['terms'])->orderBy('seqn', 'asc')->get();
-        $uoms = Xcodes::active()->where('type', 'Unit of Measurement')->orderBy('seqn', 'asc')->get();
-        $countriesOfOrigins = Xcodes::active()->where('type', 'Country of Origin')->orderBy('seqn', 'asc')->get();
+        $uoms = Xcodes::relatedBusiness()->active()->where('type', 'Unit of Measurement')->orderBy('seqn', 'asc')->get();
+        $countriesOfOrigins = Xcodes::relatedBusiness()->active()->where('type', 'Country of Origin')->orderBy('seqn', 'asc')->get();
+        $stockStatus = Xcodes::relatedBusiness()->active()->where('type', 'Stock Status')->orderBy('seqn', 'asc')->get();
+        $backOrderTypes = Xcodes::relatedBusiness()->active()->where('type', 'Back Order Type')->orderBy('seqn', 'asc')->get();
+        $taxCategories = TaxCategory::where('business_id', getBusinessId())->orderBy('name', 'asc')->get();
 
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
@@ -55,6 +59,9 @@ class MD12Controller extends ZayaanController
                         'attributes' => $attributes,
                         'uoms' => $uoms,
                         'countriesOfOrigins' => $countriesOfOrigins,
+                        'stockStatus' => $stockStatus,
+                        'backOrderTypes' => $backOrderTypes,
+                        'taxCategories' => $taxCategories,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -73,6 +80,9 @@ class MD12Controller extends ZayaanController
                         'attributes' => $attributes,
                         'uoms' => $uoms,
                         'countriesOfOrigins' => $countriesOfOrigins,
+                        'stockStatus' => $stockStatus,
+                        'backOrderTypes' => $backOrderTypes,
+                        'taxCategories' => $taxCategories,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -91,6 +101,9 @@ class MD12Controller extends ZayaanController
                         'attributes' => $attributes,
                         'uoms' => $uoms,
                         'countriesOfOrigins' => $countriesOfOrigins,
+                        'stockStatus' => $stockStatus,
+                        'backOrderTypes' => $backOrderTypes,
+                        'taxCategories' => $taxCategories,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -105,6 +118,9 @@ class MD12Controller extends ZayaanController
                         'attributes' => $attributes,
                         'uoms' => $uoms,
                         'countriesOfOrigins' => $countriesOfOrigins,
+                        'stockStatus' => $stockStatus,
+                        'backOrderTypes' => $backOrderTypes,
+                        'taxCategories' => $taxCategories,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -124,6 +140,9 @@ class MD12Controller extends ZayaanController
             'attributes' => $attributes,
             'uoms' => $uoms,
             'countriesOfOrigins' => $countriesOfOrigins,
+            'stockStatus' => $stockStatus,
+            'backOrderTypes' => $backOrderTypes,
+            'taxCategories' => $taxCategories,
             'product' => new Product(),
             'detailList' => Collection::empty(),
         ]);

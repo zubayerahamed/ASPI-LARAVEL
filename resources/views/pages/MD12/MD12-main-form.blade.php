@@ -105,47 +105,86 @@
                                        class="form-control"
                                        id="sku"
                                        name="sku"
-                                       value="{{ $product->sku }}"
-                                       required>
+                                       value="{{ $product->sku }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label" for="barcode">Barcode</label>
+                                <label class="form-label" for="barcode">Barcode (ISBN, UPC, GTIN, etc.)</label>
                                 <input
                                        type="text"
                                        class="form-control"
                                        id="barcode"
                                        name="barcode"
-                                       value="{{ $product->barcode }}"
-                                       required>
+                                       value="{{ $product->barcode }}">
+                                <small class="text-muted font-italic">Must be unique for each product</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="stock_track" name="stock_track">
+                                    <label for="stock_track" class="custom-control-label form-label">Manage Stock?</label>
+                                </div>
+                                <small class="text-muted font-italic">For Stock Management, You must enter opening stock from Inventory</small>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label" for="manufacturer_sku">Manufacturer SKU</label>
-                                <input
-                                       type="text"
-                                       class="form-control"
-                                       id="manufacturer_sku"
-                                       name="manufacturer_sku"
-                                       value="{{ $product->manufacturer_sku }}"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="country_of_origin">Country of Origin</label>
+                                <label class="form-label" for="backorder_type">Back Order Type</label>
                                 <select
                                         class="form-control select2bs4"
-                                        id="country_of_origin"
-                                        name="country_of_origin"
-                                        required>
-                                    <option value="">-- Select Country of Origin --</option>
-                                    @foreach ($countriesOfOrigins as $countryOfOrigin)
-                                        <option value="{{ $countryOfOrigin->xcode }}" {{ $product->country_of_origin == $countryOfOrigin->xcode ? 'selected' : '' }}>{{ $countryOfOrigin->description }}</option>
+                                        id="backorder_type"
+                                        name="backorder_type">
+                                    <option value="">-- Select Back Order Type --</option>
+                                    @foreach ($backOrderTypes as $type)
+                                        <option value="{{ $type->xcode }}" {{ $product->backorder_type == $type->xcode ? 'selected' : '' }}>{{ $type->description }}</option>
                                     @endforeach
                                 </select>
+                                <small class="text-muted font-italic">Allow customer checkout when out of stock</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="reorder_point">Stock Reorder Point</label>
+                                <input
+                                       type="number"
+                                       class="form-control"
+                                       id="reorder_point"
+                                       name="reorder_point"
+                                       min="0"
+                                       value="{{ $product->reorder_point ?? 0 }}">
+                                <small class="text-muted font-italic">Notify when stock is below</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="stock_status">Stock Status</label>
+                                <select
+                                        class="form-control select2bs4"
+                                        id="stock_status"
+                                        name="stock_status">
+                                    <option value="">-- Select Stock Status --</option>
+                                    @foreach ($stockStatus as $status)
+                                        <option value="{{ $status->xcode }}" {{ $product->stock_status == $status->xcode ? 'selected' : '' }}>{{ $status->description }}</option>
+                                    @endforeach
+                                </select>
+                                <small class="text-muted font-italic">Current stock status of the product</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="max_order_qty">Max Quantity per Order</label>
+                                <input
+                                       type="number"
+                                       class="form-control"
+                                       id="max_order_qty"
+                                       name="max_order_qty"
+                                       min="0"
+                                       value="{{ $product->max_order_qty ?? 0 }}">
+                                <small class="text-muted font-italic">Limit purchases items per order</small>
                             </div>
                         </div>
                     </div>
@@ -177,8 +216,7 @@
                                 <select
                                         class="form-control select2bs4"
                                         id="purchase_unit"
-                                        name="purchase_unit"
-                                        required>
+                                        name="purchase_unit">
                                     <option value="">-- Select Purchase Unit --</option>
                                     @foreach ($uoms as $purchaseUnit)
                                         <option value="{{ $purchaseUnit->xcode }}" {{ $product->purchase_unit == $purchaseUnit->xcode ? 'selected' : '' }}>{{ $purchaseUnit->description }}</option>
@@ -194,8 +232,7 @@
                                        class="form-control"
                                        id="purchase_conversion"
                                        name="purchase_conversion"
-                                       value="{{ $product->purchase_conversion ?? 1 }}"
-                                       required>
+                                       value="{{ $product->purchase_conversion ?? 1 }}">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -204,8 +241,7 @@
                                 <select
                                         class="form-control select2bs4"
                                         id="sell_unit"
-                                        name="sell_unit"
-                                        required>
+                                        name="sell_unit">
                                     <option value="">-- Select Sell Unit --</option>
                                     @foreach ($uoms as $sellUnit)
                                         <option value="{{ $sellUnit->xcode }}" {{ $product->sell_unit == $sellUnit->xcode ? 'selected' : '' }}>{{ $sellUnit->description }}</option>
@@ -221,8 +257,7 @@
                                        class="form-control"
                                        id="sell_conversion"
                                        name="sell_conversion"
-                                       value="{{ $product->sell_conversion ?? 1 }}"
-                                       required>
+                                       value="{{ $product->sell_conversion ?? 1 }}">
                             </div>
                         </div>
                     </div>
@@ -313,6 +348,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="free_shipping" name="free_shipping">
+                                    <label for="free_shipping" class="custom-control-label form-label">Free Shipping?</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label" for="volumetric_weight">Volumetric Weight</label>
@@ -339,6 +382,27 @@
 
 
 
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <h5>TAX Rules</h5>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="tax_category_id">Tax Category</label>
+                                <select
+                                        class="form-control select2bs4"
+                                        id="tax_category_id"
+                                        name="tax_category_id"
+                                        required>
+                                    <option value="">-- Select Tax Category --</option>
+                                    @foreach ($taxCategories as $taxCategory)
+                                        <option value="{{ $taxCategory->id }}" {{ $product->tax_category_id == $taxCategory->id ? 'selected' : '' }}>{{ $taxCategory->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
 
                 </div>
@@ -548,6 +612,14 @@
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" type="checkbox" id="is_for_sell" name="is_for_sell" {{ $product->is_for_sell ? 'checked' : '' }}>
                                     <label for="is_for_sell" class="custom-control-label form-label">Is For Sell?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_downloadable" name="is_downloadable" {{ $product->is_downloadable ? 'checked' : '' }}>
+                                    <label for="is_downloadable" class="custom-control-label form-label">Is Downloadable?</label>
                                 </div>
                             </div>
                         </div>

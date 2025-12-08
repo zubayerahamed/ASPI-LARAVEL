@@ -18,16 +18,15 @@ return new class extends Migration
             $table->string('price_type', 50); // e.g., base, mrp, list, promo_override, contract etc. It will be declared from xcodes
 
             $table->decimal('amount', 8, 2)->default(0.00);
-            $table->string('currency', 10)->default('BDT'); // Currency code, e.g., USD, EUR, BDT. It will be declared from xcodes. Default is BDT set from business settings
 
             $table->date('effective_from');
             $table->date('effective_to')->nullable();
 
-            $table->decimal('min_quantity', 8, 2)->nullable(); // Minimum quantity for this price to be applicable
-            $table->decimal('max_quantity', 8, 2)->nullable(); // Maximum quantity for this price to be applicable
-            $table->string('customer_group', 50)->nullable(); // e.g., retail, wholesale, vip, etc. Null means applicable to all customers , data comes from xcodes
+            // $table->decimal('min_quantity', 8, 2)->nullable(); // Minimum quantity for this price to be applicable
+            // $table->decimal('max_quantity', 8, 2)->nullable(); // Maximum quantity for this price to be applicable
+            // $table->string('customer_group', 50)->nullable(); // e.g., retail, wholesale, vip, etc. Null means applicable to all customers , data comes from xcodes
 
-            $table->foreignId('business_unit_id')->nullable()->references('id')->on('business_units')->onDelete('set null');
+            // $table->foreignId('business_unit_id')->nullable()->references('id')->on('business_units')->onDelete('set null');
 
             $table->timestamps();
         });
