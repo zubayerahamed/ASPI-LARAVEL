@@ -30,7 +30,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
-                                <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $user->status == 'active' ? 'checked' : '' }}>
+                                <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $user->status == 'ACTIVE' ? 'checked' : '' }}>
                                 <label for="is_active" class="custom-control-label form-label">Is Active?</label>
                             </div>
                         </div>

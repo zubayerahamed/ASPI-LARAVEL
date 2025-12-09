@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->decimal('rate', 8, 2)->default(0.00); // e.g., 15.00 for 15%
-            $table->enum('calc_type', ['exclusive', 'inclusive', 'compound', 'exempt'])->default('exclusive');
+            $table->enum('calc_type', ['EXCLUSIVE', 'INCLUSIVE', 'COMPOUND', 'EXEMPT'])->default('EXCLUSIVE');
             $table->unsignedSmallInteger('seqn')->default(1); // order of application (lower first)
             $table->boolean('is_recoverable')->nullable(); // override of tax_components.is_recoverable if needed
 

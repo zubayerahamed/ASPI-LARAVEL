@@ -18,6 +18,7 @@ class ProductItem extends Model
 
         // Units and Conversions
         'base_unit',
+        'consumption_type',
         'purchase_unit',
         'purchase_conversion',
         'sell_unit',

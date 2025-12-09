@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_item_id')->references('id')->on('product_items')->onDelete('cascade');
 
-            $table->string('price_type', 50); // e.g., base, mrp, list, promo_override, contract etc. It will be declared from xcodes
+            $table->string('price_type', 50); // e.g., BASE, LIST, WHOLESALE, PROMO, CONTRACT, MRP
 
             $table->decimal('amount', 8, 2)->default(0.00);
 

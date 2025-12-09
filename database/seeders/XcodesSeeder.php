@@ -520,6 +520,148 @@ class XcodesSeeder extends Seeder
             ],
 
 
+            // Consumption Type Data
+            [
+                'type' => 'Code Type',
+                'xcode' => 'Consumption Type',
+                'description' => '',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 8,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Consumption Type',
+                'xcode' => 'LIFO',
+                'description' => 'Last In, First Out',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 1,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Consumption Type',
+                'xcode' => 'FIFO',
+                'description' => 'First In, First Out',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 2,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Consumption Type',
+                'xcode' => 'WEIGHTED_AVERAGE',
+                'description' => 'Weighted Average',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 3,
+                'business_id' => null,
+            ],
+
+            // Consumption Type Data
+            [
+                'type' => 'Code Type',
+                'xcode' => 'Price Type',
+                'description' => '',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 9,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Price Type',
+                'xcode' => 'BASE',
+                'description' => 'Base Price', // (normal default price)
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 1,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Price Type',
+                'xcode' => 'LIST',
+                'description' => 'List Price', // (published market price)
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 2,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Price Type',
+                'xcode' => 'WHOLESALE',
+                'description' => 'Wholesale Price',  // special price for wholesale customer group
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 3,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Price Type',
+                'xcode' => 'PROMO',
+                'description' => 'Promotional Price',   // temporary promotional override
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 4,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Price Type',
+                'xcode' => 'CONTRACT',
+                'description' => 'Contract Price',   // customer-specific negotiated fixed price
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 5,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Price Type',
+                'xcode' => 'MRP',
+                'description' => 'Maximum Retail Price',   // maximum retail price allowed
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 6,
+                'business_id' => null,
+            ],
+
+            // Discount Type Data
+            [
+                'type' => 'Code Type',
+                'xcode' => 'Discount Type',
+                'description' => '',
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 10,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Discount Type',
+                'xcode' => 'NONE',
+                'description' => 'None', // (normal default price)
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 1,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Discount Type',
+                'xcode' => 'FLAT',
+                'description' => 'Flat Discount', // (published market price)
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 2,
+                'business_id' => null,
+            ],
+            [
+                'type' => 'Discount Type',
+                'xcode' => 'PERCENT',
+                'description' => 'Percentage Discount',  // special price for wholesale customer group
+                'symbol' => '',
+                'is_active' => true,
+                'seqn' => 3,
+                'business_id' => null,
+            ],
+
+
         ]);
     }
 }

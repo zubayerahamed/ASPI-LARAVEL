@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('notes')->nullable();
 
-            $table->enum('transaction_type', ['sales', 'purchase']);
+            $table->enum('transaction_type', ['SALES', 'PURCHASE']);
            
             $table->date('effective_from');
             $table->date('effective_to')->nullable();

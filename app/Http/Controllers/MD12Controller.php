@@ -32,6 +32,8 @@ class MD12Controller extends ZayaanController
         $countriesOfOrigins = Xcodes::relatedBusiness()->active()->where('type', 'Country of Origin')->orderBy('seqn', 'asc')->get();
         $stockStatus = Xcodes::relatedBusiness()->active()->where('type', 'Stock Status')->orderBy('seqn', 'asc')->get();
         $backOrderTypes = Xcodes::relatedBusiness()->active()->where('type', 'Back Order Type')->orderBy('seqn', 'asc')->get();
+        $consumptionTypes = Xcodes::relatedBusiness()->active()->where('type', 'Consumption Type')->orderBy('seqn', 'asc')->get();
+        $discountTypes = Xcodes::relatedBusiness()->active()->where('type', 'Discount Type')->orderBy('seqn', 'asc')->get();
         $taxCategories = TaxCategory::where('business_id', getBusinessId())->orderBy('name', 'asc')->get();
 
         if ($request->ajax()) {
@@ -62,6 +64,8 @@ class MD12Controller extends ZayaanController
                         'stockStatus' => $stockStatus,
                         'backOrderTypes' => $backOrderTypes,
                         'taxCategories' => $taxCategories,
+                        'consumptionTypes' => $consumptionTypes,
+                        'discountTypes' => $discountTypes,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -83,6 +87,8 @@ class MD12Controller extends ZayaanController
                         'stockStatus' => $stockStatus,
                         'backOrderTypes' => $backOrderTypes,
                         'taxCategories' => $taxCategories,
+                        'consumptionTypes' => $consumptionTypes,
+                        'discountTypes' => $discountTypes,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -104,6 +110,8 @@ class MD12Controller extends ZayaanController
                         'stockStatus' => $stockStatus,
                         'backOrderTypes' => $backOrderTypes,
                         'taxCategories' => $taxCategories,
+                        'consumptionTypes' => $consumptionTypes,
+                        'discountTypes' => $discountTypes,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -121,6 +129,8 @@ class MD12Controller extends ZayaanController
                         'stockStatus' => $stockStatus,
                         'backOrderTypes' => $backOrderTypes,
                         'taxCategories' => $taxCategories,
+                        'consumptionTypes' => $consumptionTypes,
+                        'discountTypes' => $discountTypes,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -143,6 +153,8 @@ class MD12Controller extends ZayaanController
             'stockStatus' => $stockStatus,
             'backOrderTypes' => $backOrderTypes,
             'taxCategories' => $taxCategories,
+            'consumptionTypes' => $consumptionTypes,
+            'discountTypes' => $discountTypes,
             'product' => new Product(),
             'detailList' => Collection::empty(),
         ]);
@@ -165,7 +177,6 @@ class MD12Controller extends ZayaanController
         $p->slug = 'AUTO-DRAFT';
         $p->business_id = getBusinessId();
         $p->product_type = 'STANDARD';
-        $p->base_unit = 'pcs';
         $p->is_active = true;
 
         if($p->save()){

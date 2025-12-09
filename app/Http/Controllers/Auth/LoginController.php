@@ -90,7 +90,7 @@ class LoginController extends Controller
         }
 
         // Step 3: Custom pre-login checks
-        if ($user->status !== 'active') {
+        if ($user->status !== 'ACTIVE') {
             throw ValidationException::withMessages([
                 'email' => 'Your account is not active yet.',
             ]);

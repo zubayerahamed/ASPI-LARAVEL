@@ -92,10 +92,127 @@
                 </div>
                 <div class="card-body">
 
-                    <!-- Identification -->
+                    <!-- Pricing -->
                     <div class="row mb-5">
                         <div class="col-md-12">
-                            <h5>Identification</h5>
+                            <h5 class="text-primary">Pricing & Discount</h5>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" for="price">Cost Price</label>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="cost_price"
+                                    name="cost_price"
+                                    min="0"
+                                    value="{{ $product->cost_price ?? 0 }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" for="price">MRP Price</label>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="price"
+                                    name="price"
+                                    min="0"
+                                    value="{{ $product->price ?? 0 }}"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" for="tax_category_id">Tax Category</label>
+                                <select
+                                        class="form-control select2bs4"
+                                        id="tax_category_id"
+                                        name="tax_category_id"
+                                        required>
+                                    <option value="">-- Select Tax Category --</option>
+                                    @foreach ($taxCategories as $taxCategory)
+                                        <option value="{{ $taxCategory->id }}" {{ $product->tax_category_id == $taxCategory->id ? 'selected' : '' }}>{{ $taxCategory->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" for="selling_price">Selling Price</label>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="selling_price"
+                                    name="selling_price"
+                                    min="0"
+                                    value="{{ $product->selling_price ?? 0 }}"
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="discount_type">Discount Type</label>
+                                        <select
+                                                class="form-control select2bs4"
+                                                id="discount_type"
+                                                name="discount_type"
+                                                required>
+                                            <option value="">-- Select Discount Type --</option>
+                                            @foreach ($discountTypes as $discountType)
+                                                <option value="{{ $discountType->xcode }}" {{ $product->discount_type == $discountType->xcode ? 'selected' : '' }}>{{ $discountType->description }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="selling_price">Discount Amount</label>
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            id="discount_amt"
+                                            name="discount_amt"
+                                            min="0"
+                                            value="{{ $product->discount_amt ?? 0 }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="discount_start_date">Discount Start</label>
+                                        <div class="input-group date datetimepicker" id="discount_start_date" data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input" data-target="#discount_start_date" />
+                                            <div class="input-group-append" data-target="#discount_start_date" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="discount_end_date">Discount End</label>
+                                        <div class="input-group date datetimepicker" id="discount_end_date" data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input" data-target="#discount_end_date" />
+                                            <div class="input-group-append" data-target="#discount_end_date" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inventory -->
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <h5 class="text-primary">Inventory</h5>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -130,7 +247,7 @@
                                 <small class="text-muted font-italic">For Stock Management, You must enter opening stock from Inventory</small>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label" for="backorder_type">Back Order Type</label>
                                 <select
@@ -145,7 +262,7 @@
                                 <small class="text-muted font-italic">Allow customer checkout when out of stock</small>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label" for="reorder_point">Stock Reorder Point</label>
                                 <input
@@ -158,8 +275,7 @@
                                 <small class="text-muted font-italic">Notify when stock is below</small>
                             </div>
                         </div>
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label" for="stock_status">Stock Status</label>
                                 <select
@@ -174,7 +290,7 @@
                                 <small class="text-muted font-italic">Current stock status of the product</small>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label" for="max_order_qty">Max Quantity per Order</label>
                                 <input
@@ -193,7 +309,7 @@
                     <!-- Units and Conversions -->
                     <div class="row mb-5">
                         <div class="col-md-12">
-                            <h5>Units and Conversions</h5>
+                            <h5 class="text-primary">Units and Conversions</h5>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -205,7 +321,22 @@
                                         required>
                                     <option value="">-- Select Base Unit --</option>
                                     @foreach ($uoms as $baseUnit)
-                                        <option value="{{ $baseUnit->xcode }}" {{ $product->base_unit == $baseUnit->xcode ? 'selected' : '' }}>{{ $baseUnit->description }}</option>
+                                        <option value="{{ $baseUnit->xcode }}">{{ $baseUnit->description }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="consumption_type">Consumption Type</label>
+                                <select
+                                        class="form-control select2bs4"
+                                        id="consumption_type"
+                                        name="consumption_type"
+                                        required>
+                                    <option value="">-- Select Consumption Type --</option>
+                                    @foreach ($consumptionTypes as $consumptionType)
+                                        <option value="{{ $consumptionType->xcode }}">{{ $consumptionType->description }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -266,7 +397,7 @@
                     <!-- Dimensions & Shipping -->
                     <div class="row mb-5">
                         <div class="col-md-12">
-                            <h5>Dimensions & Shipping</h5>
+                            <h5 class="text-primary">Dimensions & Shipping</h5>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -381,28 +512,6 @@
                     </div>
 
 
-
-                    <div class="row mb-5">
-                        <div class="col-md-12">
-                            <h5>TAX Rules</h5>
-                        </div>
-                        
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="tax_category_id">Tax Category</label>
-                                <select
-                                        class="form-control select2bs4"
-                                        id="tax_category_id"
-                                        name="tax_category_id"
-                                        required>
-                                    <option value="">-- Select Tax Category --</option>
-                                    @foreach ($taxCategories as $taxCategory)
-                                        <option value="{{ $taxCategory->id }}" {{ $product->tax_category_id == $taxCategory->id ? 'selected' : '' }}>{{ $taxCategory->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
 
 
                 </div>

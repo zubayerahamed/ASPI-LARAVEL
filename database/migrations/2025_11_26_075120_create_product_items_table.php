@@ -24,6 +24,7 @@ return new class extends Migration
 
             // Units and Conversions
             $table->string('base_unit', 50); // kg, g, litre, ml, unit, pcs, dozen, box, packet etc. It will be declared from xcodes
+            $table->enum('consumption_type', ['LIFO', 'FIFO', 'WEIGHTED_AVERAGE'])->default('WEIGHTED_AVERAGE'); // Inventory consumption method for this product item, values from xcodes
             $table->string('purchase_unit', 50)->nullable(); // kg, g, litre, ml, unit, pcs, dozen, box, packet etc. It will be declared from xcodes
             $table->decimal('purchase_conversion', 8, 2)->default(0.00); // 1, 2, 5, 10, 20 etc.
             $table->string('sell_unit', 50)->nullable(); // kg, g, litre, ml, unit, pcs, dozen, box, packet etc. It will be declared from xcodes
