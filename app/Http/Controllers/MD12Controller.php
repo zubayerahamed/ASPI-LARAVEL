@@ -6,10 +6,12 @@ use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductAttribute;
 use App\Models\TaxCategory;
 use App\Models\Xcodes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class MD12Controller extends ZayaanController
@@ -67,6 +69,7 @@ class MD12Controller extends ZayaanController
                         'consumptionTypes' => $consumptionTypes,
                         'discountTypes' => $discountTypes,
                         'product' => $product,
+                        'productAttributes' => $product->productAttributes()->with(['attribute', 'term'])->get(),
                         'detailList' => Collection::empty(),
                     ])->render(),
                     'content_header_title' => 'Product',
@@ -202,5 +205,175 @@ class MD12Controller extends ZayaanController
             ])->render(),
         ]);
     }
+
+    public function attributeSelectionForm(Request $request)
+    {
+        $attributeId = $request->query('attribute_id', null);
+
+        $attribute = Attribute::relatedBusiness()
+                        ->with(['terms'])
+                        ->where('id', $attributeId)
+                        ->first();
+
+        return response()->json([
+            'page' => view('pages.MD12.MD12-attribute-list', [
+                'attribute' => $attribute,
+            ])->render(),
+        ]);
+    }
+
+    public function saveProductAttribute(Request $request)
+    {
+        $productId = $request->input('product_id');
+
+        // Basic validation
+        if (!$productId) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'product_id is required.',
+            ], 422);
+        }
+
+        // Check product exists
+        $product = Product::with(['productAttributes'])
+            ->where('business_id', getBusinessId())
+            ->where('id', $productId)
+            ->first();
+
+        if (!$product) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Product not found.',
+            ], 404);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            // Normalize attributes — always an array (possibly empty)
+            $attributes = $request->input('attributes', []); // returns [] if missing
+
+            // If attributes is not an array (malformed request), cast to empty
+            if (!is_array($attributes)) {
+                $attributes = [];
+            }
+
+            // If there are no attributes in the request => delete all existing and return success
+            if (empty($attributes)) {
+                ProductAttribute::where('product_id', $productId)->delete();
+
+                DB::commit();
+
+                return response()->json([
+                    'status' => 'success',
+                    'displayMessage' => true,
+                    'message' => 'All product attributes removed successfully.',
+                ]);
+            }
+
+            // STEP 1: Build new desired records
+            $newRecords = [];
+
+            foreach ($attributes as $attributeId) {
+                // ensure attributeId is valid-ish
+                if (!$attributeId) {
+                    continue;
+                }
+
+                $terms = $request->input("terms_$attributeId", []);
+                if (!is_array($terms)) {
+                    $terms = [];
+                }
+
+                // VALIDATION: attribute must have at least one term
+                if (empty($terms)) {
+                    DB::rollBack();
+                    return response()->json([
+                        'status'  => 'error',
+                        'message' => 'Each selected attribute must contain at least one term.',
+                    ], 422);
+                }
+
+                $useInVariation = (int) $request->input("use_in_variation_$attributeId", 0);
+
+                foreach ($terms as $termId) {
+                    if ($termId === null || $termId === '') {
+                        continue;
+                    }
+
+                    $key = "{$attributeId}-{$termId}";
+
+                    $newRecords[$key] = [
+                        'product_id'       => $productId,
+                        'attribute_id'     => $attributeId,
+                        'term_id'          => $termId,
+                        'use_in_variation' => $useInVariation,
+                    ];
+                }
+            }
+
+            // STEP 2: Fetch existing
+            $existing = ProductAttribute::where('product_id', $productId)->get();
+            $existingKeys = [];
+
+            foreach ($existing as $row) {
+                $key = "{$row->attribute_id}-{$row->term_id}";
+                $existingKeys[$key] = $row;
+            }
+
+            // STEP 3A: INSERT new rows
+            foreach ($newRecords as $key => $record) {
+                if (!isset($existingKeys[$key])) {
+                    ProductAttribute::create($record);
+                }
+            }
+
+            // STEP 3B: UPDATE existing rows (only use_in_variation here)
+            foreach ($newRecords as $key => $record) {
+                if (isset($existingKeys[$key])) {
+                    $existing = $existingKeys[$key];
+
+                    // Only update if value changed (optional but reduces DB writes)
+                    if ((int) $existing->use_in_variation !== (int) $record['use_in_variation']) {
+                        $existing->update([
+                            'use_in_variation' => $record['use_in_variation']
+                        ]);
+                    }
+                }
+            }
+
+            // STEP 3C: DELETE removed rows
+            foreach ($existingKeys as $key => $row) {
+                if (!isset($newRecords[$key])) {
+                    $row->delete();
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'displayMessage' => true,
+                'message' => 'Product attributes saved successfully.',
+            ]);
+
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
+            Log::error('Product attribute sync failed', [
+                'product_id' => $productId,
+                'error'      => $e->getMessage(),
+                'trace'      => $e->getTraceAsString(),
+            ]);
+
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Something went wrong while saving attributes.',
+            ], 500);
+        }
+    }
+
+
 
 }

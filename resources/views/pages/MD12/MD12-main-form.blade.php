@@ -2,7 +2,7 @@
     @csrf
     @if ($product->id != null)
         @method('PUT')
-        <input type="hidden" name="id" value="{{ $product->id }}">
+        <input type="hidden" name="id" id="product_id" value="{{ $product->id }}">
     @endif
 
 
@@ -638,10 +638,9 @@
                                     <div class="form-group">
                                         <select
                                                 class="form-control select2bs4"
-                                                id="attribute_id"
-                                                name="attribute_id"
+                                                id="global-attribute"
                                                 required>
-                                            <option value="">-- Add Global Attribute --</option>
+                                            <option value="-1">-- Add Global Attribute --</option>
                                             @foreach ($attributes as $attribute)
                                                 <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
                                             @endforeach
@@ -650,23 +649,27 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <button class="btn btn-default">Add Global Attribute</button>
+                                    <button data-reloadurl="{{ route('MD12.attribute-selection-form') }}" data-reloadid="attribute-list-container" class="btn btn-default btn-add-global-attribute">Add Global Attribute</button>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 text-right">
-                            {{-- <button class="btn btn-default">Create & Add new attribute</button> --}}
+                            <a href="#" data-submiturl="{{ route('MD12.save-product-attribute') }}" class="btn btn-primary d-flex justify-content-center align-items-center gap-2 btn-save-attributes" title="Save">
+                                <i class="ph ph-floppy-disk"></i> 
+                                <span>Save Attributes</span>
+                            </a>
                         </div>
                     </div>
 
                     <!-- Attribute List -->
-                    @foreach ($product->productAttributes as $attribute)
-                        <div class="attribute-list-container">
+                    <div class="attribute-list-container">
+                        @foreach ($productAttributes as $attribute)
                             @include('pages.MD12.MD12-attribute-list', [
-                                'selectedAttribute' => $attribute,
+                                'attribute' => $attribute,
+                                'initscript' => false,
                             ])
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
 
 
                 </div>
@@ -837,5 +840,76 @@
                 url: $(this).data('reloadurl') + '?product_type=' + $(this).val()
             });
         });
+
+
+        $('.btn-add-global-attribute').off('click').on('click', function(e) {
+            e.preventDefault();
+            let attributeId = $('#global-attribute').val();
+            if (attributeId == -1) {
+                showMessage("error", 'Please select a valid attribute to add.');
+                return;
+            }
+
+            // Check attribute already added and in array
+            var found = false;
+            $('input[name="attributes[]"]').each(function() {
+                if ($(this).val() == attributeId) {
+                    found = true;
+                    return; // break loop
+                }
+            });
+            if (found) {
+                showMessage("error", 'Attribute already added.');
+                return;
+            }
+
+            sectionAppendAjaxReq({
+                id: $(this).data('reloadid'),
+                url: $(this).data('reloadurl') + '?attribute_id=' + attributeId
+            }, () => {
+                $('#global-attribute').val(-1).trigger('change');
+                $('#global-attribute option[value="' + attributeId + '"]').prop('disabled', true);
+            });
+        });
+
+        $('.attribute-list-container').on('click', '.btn-remove-attribute', function(e) {
+            e.preventDefault();
+            let attributeId = $(this).data('attribute-id');
+            // Remove attribute item
+            $(this).closest('.attribute-item-' + attributeId).remove();
+            $('#global-attribute').val(-1).trigger('change');
+            $('#global-attribute option[value="' + attributeId + '"]').prop('disabled', false);
+        });
+
+        $('.btn-save-attributes').off('click').on('click', function(e) {
+            e.preventDefault();
+
+            var submiturl = $(this).data('submiturl');
+
+            let attributesData = {};
+            attributesData['product_id'] = $('#product_id').val();
+            $('.attributes-field').each(function() {
+                let fieldName = $(this).attr('name');
+                if ($(this).is(':checkbox')) {
+                    attributesData[fieldName] = $(this).is(':checked') ? 1 : 0;
+                } else if ($(this).is('select')) {
+                    attributesData[fieldName] = $(this).val();
+                } else {
+                    // Handle same field names (like attributes[])
+                    if (fieldName.endsWith('[]')) {
+                        if (!(fieldName in attributesData)) {
+                            attributesData[fieldName] = [];
+                        }
+                        attributesData[fieldName].push($(this).val());
+                    } else {
+                        attributesData[fieldName] = $(this).val();
+                    }
+                }                
+            });
+
+            console.log(attributesData);
+            actionPostRequest(submiturl, attributesData);
+        });
+
     })
 </script>

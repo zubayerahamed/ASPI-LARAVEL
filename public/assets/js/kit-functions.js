@@ -263,6 +263,30 @@ function sectionReloadAjaxReq(section, callback, disableloadingmaskeffect) {
     });
 }
 
+function sectionAppendAjaxReq(section, callback, disableloadingmaskeffect) {
+    if (disableloadingmaskeffect == undefined || disableloadingmaskeffect == null || disableloadingmaskeffect == false) loadingMask2.show();
+
+    $.ajax({
+        url: section.url,
+        type: "GET",
+        success: function (data) {
+            if (disableloadingmaskeffect == undefined || disableloadingmaskeffect == null || disableloadingmaskeffect == false) loadingMask2.hide();
+            $("." + section.id).append(data.page);
+
+            if (callback) callback(data);
+        },
+        error: function (jqXHR, status, errorThrown) {
+            if (disableloadingmaskeffect == undefined || disableloadingmaskeffect == null || disableloadingmaskeffect == false) loadingMask2.hide();
+            if (jqXHR.status === 401) {
+                // Session is invalid, reload the url to go back to login page
+                location.reload();
+            } else {
+                showMessage("error", jqXHR.responseJSON.message);
+            }
+        },
+    });
+}
+
 function sectionReloadAjaxPostReq(section, data, callback) {
     loadingMask2.show();
     $.ajax({

@@ -160,6 +160,9 @@ Route::put('/MD12/{id}', [MD12Controller::class, 'update'])->name('MD12.update')
 Route::delete('/MD12/{id}', [MD12Controller::class, 'delete'])->name('MD12.delete');
 // New route for product behaviour dropdown
 Route::get('/MD12/product-behaviour-dropdown', [MD12Controller::class, 'productBehaviourDropdown'])->name('MD12.product-behaviour-dropdown');
+Route::get('/MD12/attribute-selection-form', [MD12Controller::class, 'attributeSelectionForm'])->name('MD12.attribute-selection-form');
+Route::post('/MD12/save-product-attribute', [MD12Controller::class, 'saveProductAttribute'])->name('MD12.save-product-attribute');
+
 
 
 
