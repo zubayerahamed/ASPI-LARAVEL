@@ -9,17 +9,20 @@
                 </div>
             </div>
         </div>
-        <a href="#" class="text-danger"><i class="ph ph-trash"></i></a>
+        <div class="d-flex align-items-center justify-content-end gap-2">
+            <a href="#" class="text-danger" title="Remove"><i class="ph ph-trash"></i></a>
+            <a href="#" class="text-success" title="Save"><i class="ph ph-floppy-disk"></i></a>
+        </div>
     </div>
     <div class="form-group mb-0">
         <select
                 class="form-control select2bs4"
-                id="attribute_value_id"
-                name="attribute_value_id[]"
+                id="attribute_value_id_{{ $selectedAttribute->attribute_id }}"
+                name="attribute_value_id_{{ $selectedAttribute->attribute_id }}[]"
                 multiple="multiple"
                 data-placeholder="-- Select Attribute Values --"
                 required>
-            @foreach ($selectedAttributes as $pType)
+            @foreach ($selectedAttribute as $pType)
                 <option value="{{ $pType->xcode }}" {{ $product->product_type == $pType->xcode ? 'selected' : '' }}>{{ $pType->description }}</option>
             @endforeach
         </select>

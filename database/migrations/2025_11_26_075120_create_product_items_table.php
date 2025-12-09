@@ -16,6 +16,15 @@ return new class extends Migration
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->string('product_behaviour', 50); // single, variant, bundle
 
+            $table->boolean('is_item_active')->default(true);  // Whether product is active or inactive
+            $table->boolean('is_listed')->default(false);  // Whether to show in storefront
+            $table->boolean('is_featured')->default(false);  // Whether to show in featured section in storefront
+            $table->boolean('is_trending')->default(false);  // Whether to show in trending section in storefront
+            $table->boolean('is_highlighted')->default(false);  // Whether to highlight in storefront
+            $table->boolean('is_for_purchase')->default(false);  // Whether available for purchase
+            $table->boolean('is_for_sell')->default(false);  // Whether available for sell
+            $table->boolean('is_downloadable')->default(false);  // Whether downloadable product if product_type is digital
+
             // Identification
             $table->string('sku', 100);  // Stock Keeping Unit, unique identifier for the product item
             $table->string('barcode', 255)->nullable();  // Barcode value EAN/UPC code
@@ -56,7 +65,6 @@ return new class extends Migration
             // $table->boolean('is_fragile')->default(false);  // Whether the product item is fragile. Use for handling instructions. Check Product Handling Profiles
             // $table->boolean('is_service')->default(false);  // Whether the product item is a service, no stock management
             // $table->boolean('is_digital')->default(false);  // Whether the product item is a digital product, no stock management
-            $table->boolean('is_downloadable')->default(false);  // Whether the product item is downloadable, if is_digital is true
             // $table->boolean('is_batch_managed')->default(false);  // Whether the product item is batch managed, stock tracked by batch numbers, can be negative stock, when it is true the is_serialized will be false
             // $table->boolean('is_serialized')->default(false);  // Whether the product item is serialized, stock tracked by serial numbers and IMEI numbers, can't be negative stock
             $table->boolean('stock_track')->default(false); // Whether to track stock for this product item

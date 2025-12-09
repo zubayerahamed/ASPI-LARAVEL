@@ -10,6 +10,15 @@ class ProductItem extends Model
         'product_id',
         'product_behaviour',
 
+        'is_item_active',
+        'is_listed',
+        'is_featured',
+        'is_trending',
+        'is_highlighted',
+        'is_for_purchase',
+        'is_for_sell',
+        'is_downloadable',
+
         // Identification
         'sku',
         'barcode',

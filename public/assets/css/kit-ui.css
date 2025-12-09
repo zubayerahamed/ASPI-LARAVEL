@@ -1,4 +1,14 @@
-
+.bootstrap-duallistbox-container .btn-group > .btn {
+	border-color: #ced4da !important;
+}
+.bootstrap-duallistbox-container select{
+	height: 300px !important;
+	border-color: #ced4da !important;
+	padding: 0px 5px !important;
+}
+.bootstrap-duallistbox-container select option{
+	padding: 5px !important;
+}
 
 
 .dark-mode .select2-container--bootstrap4 .select2-selection {

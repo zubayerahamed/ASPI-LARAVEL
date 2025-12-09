@@ -12,7 +12,6 @@
                 <div class="card-body">
 
                     <div class="row">
-
                         <div class="col-md-4">
                             <div class="form-group mb-3">
                                 <label class="form-label" for="name">Name</label>
@@ -39,10 +38,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label" for="type">Product Type</label>
@@ -60,27 +55,57 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="col-md-4 product-behaviour-dropdown-container">
                             @include('pages.MD12.MD12-product-behaviour-dropdown', [
                                 'productType' => $product->product_type,
                                 'initscript' => false,
                             ])
                         </div>
-
-
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="type">Category</label>
+                                <select class="form-control select2bs4" id="category_id" name="category_id">
+                                    <option value="">-- Select Category --</option>
+                                    @include('pages.MD12.MD12-category-recursive', [
+                                        'categoryTree' => $categoryTree,
+                                        'count' => 0,
+                                    ])
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" for="brand_id">Brand</label>
+                                <select class="form-control select2bs4" id="brand_id" name="brand_id">
+                                    <option value="">-- Select Brand --</option>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->id }}" {{ $product->brand_id == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        
 
 
                     </div>
 
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $product->is_active ? 'checked' : '' }}>
+                                    <label for="is_active" class="custom-control-label form-label">Is Active?</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
                 </div>
             </div>
 
 
-            <!-- Attribute -->
+            <!-- Details -->
             <div class="card card-dark card-outline card-secondary">
                 <div class="card-header">
                     <h3 class="card-title text-dark">Details</h3>
@@ -91,6 +116,75 @@
                     </div>
                 </div>
                 <div class="card-body">
+
+                    <!-- Status -->
+                    <div class="row mb-5">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_item_active" name="is_item_active">
+                                    <label for="is_item_active" class="custom-control-label form-label">Is Item Active?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_downloadable" name="is_downloadable" {{ $product->is_downloadable ? 'checked' : '' }}>
+                                    <label for="is_downloadable" class="custom-control-label form-label">Is Downloadable?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_listed" name="is_listed">
+                                    <label for="is_listed" class="custom-control-label form-label">Display for Sell?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_featured" name="is_featured">
+                                    <label for="is_featured" class="custom-control-label form-label">Is Featured?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_trending" name="is_trending">
+                                    <label for="is_trending" class="custom-control-label form-label">Is Trending?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_highlighted" name="is_highlighted">
+                                    <label for="is_highlighted" class="custom-control-label form-label">Is Highlighted?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_for_purchase" name="is_for_purchase">
+                                    <label for="is_for_purchase" class="custom-control-label form-label">Is For Purchase?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_for_sell" name="is_for_sell">
+                                    <label for="is_for_sell" class="custom-control-label form-label">Is For Sell?</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
 
                     <!-- Pricing -->
                     <div class="row mb-5">
@@ -311,84 +405,92 @@
                         <div class="col-md-12">
                             <h5 class="text-primary">Units and Conversions</h5>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="base_unit">Base Unit</label>
-                                <select
-                                        class="form-control select2bs4"
-                                        id="base_unit"
-                                        name="base_unit"
-                                        required>
-                                    <option value="">-- Select Base Unit --</option>
-                                    @foreach ($uoms as $baseUnit)
-                                        <option value="{{ $baseUnit->xcode }}">{{ $baseUnit->description }}</option>
-                                    @endforeach
-                                </select>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="base_unit">Base Unit</label>
+                                        <select
+                                                class="form-control select2bs4"
+                                                id="base_unit"
+                                                name="base_unit"
+                                                required>
+                                            <option value="">-- Select Base Unit --</option>
+                                            @foreach ($uoms as $baseUnit)
+                                                <option value="{{ $baseUnit->xcode }}">{{ $baseUnit->description }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="consumption_type">Consumption Type</label>
+                                        <select
+                                                class="form-control select2bs4"
+                                                id="consumption_type"
+                                                name="consumption_type"
+                                                required>
+                                            <option value="">-- Select Consumption Type --</option>
+                                            @foreach ($consumptionTypes as $consumptionType)
+                                                <option value="{{ $consumptionType->xcode }}">{{ $consumptionType->description }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="consumption_type">Consumption Type</label>
-                                <select
-                                        class="form-control select2bs4"
-                                        id="consumption_type"
-                                        name="consumption_type"
-                                        required>
-                                    <option value="">-- Select Consumption Type --</option>
-                                    @foreach ($consumptionTypes as $consumptionType)
-                                        <option value="{{ $consumptionType->xcode }}">{{ $consumptionType->description }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="purchase_unit">Purchase Unit</label>
-                                <select
-                                        class="form-control select2bs4"
-                                        id="purchase_unit"
-                                        name="purchase_unit">
-                                    <option value="">-- Select Purchase Unit --</option>
-                                    @foreach ($uoms as $purchaseUnit)
-                                        <option value="{{ $purchaseUnit->xcode }}" {{ $product->purchase_unit == $purchaseUnit->xcode ? 'selected' : '' }}>{{ $purchaseUnit->description }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="purchase_conversion">Purchase Conversion</label>
-                                <input
-                                       type="number"
-                                       class="form-control"
-                                       id="purchase_conversion"
-                                       name="purchase_conversion"
-                                       value="{{ $product->purchase_conversion ?? 1 }}">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="sell_unit">Sell Unit</label>
-                                <select
-                                        class="form-control select2bs4"
-                                        id="sell_unit"
-                                        name="sell_unit">
-                                    <option value="">-- Select Sell Unit --</option>
-                                    @foreach ($uoms as $sellUnit)
-                                        <option value="{{ $sellUnit->xcode }}" {{ $product->sell_unit == $sellUnit->xcode ? 'selected' : '' }}>{{ $sellUnit->description }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="sell_conversion">Sell Conversion</label>
-                                <input
-                                       type="number"
-                                       class="form-control"
-                                       id="sell_conversion"
-                                       name="sell_conversion"
-                                       value="{{ $product->sell_conversion ?? 1 }}">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="purchase_unit">Purchase Unit</label>
+                                        <select
+                                                class="form-control select2bs4"
+                                                id="purchase_unit"
+                                                name="purchase_unit">
+                                            <option value="">-- Select Purchase Unit --</option>
+                                            @foreach ($uoms as $purchaseUnit)
+                                                <option value="{{ $purchaseUnit->xcode }}" {{ $product->purchase_unit == $purchaseUnit->xcode ? 'selected' : '' }}>{{ $purchaseUnit->description }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="purchase_conversion">Purchase Conversion</label>
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            id="purchase_conversion"
+                                            name="purchase_conversion"
+                                            value="{{ $product->purchase_conversion ?? 1 }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="sell_unit">Sell Unit</label>
+                                        <select
+                                                class="form-control select2bs4"
+                                                id="sell_unit"
+                                                name="sell_unit">
+                                            <option value="">-- Select Sell Unit --</option>
+                                            @foreach ($uoms as $sellUnit)
+                                                <option value="{{ $sellUnit->xcode }}" {{ $product->sell_unit == $sellUnit->xcode ? 'selected' : '' }}>{{ $sellUnit->description }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="sell_conversion">Sell Conversion</label>
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            id="sell_conversion"
+                                            name="sell_conversion"
+                                            value="{{ $product->sell_conversion ?? 1 }}">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -399,23 +501,23 @@
                         <div class="col-md-12">
                             <h5 class="text-primary">Dimensions & Shipping</h5>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="weight_unit">Weight Unit</label>
-                                <select
-                                        class="form-control select2bs4"
-                                        id="weight_unit"
-                                        name="weight_unit">
-                                    <option value="">-- Select Weight Unit --</option>
-                                    @foreach ($uoms as $weightUnit)
-                                        <option value="{{ $weightUnit->xcode }}" {{ $product->weight_unit == $weightUnit->xcode ? 'selected' : '' }}>{{ $weightUnit->description }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="weight_unit">Weight Unit</label>
+                                        <select
+                                                class="form-control select2bs4"
+                                                id="weight_unit"
+                                                name="weight_unit">
+                                            <option value="">-- Select Weight Unit --</option>
+                                            @foreach ($uoms as $weightUnit)
+                                                <option value="{{ $weightUnit->xcode }}" {{ $product->weight_unit == $weightUnit->xcode ? 'selected' : '' }}>{{ $weightUnit->description }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="form-label" for="weight">Weight</label>
                                         <input
@@ -428,23 +530,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label" for="dimension_unit">Dimension Unit</label>
-                                <select
-                                        class="form-control select2bs4"
-                                        id="dimension_unit"
-                                        name="dimension_unit">
-                                    <option value="">-- Select Dimension Unit --</option>
-                                    @foreach ($uoms as $dimensionUnit)
-                                        <option value="{{ $dimensionUnit->xcode }}" {{ $product->dimension_unit == $dimensionUnit->xcode ? 'selected' : '' }}>{{ $dimensionUnit->description }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="dimension_unit">Dimension Unit</label>
+                                        <select
+                                                class="form-control select2bs4"
+                                                id="dimension_unit"
+                                                name="dimension_unit">
+                                            <option value="">-- Select Dimension Unit --</option>
+                                            @foreach ($uoms as $dimensionUnit)
+                                                <option value="{{ $dimensionUnit->xcode }}" {{ $product->dimension_unit == $dimensionUnit->xcode ? 'selected' : '' }}>{{ $dimensionUnit->description }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="form-label" for="length">Length</label>
                                         <input
@@ -455,7 +557,7 @@
                                                value="{{ $product->length ?? 0 }}">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="form-label" for="width">Width</label>
                                         <input
@@ -466,7 +568,7 @@
                                                value="{{ $product->width ?? 0 }}">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="form-label" for="height">Height</label>
                                         <input
@@ -487,7 +589,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label" for="volumetric_weight">Volumetric Weight</label>
                                 <input
@@ -498,7 +600,7 @@
                                         value="{{ $product->volumetric_weight ?? 0 }}">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label" for="shipping_charge">Shipping Charge</label>
                                 <input
@@ -544,6 +646,7 @@
                                                 <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
                                             @endforeach
                                         </select>
+                                        <small class="text-muted font-italic">You can save attribute selections for this product.</small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -557,11 +660,13 @@
                     </div>
 
                     <!-- Attribute List -->
-                    <div class="attribute-list-container">
-                        @include('pages.MD12.MD12-attribute-list', [
-                            'selectedAttributes' => $productTypes,
-                        ])
-                    </div>
+                    @foreach ($product->productAttributes as $attribute)
+                        <div class="attribute-list-container">
+                            @include('pages.MD12.MD12-attribute-list', [
+                                'selectedAttribute' => $attribute,
+                            ])
+                        </div>
+                    @endforeach
 
 
                 </div>
@@ -656,91 +761,10 @@
             </div>
 
 
-            <!-- Status Column -->
-            <div class="card card-dark card-outline card-secondary">
-                <div class="card-header">
-                    <h3 class="card-title text-dark">Status</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-lg fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" {{ $product->is_active ? 'checked' : '' }}>
-                                    <label for="is_active" class="custom-control-label form-label">Is Active?</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="is_listed" name="is_listed" {{ $product->is_listed ? 'checked' : '' }}>
-                                    <label for="is_listed" class="custom-control-label form-label">Display for Sell?</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="is_featured" name="is_featured" {{ $product->is_featured ? 'checked' : '' }}>
-                                    <label for="is_featured" class="custom-control-label form-label">Is Featured?</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="is_trending" name="is_trending" {{ $product->is_trending ? 'checked' : '' }}>
-                                    <label for="is_trending" class="custom-control-label form-label">Is Trending?</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="is_highlighted" name="is_highlighted" {{ $product->is_highlighted ? 'checked' : '' }}>
-                                    <label for="is_highlighted" class="custom-control-label form-label">Is Highlighted?</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="is_for_purchase" name="is_for_purchase" {{ $product->is_for_purchase ? 'checked' : '' }}>
-                                    <label for="is_for_purchase" class="custom-control-label form-label">Is For Purchase?</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="is_for_sell" name="is_for_sell" {{ $product->is_for_sell ? 'checked' : '' }}>
-                                    <label for="is_for_sell" class="custom-control-label form-label">Is For Sell?</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="is_downloadable" name="is_downloadable" {{ $product->is_downloadable ? 'checked' : '' }}>
-                                    <label for="is_downloadable" class="custom-control-label form-label">Is Downloadable?</label>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
             <!-- Category Column -->
             <div class="card card-dark card-outline card-secondary">
                 <div class="card-header">
-                    <h3 class="card-title text-dark">Category</h3>
+                    <h3 class="card-title text-dark">Display Categories</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-lg fa-minus"></i>
@@ -752,33 +776,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="form-label" for="type">Primary Category</label>
-                                <select class="form-control select2bs4" id="parent_category_id" name="parent_category_id">
-                                    <option value="">-- Select Primary Category --</option>
-                                    @include('pages.MD12.MD12-category-recursive', [
-                                        'categoryTree' => $categoryTree,
-                                        'count' => 0,
-                                    ])
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="form-label" for="type">Display Categories</label>
-                                <select class="form-control select2bs4" id="display_category_id" name="display_category_id[]" multiple="multiple">
-                                    <option value="">-- Select Display Categories --</option>
-                                    @include('pages.MD12.MD12-category-recursive', [
-                                        'categoryTree' => $categoryTree,
-                                        'count' => 0,
-                                    ])
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="form-label" for="type">Display Categories</label>
                                 <select class="duallistbox" multiple="multiple" id="display_category_id" name="display_category_id[]">
                                     @include('pages.MD12.MD12-category-recursive', [
                                         'categoryTree' => $categoryTree,
@@ -787,40 +784,12 @@
                                 </select>
                             </div>
                         </div>
-
                     </div>
 
                 </div>
             </div>
 
-            <!-- Brand Column -->
-            <div class="card card-dark card-outline card-secondary">
-                <div class="card-header">
-                    <h3 class="card-title text-dark">Brand</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-lg fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <select class="form-control select2bs4" id="brand_id" name="brand_id">
-                                    <option value="">-- Select Brand --</option>
-                                    @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}" {{ $product->brand_id == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
+        
 
 
 

@@ -12,6 +12,7 @@ class Product extends Model
         'name',
         'slug',
         'brand_id',
+        'category_id',
 
         'short_description',
         'description',
@@ -19,13 +20,6 @@ class Product extends Model
         'product_type',
 
         'is_active',
-        'is_listed',
-        'is_featured',
-        'is_trending',
-        'is_highlighted',
-        'is_for_purchase',
-        'is_for_sell',
-        'is_downloadable',
 
         'business_id',
     ];
@@ -38,6 +32,16 @@ class Product extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function productAttributes()
+    {
+        return $this->hasMany(ProductAttribute::class);
     }
 
     public function business()

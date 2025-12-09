@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name', 255);  // Name of the product
             $table->string('slug', 255);  // unique per business
 
+            $table->foreignId("category_id")->nullable()->references("id")->on("categories")->onDelete("set null");  // Though brands cant be deleted if products exist, but just in case
             $table->foreignId("brand_id")->nullable()->references("id")->on("brands")->onDelete("set null");  // Though brands cant be deleted if products exist, but just in case
 
             $table->text('short_description')->nullable();  // Short description of the product
@@ -25,13 +26,6 @@ return new class extends Migration
             $table->string('product_type', 50); // data from xcodes: physical, digital, service etc.
 
             $table->boolean('is_active')->default(true);  // Whether product is active or inactive
-            $table->boolean('is_listed')->default(false);  // Whether to show in storefront
-            $table->boolean('is_featured')->default(false);  // Whether to show in featured section in storefront
-            $table->boolean('is_trending')->default(false);  // Whether to show in trending section in storefront
-            $table->boolean('is_highlighted')->default(false);  // Whether to highlight in storefront
-            $table->boolean('is_for_purchase')->default(false);  // Whether available for purchase
-            $table->boolean('is_for_sell')->default(false);  // Whether available for sell
-            $table->boolean('is_downloadable')->default(false);  // Whether downloadable product if product_type is digital
     
             $table->foreignId("business_id")->references("id")->on("businesses")->onDelete("cascade");
             $table->unique(['slug', 'business_id']);
