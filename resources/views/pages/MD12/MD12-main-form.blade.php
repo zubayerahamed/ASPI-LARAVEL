@@ -792,7 +792,63 @@
                 </div>
             </div>
 
+
+            <!-- Product Collections Column -->
+            <div class="card card-dark card-outline card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title text-dark">Product Collections</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-lg fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        @foreach ($productCollections as $pc)
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="pc_{{ $pc->id }}" name="product_collections[]">
+                                        <label for="pc_{{ $pc->id }}" class="custom-control-label form-label">{{ $pc->name }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+            </div>
+
         
+            <!-- Product Labels Column -->
+            <div class="card card-dark card-outline card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title text-dark">Labels</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-lg fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        @foreach ($productLabels as $pl)
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="pl_{{ $pl->id }}" name="product_labels[]">
+                                        <label for="pl_{{ $pl->id }}" class="custom-control-label form-label">{{ $pl->name }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+            </div>
 
 
 

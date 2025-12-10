@@ -34,6 +34,7 @@ use App\Http\Controllers\MD09Controller;
 use App\Http\Controllers\MD10Controller;
 use App\Http\Controllers\MD11Controller;
 use App\Http\Controllers\MD12Controller;
+use App\Http\Controllers\MD14Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
@@ -165,6 +166,13 @@ Route::post('/MD12/save-product-attribute', [MD12Controller::class, 'saveProduct
 
 
 
+Route::get('/MD14', [MD14Controller::class, 'index'])->name('MD14');
+Route::get('/MD14/detail-table', [MD14Controller::class, 'detailTable'])->name('MD14.detail-table');
+Route::post('/MD14', [MD14Controller::class, 'create'])->name('MD14.create');
+Route::put('/MD14/{id}', [MD14Controller::class, 'update'])->name('MD14.update');
+Route::delete('/MD14/{id}', [MD14Controller::class, 'delete'])->name('MD14.delete');
+
+
 
 Route::get('/AD05', [AD05Controller::class, 'index'])->name('AD05');
 Route::get('/AD05/detail-table', [AD05Controller::class, 'detailTable'])->name('AD05.detail-table');
@@ -246,3 +254,4 @@ Route::post('/search/LAD05/{suffix}', [App\Http\Controllers\SearchSuggestControl
 Route::post('/search/LMD07/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LMD07'])->name('search.LMD07');
 Route::post('/search/LMD09/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LMD09'])->name('search.LMD09');
 Route::post('/search/LMD12/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LMD12'])->name('search.LMD12');
+Route::post('/search/LMD14/{suffix}', [App\Http\Controllers\SearchSuggestController::class, 'LMD14'])->name('search.LMD14');

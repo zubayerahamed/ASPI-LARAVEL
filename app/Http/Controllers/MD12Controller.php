@@ -7,6 +7,8 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductAttribute;
+use App\Models\ProductCollection;
+use App\Models\ProductLabel;
 use App\Models\TaxCategory;
 use App\Models\Xcodes;
 use Illuminate\Http\Request;
@@ -37,6 +39,8 @@ class MD12Controller extends ZayaanController
         $consumptionTypes = Xcodes::relatedBusiness()->active()->where('type', 'Consumption Type')->orderBy('seqn', 'asc')->get();
         $discountTypes = Xcodes::relatedBusiness()->active()->where('type', 'Discount Type')->orderBy('seqn', 'asc')->get();
         $taxCategories = TaxCategory::where('business_id', getBusinessId())->orderBy('name', 'asc')->get();
+        $productCollections = ProductCollection::active()->where('business_id', getBusinessId())->orderBy('name', 'asc')->get();
+        $productLabels = ProductLabel::relatedBusiness()->active()->orderBy('name', 'asc')->get();
 
         if ($request->ajax()) {
             if ($frommenu == 'Y') {
@@ -68,6 +72,8 @@ class MD12Controller extends ZayaanController
                         'taxCategories' => $taxCategories,
                         'consumptionTypes' => $consumptionTypes,
                         'discountTypes' => $discountTypes,
+                        'productCollections' => $productCollections,
+                        'productLabels' => $productLabels,
                         'product' => $product,
                         'productAttributes' => $product->productAttributes()->with(['attribute', 'term'])->get(),
                         'detailList' => Collection::empty(),
@@ -92,6 +98,8 @@ class MD12Controller extends ZayaanController
                         'taxCategories' => $taxCategories,
                         'consumptionTypes' => $consumptionTypes,
                         'discountTypes' => $discountTypes,
+                        'productCollections' => $productCollections,
+                        'productLabels' => $productLabels,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -115,6 +123,8 @@ class MD12Controller extends ZayaanController
                         'taxCategories' => $taxCategories,
                         'consumptionTypes' => $consumptionTypes,
                         'discountTypes' => $discountTypes,
+                        'productCollections' => $productCollections,
+                        'productLabels' => $productLabels,
                         'product' => $product,
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -134,6 +144,8 @@ class MD12Controller extends ZayaanController
                         'taxCategories' => $taxCategories,
                         'consumptionTypes' => $consumptionTypes,
                         'discountTypes' => $discountTypes,
+                        'productCollections' => $productCollections,
+                        'productLabels' => $productLabels,
                         'product' => new Product(),
                         'detailList' => Collection::empty(),
                     ])->render(),
@@ -158,6 +170,8 @@ class MD12Controller extends ZayaanController
             'taxCategories' => $taxCategories,
             'consumptionTypes' => $consumptionTypes,
             'discountTypes' => $discountTypes,
+            'productCollections' => $productCollections,
+            'productLabels' => $productLabels,
             'product' => new Product(),
             'detailList' => Collection::empty(),
         ]);
