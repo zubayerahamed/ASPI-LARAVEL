@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services;
 
@@ -25,13 +25,13 @@ class ProductService
         $query = Product::query();
 
         $query->where('business_id', getBusinessId());
+        $query->where('name', '<>', 'AUTO-DRAFT');
 
-        // Apply search filter
+        // Apply the same filters as in LSA11 method
         if (!empty($searchValue)) {
             $query->where(function ($q) use ($searchValue) {
                 $q->where('name', 'like', "%{$searchValue}%")
-                  ->orWhere('slug', 'like', "%{$searchValue}%");
-                // Add other searchable columns as needed
+                    ->orWhere('slug', 'like', "%{$searchValue}%");
             });
         }
 
@@ -49,8 +49,8 @@ class ProductService
 
         // Get paginated results
         return $query->skip($start)
-                    ->take($length)
-                    ->get();
+            ->take($length)
+            ->get();
     }
 
     /**
@@ -66,12 +66,13 @@ class ProductService
         $query = Product::query();
 
         $query->where('business_id', getBusinessId());
+        $query->where('name', '<>', 'AUTO-DRAFT');
 
         // Apply the same filters as in LSA11 method
         if (!empty($searchValue)) {
             $query->where(function ($q) use ($searchValue) {
                 $q->where('name', 'like', "%{$searchValue}%")
-                  ->orWhere('slug', 'like', "%{$searchValue}%");
+                    ->orWhere('slug', 'like', "%{$searchValue}%");
             });
         }
 
@@ -79,6 +80,7 @@ class ProductService
             $query->where('dependent_column', $dependentParam);
         }
 
+        // Uncomment if needed
         // $query->where('suffix', $suffix);
 
         return $query->count();

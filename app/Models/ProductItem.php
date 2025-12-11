@@ -10,6 +10,8 @@ class ProductItem extends Model
         'product_id',
         'product_behaviour',
 
+        'thumbnail_id',
+
         'is_item_active',
         'is_listed',
         'is_featured',
@@ -93,5 +95,32 @@ class ProductItem extends Model
         'download_expiry',
     ];
 
+    protected $casts = [
+        'is_item_active' => 'boolean',
+        'is_listed' => 'boolean',
+        'is_featured' => 'boolean',
+        'is_trending' => 'boolean',
+        'is_highlighted' => 'boolean',
+        'is_for_purchase' => 'boolean',
+        'is_for_sell' => 'boolean',
+        'is_downloadable' => 'boolean',
+        'free_shipping' => 'boolean',
+        'stock_track' => 'boolean',
+    ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_item_active', true);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function thumbnail()
+    {
+        return $this->belongsTo(Cadoc::class, 'thumbnail_id');
+    }
 
 }

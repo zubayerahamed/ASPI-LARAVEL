@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->string('product_behaviour', 50); // single, variant, bundle
 
+            $table->foreignId('thumbnail_id')->nullable()->references('id')->on('cadocs')->onDelete('set null');
+
             $table->boolean('is_item_active')->default(true);  // Whether product is active or inactive
             $table->boolean('is_listed')->default(false);  // Whether to show in storefront
             $table->boolean('is_featured')->default(false);  // Whether to show in featured section in storefront

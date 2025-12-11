@@ -24,6 +24,16 @@ class Product extends Model
         'business_id',
     ];
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeWithoutAutoDraft($query)
+    {
+        return $query->where('name', '<>', 'AUTO-DRAFT');
+    }
+
     public function getNameAttribute($value)
     {
         return $value == 'AUTO-DRAFT' ? '' : $value;
@@ -47,6 +57,16 @@ class Product extends Model
     public function business()
     {
         return $this->belongsTo(Business::class);
+    }
+
+    public function productItems()
+    {
+        return $this->hasMany(ProductItem::class);
+    }
+
+    public function productImages()
+    {
+        return $this->hasMany(ProductImage::class)->orderBy('seqn', 'asc');
     }
 
     // unique slug per business

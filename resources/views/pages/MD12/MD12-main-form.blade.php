@@ -117,6 +117,38 @@
                 </div>
                 <div class="card-body">
 
+                    <div id="thumbnail-dropzone" class="dropzone"></div>
+                    
+                    <div class="row mb-5">
+                        <div class="col-md-3">
+                            
+                            {{-- <div class="form-group">
+                                <label class="form-label" for="thumbnail">Thumbnail</label>
+                                <div class="row">
+                                    @if ($product->productItems != null && $product->productItems->first() != null && $product->productItems->first()->thumbnail != null)
+                                        <div class="col-md-12 mb-3 thumbnail-image-container">
+                                            <img class="border mb-3" src="{{ $product->productItems->first()->thumbnail->originalFile }}" width="100%" />
+                                            <a href="#" class="btn btn-default col-12 remove-thumbnail-btn d-flex align-items-center justify-content-center gap-2"><i class="ph ph-trash"></i> <span>Remove Image</span></a>
+                                        </div>
+                                    @endif
+                                    <div class="col-md-12">
+                                        <input  type="file" 
+                                                class="filepond" 
+                                                name="thumbnail" 
+                                                id="thumbnail"
+                                                data-multiple-upload="N" 
+                                                data-max-file-size="2MB" 
+                                                data-accepted-file-types="image/*"
+                                                data-instant-upload="true" 
+                                                data-allow-image-edit="true"
+                                                data-allow-image-preview="true"
+                                            >
+                                    </div>
+                                </div>
+                            </div> --}}
+                        </div>
+                    </div>
+
                     <!-- Status -->
                     <div class="row mb-5">
                         <div class="col-md-3">
@@ -851,6 +883,49 @@
             </div>
 
 
+            <!-- Gallery Images -->
+            <div class="card card-dark card-outline card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title text-dark">Gallery Images</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-lg fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="row">
+                                    @if ($product->productItems != null && $product->productItems->first() != null && $product->productItems->first()->thumbnail != null)
+                                        <div class="col-md-12 mb-3 thumbnail-image-container">
+                                            <img class="border mb-3" src="{{ $product->productItems->first()->thumbnail->originalFile }}" width="100%" />
+                                            <a href="#" class="btn btn-default col-12 remove-thumbnail-btn d-flex align-items-center justify-content-center gap-2"><i class="ph ph-trash"></i> <span>Remove Image</span></a>
+                                        </div>
+                                    @endif
+                                    <div class="col-md-12">
+                                        <input  type="file" 
+                                                class="filepond" 
+                                                name="thumbnail" 
+                                                id="thumbnail"
+                                                data-multiple-upload="Y" 
+                                                data-max-file-size="2MB" 
+                                                data-accepted-file-types="image/*"
+                                                data-instant-upload="true" 
+                                                data-allow-image-edit="true"
+                                                data-allow-image-preview="true"
+                                            >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
 
         </div>
 
@@ -861,6 +936,8 @@
 <script type="text/javascript">
     $(document).ready(function() {
         kit.ui.init();
+
+        $("div.dropzone").dropzone({ url: "/file/post" });
 
         $('.btn-reset').off('click').on('click', function(e) {
             e.preventDefault();

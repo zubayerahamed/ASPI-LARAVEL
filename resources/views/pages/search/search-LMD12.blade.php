@@ -5,7 +5,6 @@
                 <tr>
                     <th>Name</th>
                     <th>Group</th>
-                    <th>Product Type</th>
                     <th>Is Active?</th>
                 </tr>
             </thead>
@@ -41,10 +40,6 @@
                 render: function(data, type, row, meta) {
                     return '<a data-prompt="' + row['name'] + '" data-value="' + data + '" style="cursor: pointer;" class="dataindex" href="#">' + row['name'] + '</a>';
                 }
-            }, {
-                suffix: [0],
-                name: 'item_group',
-                rendername: 'item_group',
             }, {
                 suffix: [0],
                 name: 'product_type',

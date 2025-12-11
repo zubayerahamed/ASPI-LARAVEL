@@ -641,7 +641,7 @@ kit.ui.init = function () {
     kit.ui.config.initDualListbox();
     kit.ui.config.initBootstrapSwitch();
     kit.ui.config.initSummernote();
-    kit.ui.config.initFilePond();
+    // kit.ui.config.initFilePond();
     kit.ui.config.formRequiredLabel();
     kit.ui.config.phosphorIconPicker();
     kit.ui.config.advancedSearch();
