@@ -117,35 +117,10 @@
                 </div>
                 <div class="card-body">
 
-                    <div id="thumbnail-dropzone" class="dropzone"></div>
-                    
+                    <!-- Thumbnail Upload -->
                     <div class="row mb-5">
-                        <div class="col-md-3">
-                            
-                            {{-- <div class="form-group">
-                                <label class="form-label" for="thumbnail">Thumbnail</label>
-                                <div class="row">
-                                    @if ($product->productItems != null && $product->productItems->first() != null && $product->productItems->first()->thumbnail != null)
-                                        <div class="col-md-12 mb-3 thumbnail-image-container">
-                                            <img class="border mb-3" src="{{ $product->productItems->first()->thumbnail->originalFile }}" width="100%" />
-                                            <a href="#" class="btn btn-default col-12 remove-thumbnail-btn d-flex align-items-center justify-content-center gap-2"><i class="ph ph-trash"></i> <span>Remove Image</span></a>
-                                        </div>
-                                    @endif
-                                    <div class="col-md-12">
-                                        <input  type="file" 
-                                                class="filepond" 
-                                                name="thumbnail" 
-                                                id="thumbnail"
-                                                data-multiple-upload="N" 
-                                                data-max-file-size="2MB" 
-                                                data-accepted-file-types="image/*"
-                                                data-instant-upload="true" 
-                                                data-allow-image-edit="true"
-                                                data-allow-image-preview="true"
-                                            >
-                                    </div>
-                                </div>
-                            </div> --}}
+                        <div class="col-md-12">
+                            <div id="thumbnail-dropzone" class="dropzone"></div>
                         </div>
                     </div>
 

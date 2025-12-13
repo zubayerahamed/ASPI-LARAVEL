@@ -81,7 +81,13 @@
                                 </div>
                             @endif
                             <div class="col-md-12">
-                                <input  type="file" 
+                                <div id="myDropzone" 
+                                    class="dropzone"
+                                    data-maxFilesize="2MB"
+                                    data-maxFiles="1"
+                                    data-acceptedFiles="image/*"
+                                ></div>
+                                {{-- <input  type="file" 
                                         class="filepond" 
                                         name="thumbnail" 
                                         id="thumbnail"
@@ -91,7 +97,7 @@
                                         data-instant-upload="true" 
                                         data-allow-image-edit="true"
                                         data-allow-image-preview="true"
-                                    >
+                                    > --}}
                             </div>
                         </div>
                     </div>
@@ -149,8 +155,222 @@
 </div>
 
 <script type="text/javascript">
+    // let dropzoneInstances = {};
+    // let uploadedFiles = [];
+    // let logEntries = [];
+    if (typeof window.dropzoneInstances === 'undefined') {
+        window.dropzoneInstances = {};
+    }
+    if (typeof window.uploadedFiles === 'undefined') {
+        window.uploadedFiles = [];
+    }
+    if (typeof window.logEntries === 'undefined') {
+        window.logEntries = [];
+    }
+
+    function initDropzone(containerId = 'myDropzone') {
+        const $container = $(`#${containerId}`);
+        
+        if (!$container.length) {
+            console.error(`Dropzone container #${containerId} not found`);
+            return;
+        }
+
+        // Destroy existing instance if it exists
+        if (dropzoneInstances[containerId]) {
+            dropzoneInstances[containerId].destroy();
+            $container.html('');
+            $container.removeClass("dz-started dz-drag-hover");
+        }
+
+        // Get configuration values from data attributes
+        const maxFilesize = $container.data('maxfilesize');
+        const maxFiles = $container.data('maxfiles');
+        const acceptedFiles = $container.data('acceptedfiles');
+        
+        // Parse maxFilesize string (e.g., "2MB" -> 2)
+        const parseMaxFilesize = (sizeString) => {
+            if (!sizeString) return 2; // default
+            
+            const match = sizeString.match(/^(\d+)/);
+            return match ? parseInt(match[1]) : 2;
+        };
+
+        // Configuration
+        const config = {
+            url: $('a.filepond-process-url').attr('href'),
+            maxFilesize: parseMaxFilesize(maxFilesize),
+            maxFiles: maxFiles ? parseInt(maxFiles) : 1,
+            acceptedFiles: acceptedFiles || 'image/*',
+            addRemoveLinks: true,
+            timeout: 5000,
+            renameFile: function(file) {
+                var dt = new Date();
+                var time = dt.getTime();
+                return time + file.name;
+            },
+            init: function() {
+                // Store reference to this instance
+                const dzInstance = this;
+                
+                // Add event handlers for this specific instance
+                dzInstance.on("addedfile", function(file) {
+                    console.log(`File added to ${containerId}:`, file.name);
+                    addLog(`${containerId}: File added - ${file.name}`, "info");
+                    
+                    // Add to uploadedFiles array
+                    uploadedFiles.push({
+                        id: containerId,
+                        name: file.name,
+                        size: file.size,
+                        status: 'queued'
+                    });
+                });
+                
+                dzInstance.on("removedfile", function(file) {
+                    console.log(`File removed from ${containerId}:`, file.name);
+                    addLog(`${containerId}: File removed - ${file.name}`, "warning");
+                    
+                    // Remove from uploadedFiles array
+                    uploadedFiles = uploadedFiles.filter(f => 
+                        !(f.id === containerId && f.name === file.name)
+                    );
+                });
+                
+                dzInstance.on("success", function(file, response) {
+                    console.log(`Upload successful in ${containerId}:`, file.name);
+                    addLog(`${containerId}: Upload successful - ${file.name}`, "success");
+                    
+                    // Update status in uploadedFiles
+                    const fileIndex = uploadedFiles.findIndex(f => 
+                        f.id === containerId && f.name === file.name
+                    );
+                    if (fileIndex !== -1) {
+                        uploadedFiles[fileIndex].status = 'uploaded';
+                        uploadedFiles[fileIndex].response = response;
+                    }
+                });
+                
+                dzInstance.on("error", function(file, errorMessage) {
+                    console.error(`Upload error in ${containerId}:`, errorMessage);
+                    addLog(`${containerId}: Upload error - ${file.name}: ${errorMessage}`, "error");
+                    
+                    // Update status in uploadedFiles
+                    const fileIndex = uploadedFiles.findIndex(f => 
+                        f.id === containerId && f.name === file.name
+                    );
+                    if (fileIndex !== -1) {
+                        uploadedFiles[fileIndex].status = 'error';
+                        uploadedFiles[fileIndex].error = errorMessage;
+                    }
+                });
+                
+                dzInstance.on("sending", function(file, xhr, formData) {
+                    console.log(`Sending from ${containerId}:`, file.name);
+                    // Add custom data if needed
+                    formData.append("dropzoneId", containerId);
+                });
+            }
+        };
+
+        // Initialize Dropzone
+        dropzoneInstances[containerId] = new Dropzone(`#${containerId}`, config);
+
+        console.log(`Dropzone initialized for #${containerId} with config:`, config);
+    }
+
+    // Initialize all Dropzones on the page
+    function initAllDropzones() {
+        $('.dropzone').each(function() {
+            const containerId = $(this).attr('id');
+            if (containerId) {
+                destroyDropzone(containerId);
+                initDropzone(containerId);
+            }
+        });
+    }
+
+    // Helper function to add log
+    function addLog(message, type = "info") {
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = {
+            timestamp: timestamp,
+            message: message,
+            type: type
+        };
+        
+        logEntries.unshift(logEntry);
+        console.log(`[${timestamp}] ${type.toUpperCase()}: ${message}`);
+        
+        // Optional: Update a log element on the page
+        if ($('#dropzone-log').length) {
+            const logHtml = `<div class="log-entry ${type}">${timestamp}: ${message}</div>`;
+            $('#dropzone-log').prepend(logHtml);
+        }
+    }
+
+    // Get a specific Dropzone instance
+    function getDropzoneInstance(containerId) {
+        return dropzoneInstances[containerId] || null;
+    }
+
+    // Remove all files from a specific Dropzone
+    function removeAllFiles(containerId) {
+        const dz = getDropzoneInstance(containerId);
+        if (dz) {
+            dz.removeAllFiles(true);
+            addLog(`${containerId}: All files removed`, "warning");
+            
+            // Remove from uploadedFiles array
+            uploadedFiles = uploadedFiles.filter(f => f.id !== containerId);
+        }
+    }
+
+    // Process queue for a specific Dropzone
+    function processQueue(containerId) {
+        const dz = getDropzoneInstance(containerId);
+        if (dz) {
+            const queuedFiles = dz.getQueuedFiles();
+            if (queuedFiles.length > 0) {
+                dz.processQueue();
+                addLog(`${containerId}: Processing ${queuedFiles.length} files`, "info");
+            } else {
+                addLog(`${containerId}: No files in queue to process`, "warning");
+            }
+        }
+    }
+
+    // Destroy a specific Dropzone instance
+    function destroyDropzone(containerId) {
+        if (dropzoneInstances[containerId]) {
+            dropzoneInstances[containerId].destroy();
+            delete dropzoneInstances[containerId];
+            addLog(`${containerId}: Dropzone destroyed`, "warning");
+        }
+    }
+
+
     $(document).ready(function() {
         kit.ui.init();
+
+        // Disable auto discovery to prevent conflicts
+        Dropzone.autoDiscover = false;
+        
+        // Initialize all dropzones on the page
+        initAllDropzones();
+        
+        // Optional: Reinitialize dropzones on AJAX content load
+        $(document).on('ajaxComplete', function() {
+            // Wait a bit for DOM to be ready
+            setTimeout(function() {
+                $('.dropzone:not(.dz-started)').each(function() {
+                    const containerId = $(this).attr('id');
+                    if (containerId && !dropzoneInstances[containerId]) {
+                        initDropzone(containerId);
+                    }
+                });
+            }, 100);
+        });
 
         $('.btn-reset').off('click').on('click', function(e) {
             e.preventDefault();
