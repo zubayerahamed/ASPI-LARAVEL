@@ -1,3 +1,54 @@
+<style>
+    .kitfilepond{
+        width: 100%;
+        min-height: 160px;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        padding: .75rem .75rem;
+        background-color: #fff;
+        box-shadow: inset 0 0 0 transparent;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+        gap: 8px;
+        padding: 5px;
+    }
+    .file-preview{
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 4px;
+        display: block;
+    }
+    .file-preview img{
+        width: 100%;
+        height: auto;
+    }
+
+    /* Tablet: 3 columns */
+    @media (min-width: 768px) {
+        .kitfilepond {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .file-preview img {
+            height: 140px;
+        }
+    }
+
+    /* Desktop: 4-5 columns */
+    @media (min-width: 1024px) {
+        .kitfilepond {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 11.11%;
+        }
+        .file-preview img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+</style>
+
 <div class="card card-default">
     <div class="card-body">
         <form id="mainform" action="{{ $category->id == null ? route('MD02.create') : route('MD02.update', ['id' => $category->id]) }}" method="POST">
@@ -8,7 +59,27 @@
                 <input type="hidden" name="remove_thumbnail" value="NO">
             @endif
 
+            
+
             <div class="row">
+                <div class="col-md-12">
+                    
+                    <div class="form-group">
+                        <label for="exampleInputFile">File input</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="exampleInputFile">
+                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text">Upload</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
                 <div class="col-md-12">
                     <div class="form-group mb-3">
                         <label class="form-label" for="name">Category Name</label>
@@ -70,38 +141,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="form-label" for="thumbnail">Thumbnail</label>
-                        <div class="row">
-                            @if ($category->id != null && $category->thumbnail != null)
-                                <div class="col-md-12 mb-3 thumbnail-image-container">
-                                    <img class="border mb-3" src="{{ $category->thumbnail->originalFile }}" width="100%" />
-                                    <a href="#" class="btn btn-default col-12 remove-thumbnail-btn d-flex align-items-center justify-content-center gap-2"><i class="ph ph-trash"></i> <span>Remove Image</span></a>
-                                </div>
-                            @endif
-                            <div class="col-md-12">
-                                <div id="myDropzone" 
-                                    class="dropzone"
-                                    data-maxFilesize="2MB"
-                                    data-maxFiles="1"
-                                    data-acceptedFiles="image/*"
-                                ></div>
-                                {{-- <input  type="file" 
-                                        class="filepond" 
-                                        name="thumbnail" 
-                                        id="thumbnail"
-                                        data-multiple-upload="N" 
-                                        data-max-file-size="2MB" 
-                                        data-accepted-file-types="image/*"
-                                        data-instant-upload="true" 
-                                        data-allow-image-edit="true"
-                                        data-allow-image-preview="true"
-                                    > --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
 
                 <div class="col-md-12">
                     <div class="form-group">
@@ -354,23 +394,23 @@
         kit.ui.init();
 
         // Disable auto discovery to prevent conflicts
-        Dropzone.autoDiscover = false;
+        //Dropzone.autoDiscover = false;
         
         // Initialize all dropzones on the page
-        initAllDropzones();
+        //initAllDropzones();
         
         // Optional: Reinitialize dropzones on AJAX content load
-        $(document).on('ajaxComplete', function() {
-            // Wait a bit for DOM to be ready
-            setTimeout(function() {
-                $('.dropzone:not(.dz-started)').each(function() {
-                    const containerId = $(this).attr('id');
-                    if (containerId && !dropzoneInstances[containerId]) {
-                        initDropzone(containerId);
-                    }
-                });
-            }, 100);
-        });
+        // $(document).on('ajaxComplete', function() {
+        //     // Wait a bit for DOM to be ready
+        //     setTimeout(function() {
+        //         $('.dropzone:not(.dz-started)').each(function() {
+        //             const containerId = $(this).attr('id');
+        //             if (containerId && !dropzoneInstances[containerId]) {
+        //                 initDropzone(containerId);
+        //             }
+        //         });
+        //     }, 100);
+        // });
 
         $('.btn-reset').off('click').on('click', function(e) {
             e.preventDefault();
