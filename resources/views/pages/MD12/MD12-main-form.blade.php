@@ -84,7 +84,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
 
 
                     </div>
@@ -120,7 +120,29 @@
                     <!-- Thumbnail Upload -->
                     <div class="row mb-5">
                         <div class="col-md-12">
-                            <div id="thumbnail-dropzone" class="dropzone"></div>
+                            <div class="form-group">
+                                <label class="form-label" for="thumbnail">Thumbnail</label>
+                                <div class="row">
+                                    {{-- @if ($category->id != null && $category->thumbnail != null)
+                                        <div class="col-md-12 mb-3 thumbnail-image-container">
+                                            <img class="border mb-3" src="{{ $category->thumbnail->originalFile }}" width="100%" />
+                                            <a href="#" class="btn btn-default col-12 remove-thumbnail-btn d-flex align-items-center justify-content-center gap-2"><i class="ph ph-trash"></i> <span>Remove Image</span></a>
+                                        </div>
+                                    @endif --}}
+                                    <div class="col-md-12">
+                                        <input type="file"
+                                               class="filepond"
+                                               name="thumbnail"
+                                               id="thumbnail"
+                                               data-multiple-upload="N"
+                                               data-max-file-size="2MB"
+                                               data-accepted-file-types="image/*"
+                                               data-instant-upload="true"
+                                               data-allow-image-edit="true"
+                                               data-allow-image-preview="true">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -202,25 +224,25 @@
                             <div class="form-group">
                                 <label class="form-label" for="price">Cost Price</label>
                                 <input
-                                    type="number"
-                                    class="form-control"
-                                    id="cost_price"
-                                    name="cost_price"
-                                    min="0"
-                                    value="{{ $product->cost_price ?? 0 }}">
+                                       type="number"
+                                       class="form-control"
+                                       id="cost_price"
+                                       name="cost_price"
+                                       min="0"
+                                       value="{{ $product->cost_price ?? 0 }}">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label" for="price">MRP Price</label>
                                 <input
-                                    type="number"
-                                    class="form-control"
-                                    id="price"
-                                    name="price"
-                                    min="0"
-                                    value="{{ $product->price ?? 0 }}"
-                                    required>
+                                       type="number"
+                                       class="form-control"
+                                       id="price"
+                                       name="price"
+                                       min="0"
+                                       value="{{ $product->price ?? 0 }}"
+                                       required>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -242,13 +264,13 @@
                             <div class="form-group">
                                 <label class="form-label" for="selling_price">Selling Price</label>
                                 <input
-                                    type="number"
-                                    class="form-control"
-                                    id="selling_price"
-                                    name="selling_price"
-                                    min="0"
-                                    value="{{ $product->selling_price ?? 0 }}"
-                                    readonly>
+                                       type="number"
+                                       class="form-control"
+                                       id="selling_price"
+                                       name="selling_price"
+                                       min="0"
+                                       value="{{ $product->selling_price ?? 0 }}"
+                                       readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -272,12 +294,12 @@
                                     <div class="form-group">
                                         <label class="form-label" for="selling_price">Discount Amount</label>
                                         <input
-                                            type="number"
-                                            class="form-control"
-                                            id="discount_amt"
-                                            name="discount_amt"
-                                            min="0"
-                                            value="{{ $product->discount_amt ?? 0 }}">
+                                               type="number"
+                                               class="form-control"
+                                               id="discount_amt"
+                                               name="discount_amt"
+                                               min="0"
+                                               value="{{ $product->discount_amt ?? 0 }}">
                                     </div>
                                 </div>
                             </div>
@@ -466,11 +488,11 @@
                                     <div class="form-group">
                                         <label class="form-label" for="purchase_conversion">Purchase Conversion</label>
                                         <input
-                                            type="number"
-                                            class="form-control"
-                                            id="purchase_conversion"
-                                            name="purchase_conversion"
-                                            value="{{ $product->purchase_conversion ?? 1 }}">
+                                               type="number"
+                                               class="form-control"
+                                               id="purchase_conversion"
+                                               name="purchase_conversion"
+                                               value="{{ $product->purchase_conversion ?? 1 }}">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -491,11 +513,11 @@
                                     <div class="form-group">
                                         <label class="form-label" for="sell_conversion">Sell Conversion</label>
                                         <input
-                                            type="number"
-                                            class="form-control"
-                                            id="sell_conversion"
-                                            name="sell_conversion"
-                                            value="{{ $product->sell_conversion ?? 1 }}">
+                                               type="number"
+                                               class="form-control"
+                                               id="sell_conversion"
+                                               name="sell_conversion"
+                                               value="{{ $product->sell_conversion ?? 1 }}">
                                     </div>
                                 </div>
                             </div>
@@ -528,11 +550,11 @@
                                     <div class="form-group">
                                         <label class="form-label" for="weight">Weight</label>
                                         <input
-                                            type="number"
-                                            class="form-control"
-                                            id="weight"
-                                            name="weight"
-                                            value="{{ $product->weight ?? 0 }}">
+                                               type="number"
+                                               class="form-control"
+                                               id="weight"
+                                               name="weight"
+                                               value="{{ $product->weight ?? 0 }}">
                                     </div>
                                 </div>
                             </div>
@@ -600,22 +622,22 @@
                             <div class="form-group">
                                 <label class="form-label" for="volumetric_weight">Volumetric Weight</label>
                                 <input
-                                        type="number"
-                                        class="form-control"
-                                        id="volumetric_weight"
-                                        name="volumetric_weight"
-                                        value="{{ $product->volumetric_weight ?? 0 }}">
+                                       type="number"
+                                       class="form-control"
+                                       id="volumetric_weight"
+                                       name="volumetric_weight"
+                                       value="{{ $product->volumetric_weight ?? 0 }}">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label" for="shipping_charge">Shipping Charge</label>
                                 <input
-                                        type="number"
-                                        class="form-control"
-                                        id="shipping_charge"
-                                        name="shipping_charge"
-                                        value="{{ $product->shipping_charge ?? 0 }}">
+                                       type="number"
+                                       class="form-control"
+                                       id="shipping_charge"
+                                       name="shipping_charge"
+                                       value="{{ $product->shipping_charge ?? 0 }}">
                             </div>
                         </div>
                     </div>
@@ -662,7 +684,7 @@
                         </div>
                         <div class="col-md-4 text-right">
                             <a href="#" data-submiturl="{{ route('MD12.save-product-attribute') }}" class="btn btn-primary d-flex justify-content-center align-items-center gap-2 btn-save-attributes" title="Save">
-                                <i class="ph ph-floppy-disk"></i> 
+                                <i class="ph ph-floppy-disk"></i>
                                 <span>Save Attributes</span>
                             </a>
                         </div>
@@ -738,7 +760,7 @@
         <div class="col-md-3">
             <!-- Publish Column -->
             <div class="card">
-                
+
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="flex-grow-1 text-left">
@@ -828,7 +850,7 @@
                 </div>
             </div>
 
-        
+
             <!-- Product Labels Column -->
             <div class="card card-dark card-outline card-secondary">
                 <div class="card-header">
@@ -881,17 +903,16 @@
                                         </div>
                                     @endif
                                     <div class="col-md-12">
-                                        <input  type="file" 
-                                                class="filepond" 
-                                                name="thumbnail" 
-                                                id="thumbnail"
-                                                data-multiple-upload="Y" 
-                                                data-max-file-size="2MB" 
-                                                data-accepted-file-types="image/*"
-                                                data-instant-upload="true" 
-                                                data-allow-image-edit="true"
-                                                data-allow-image-preview="true"
-                                            >
+                                        <input type="file"
+                                               class="filepond"
+                                               name="thumbnail"
+                                               id="thumbnail"
+                                               data-multiple-upload="Y"
+                                               data-max-file-size="2MB"
+                                               data-accepted-file-types="image/*"
+                                               data-instant-upload="true"
+                                               data-allow-image-edit="true"
+                                               data-allow-image-preview="true">
                                     </div>
                                 </div>
                             </div>
@@ -912,7 +933,9 @@
     $(document).ready(function() {
         kit.ui.init();
 
-        $("div.dropzone").dropzone({ url: "/file/post" });
+        $("div.dropzone").dropzone({
+            url: "/file/post"
+        });
 
         $('.btn-reset').off('click').on('click', function(e) {
             e.preventDefault();
@@ -1012,7 +1035,7 @@
                     } else {
                         attributesData[fieldName] = $(this).val();
                     }
-                }                
+                }
             });
 
             console.log(attributesData);
