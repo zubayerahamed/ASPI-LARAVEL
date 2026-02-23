@@ -593,7 +593,7 @@ return [
                 ],
             ],
         ],
-        // 'DropZone' => [
+        // 'DropZone' => [ 
         //     'active' => true,
         //     'files' => [
         //         [
