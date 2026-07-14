@@ -7,7 +7,7 @@
 
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-8">
             <div class="card card-default">
                 <div class="card-body">
 
@@ -147,12 +147,30 @@
                     </div>
 
                     <!-- Status -->
-                    <div class="row mb-5">
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" type="checkbox" id="is_item_active" name="is_item_active">
                                     <label for="is_item_active" class="custom-control-label form-label">Is Item Active?</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_for_purchase" name="is_for_purchase">
+                                    <label for="is_for_purchase" class="custom-control-label form-label">Is For Purchase?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="is_for_sell" name="is_for_sell">
+                                    <label for="is_for_sell" class="custom-control-label form-label">Is For Sell?</label>
                                 </div>
                             </div>
                         </div>
@@ -172,6 +190,8 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row mb-5">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
@@ -196,22 +216,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="is_for_purchase" name="is_for_purchase">
-                                    <label for="is_for_purchase" class="custom-control-label form-label">Is For Purchase?</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" id="is_for_sell" name="is_for_sell">
-                                    <label for="is_for_sell" class="custom-control-label form-label">Is For Sell?</label>
-                                </div>
-                            </div>
-                        </div>
+                        
 
                     </div>
 
@@ -337,7 +342,7 @@
                         <div class="col-md-12">
                             <h5 class="text-primary">Inventory</h5>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label" for="sku">SKU</label>
                                 <input
@@ -348,7 +353,7 @@
                                        value="{{ $product->sku }}">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label" for="barcode">Barcode (ISBN, UPC, GTIN, etc.)</label>
                                 <input
@@ -757,7 +762,7 @@
 
 
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <!-- Publish Column -->
             <div class="card">
 
