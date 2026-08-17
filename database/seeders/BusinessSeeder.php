@@ -20,11 +20,11 @@ class BusinessSeeder extends Seeder
 
         DB::table('businesses')->insert([
             [
-                'name' => 'Bithis Kitchen',
+                'name' => 'Dora Gadgets',
                 'logo' => null,
                 'country' => 'BD',
                 'currency' => 'BDT',
-                'email' => 'zubayerahamed1990@gmail.com',
+                'email' => 'cyclingbd007@gmail.com',
                 'mobile' => '01515634889',
                 'is_inhouse' => true,
                 'is_pickup' => true,
@@ -45,7 +45,7 @@ class BusinessSeeder extends Seeder
         ]);
 
         // Assign business to system admin and business admin users
-        $business = DB::table('businesses')->where('name', 'Bithis Kitchen')->first();  
+        $business = DB::table('businesses')->where('name', 'Dora Gadgets')->first();  
 
         $systemAdmin = User::where('email', 'cyclingbd007@gmail.com')->first();
         $businessAdmin = User::where('email', 'zubayerahamed.freelancer@gmail.com')->first();
