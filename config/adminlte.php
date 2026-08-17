@@ -558,7 +558,7 @@ return [
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => 'vendor/chartjs/Chart.bundle.min.js',
                 ],
             ],
@@ -568,15 +568,16 @@ return [
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => 'vendor/sweetalert2/sweetalert2.all.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => 'vendor/sweetalert2/sweetalert2.min.css',
                 ],
             ],
+
         ],
         'toastr' => [
             'active' => true,

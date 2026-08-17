@@ -18,7 +18,7 @@
                 @if ($business->id == null)
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="form-label" for="business_category_id">Business Category</label>
+                            <label class="form-label" for="business_category_id">Business Domain</label>
                             <select class="form-control select2bs4" id="business_category_id" name="business_category_id" required>
                                 <option value="">-- Select Category --</option>
                                 @foreach ($businessCategories as $bc)

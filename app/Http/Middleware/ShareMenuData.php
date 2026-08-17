@@ -81,7 +81,7 @@ class ShareMenuData
                 ];
                 $menu[] = ['header' => 'Platform Administration'];
                 $menu[] = [
-                    'text' => 'Business Category',
+                    'text' => 'Business Domain',
                     'route' => 'SA01',
                     'icon' => 'ph ph-copy-simple',
                     'classes' => 'screen-item d-flex align-items-center',

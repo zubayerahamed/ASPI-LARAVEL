@@ -21,8 +21,8 @@ class SA01Controller extends ZayaanController
                         'businessCategory' => (new BusinessCategory())->fill(['seqn' => 0, 'is_active' => 1]),
                         'detailList' => BusinessCategory::orderBy('seqn', 'asc')->get()
                     ])->render(),
-                    'content_header_title' => 'Business Category',
-                    'subtitle' => 'Business Category',
+                    'content_header_title' => 'Business Domain',
+                    'subtitle' => 'Business Domain',
                 ]);
             }
 
@@ -54,8 +54,8 @@ class SA01Controller extends ZayaanController
         // When url is directly hit from url bar
         return view('index', [
             'page' => 'pages.SA01.SA01',
-            'content_header_title' => 'Business Category',
-            'subtitle' => 'Business Category',
+            'content_header_title' => 'Business Domain',
+            'subtitle' => 'Business Domain',
             'businessCategory' => (new BusinessCategory())->fill(['seqn' => 0, 'is_active' => 1]),
             'detailList' => BusinessCategory::orderBy('seqn', 'asc')->get()
         ]);
@@ -78,8 +78,8 @@ class SA01Controller extends ZayaanController
             'xcode' => 'required|unique:business_categories,xcode,except,id',
             'seqn' => 'required|integer',
         ], [
-            'name.required' => 'Category name required.',
-            'xcode.required' => 'Category code required.',
+            'name.required' => 'Domain name required.',
+            'xcode.required' => 'Domain code required.',
             'seqn.required' => 'Sequence number required.',
             'seqn.integer' => 'Sequence number must be an integer.',
         ]);
@@ -100,11 +100,11 @@ class SA01Controller extends ZayaanController
                 new ReloadSection('main-form-container', route('SA01', ['id' => 'RESET'])),
                 new ReloadSection('header-table-container', route('SA01.header-table')),
             ]);
-            $this->setSuccessStatusAndMessage("Category created successfully");
+            $this->setSuccessStatusAndMessage("Domain created successfully");
             return $this->getResponse();
         }
 
-        $this->setErrorStatusAndMessage("Category creation failed");
+        $this->setErrorStatusAndMessage("Domain creation failed");
         return $this->getResponse();
     }
 
@@ -116,8 +116,8 @@ class SA01Controller extends ZayaanController
             'xcode' => 'required|unique:business_categories,xcode,' . $id,
             'seqn' => 'required|integer',
         ], [
-            'name.required' => 'Category name required.',
-            'xcode.required' => 'Category code required.',
+            'name.required' => 'Domain name required.',
+            'xcode.required' => 'Domain code required.',
             'seqn.required' => 'Sequence number required.',
             'seqn.integer' => 'Sequence number must be an integer.',
         ]);
@@ -128,7 +128,7 @@ class SA01Controller extends ZayaanController
 
         $businessCategory = BusinessCategory::find($id);
         if (!$businessCategory) {
-            $this->setErrorStatusAndMessage("Category not found");
+            $this->setErrorStatusAndMessage("Domain not found");
             return $this->getResponse();
         }
 
@@ -144,11 +144,11 @@ class SA01Controller extends ZayaanController
                 new ReloadSection('main-form-container', route('SA01', ['id' => $id])),
                 new ReloadSection('header-table-container', route('SA01.header-table')),
             ]);
-            $this->setSuccessStatusAndMessage("Category updated successfully");
+            $this->setSuccessStatusAndMessage("Domain updated successfully");
             return $this->getResponse();
         }
 
-        $this->setErrorStatusAndMessage("Category update failed");
+        $this->setErrorStatusAndMessage("Domain update failed");
         return $this->getResponse();
     }
 
@@ -156,7 +156,7 @@ class SA01Controller extends ZayaanController
     {
         $businessCategory = BusinessCategory::find($id);
         if (!$businessCategory) {
-            $this->setErrorStatusAndMessage("Category not found");
+            $this->setErrorStatusAndMessage("Domain not found");
             return $this->getResponse();
         }
 
@@ -167,11 +167,11 @@ class SA01Controller extends ZayaanController
                 new ReloadSection('main-form-container', route('SA01', ['id' => 'RESET'])),
                 new ReloadSection('header-table-container', route('SA01.header-table')),
             ]);
-            $this->setSuccessStatusAndMessage("Category deleted successfully");
+            $this->setSuccessStatusAndMessage("Domain deleted successfully");
             return $this->getResponse();
         }
 
-        $this->setErrorStatusAndMessage("Category deletion failed");
+        $this->setErrorStatusAndMessage("Domain deletion failed");
         return $this->getResponse();
     }
 }
